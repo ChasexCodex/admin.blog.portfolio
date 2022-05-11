@@ -5,7 +5,16 @@ type Props = {
 }
 
 const PostRow = ({post}: Props) => {
-  return null
+  return (
+      <div>
+        <p>{post.id}</p>
+        <p>{post.title}</p>
+        <p>{post.slug}</p>
+        <p>{post.created_at}</p>
+        <p>{post.updated_at}</p>
+        <p>{post.author}</p>
+      </div>
+  )
 }
 
 export default PostRow
