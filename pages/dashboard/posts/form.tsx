@@ -27,9 +27,6 @@ const FormPost = () => {
       content,
     }
 
-    const data = new FormData()
-    Object.entries(input).forEach(([n, v]) => data.set(n, v))
-
     try {
       await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}/api/posts/store`, input)
     } catch (err) {
