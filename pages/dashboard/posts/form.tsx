@@ -1,22 +1,41 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import type {FormEvent} from 'react'
 import axios from 'axios'
 import {useRouter} from 'next/router'
+import type {Post} from '../../../types'
 
+type Input = {
+  type: 'edit' | 'create',
+  id: string | 'new',
+}
 
 const FormPost = () => {
 
   const router = useRouter()
+  const {type, id} = router.query as Input
 
-  const [title, setTitle] = useState('The Third Post')
-  const [slug, setSlug] = useState('the-third-post')
-  const [author, setAuthor] = useState('Elyas A. Al-Amri')
-  const [content, setContent] = useState('This post was made using my editor.')
+  const [title, setTitle] = useState('')
+  const [slug, setSlug] = useState('')
+  const [author, setAuthor] = useState('')
+  const [content, setContent] = useState('')
 
   const changeTitle = (e: any) => setTitle(e.target.value)
   const changeSlug = (e: any) => setSlug(e.target.value)
   const changeAuthor = (e: any) => setAuthor(e.target.value)
   const changeContent = (e: any) => setContent(e.target.value)
+
+  useEffect(() => {
+    (async () => {
+      if (type === 'edit' && id !== 'new') {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_APP_URL}/api/posts/view?id=${id}`)
+        const post = res.data.result.data[0] as Post
+        setTitle(post.title)
+        setSlug(post.slug)
+        setAuthor(post.author)
+        setContent(post.content)
+      }
+    })()
+  }, [type, id])
 
   const onsubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -25,10 +44,11 @@ const FormPost = () => {
       slug,
       author,
       content,
+      id: type === 'edit' ? id : undefined,
     }
 
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}/api/posts/store`, input)
+      await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}/api/posts/${type === 'edit' ? 'update' : 'store'}`, input)
     } catch (err) {
       console.log(err)
       // TODO: display errors
@@ -39,7 +59,7 @@ const FormPost = () => {
 
   return (
       <div>
-        <form onSubmit={onsubmit} encType="multipart/form-data" >
+        <form onSubmit={onsubmit} encType="multipart/form-data">
           <label htmlFor="title">Title</label>
           <input value={title} onChange={changeTitle} type="text" name="title" required/>
 
