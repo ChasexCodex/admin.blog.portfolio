@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import axios from 'axios'
 
 
 const FormPost = () => {
@@ -13,9 +14,25 @@ const FormPost = () => {
   const changeAuthor = (e: any) => setAuthor(e.target.value)
   const changeContent = (e: any) => setContent(e.target.value)
 
+  const onsubmit = async () => {
+    const input = {
+      title,
+      slug,
+      author,
+      content,
+    }
+
+    try {
+      const res = await axios.post(`${process.env.APP_URL}/api/posts/store`, input)
+      console.log(res)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
       <div>
-        <form>
+        <form onSubmit={onsubmit}>
           <label htmlFor="title">Title</label>
           <input value={title} onChange={changeTitle} type="text" name="title" required/>
 

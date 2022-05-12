@@ -20,7 +20,7 @@ export default async function UpdatePost(req: NextApiRequest, res: NextApiRespon
 
   const updated_at = new Date().toString()
 
-  const result = await supabase.from('posts').insert({...value, updated_at})
+  const result = await supabase.from('posts').update({...value, updated_at})
 
   if (result.error) {
     return res.status(400).json({result, updated: false})
