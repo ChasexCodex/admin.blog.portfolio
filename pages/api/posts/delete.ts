@@ -2,7 +2,7 @@ import type {NextApiRequest, NextApiResponse} from 'next'
 import {supabase} from '../../../utils/supabase'
 
 export default async function UpdatePost(req: NextApiRequest, res: NextApiResponse) {
-  const {id} = req.body
+  const {id} = req.query
 
   if (!id) {
     return res.status(400).json({message: 'id is required'})
