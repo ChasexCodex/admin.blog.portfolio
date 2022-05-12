@@ -17,9 +17,7 @@ export default async function StorePost(req: NextApiRequest, res: NextApiRespons
     return res.status(400).json({error})
   }
 
-  const updated_at = new Date().toString()
-
-  const result = await supabase.from('posts').update({...value, updated_at})
+  const result = await supabase.from('posts').insert({...value})
 
   if (result.error) {
     return res.status(400).json({result, stored: false})
