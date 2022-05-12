@@ -8,9 +8,10 @@ type Props = {
 
 const PostRow = ({post}: Props) => {
 
-  const deletePost = () => {
+  const deletePost = async () => {
     try {
-      axios.delete('/api/posts/delete?id=' + post.id)
+      await axios.delete('/api/posts/delete?id=' + post.id)
+      window.location.reload()
     } catch (err) {
       console.log(err)
     }
