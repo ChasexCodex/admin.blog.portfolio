@@ -4,7 +4,7 @@ import PostRow from '../../../components/post-row'
 
 
 const IndexPost = () => {
-  const {posts, isLoading, isError} = usePosts(0, 10)
+  const {result, isLoading, isError} = usePosts(0, 10)
 
   if(isLoading) {
     return (
@@ -22,14 +22,13 @@ const IndexPost = () => {
     )
   }
 
-
   return (
       <div>
         Posts Index
         <Link href="/dashboard/posts/form"><a>Create</a></Link>
         <Link href="/dashboard/posts/view"><a>View</a></Link>
         <div>
-          {posts.map(post => <PostRow key={post.id} post={post}/>)}
+          {result.data.map(post => <PostRow key={post.id} post={post}/>)}
         </div>
       </div>
   )
