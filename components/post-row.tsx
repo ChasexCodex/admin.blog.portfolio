@@ -26,6 +26,7 @@ const PostRow = ({post}: Props) => {
         <p>{post.updated_at}</p>
         <p>{post.author}</p>
         <Link href={'/dashboard/posts/form?type=edit&id=' + post.id}>Edit</Link>
+        <Link href={'/dashboard/posts/view/' + post.id}>View</Link>
         <button onClick={deletePost}>Delete</button>
       </div>
   )
