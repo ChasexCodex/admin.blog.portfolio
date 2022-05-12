@@ -12,15 +12,15 @@ const UpdatePostSchema = Joi
     })
 
 export default async function UpdatePost(req: NextApiRequest, res: NextApiResponse) {
-  const {value, error} = UpdatePostSchema.validate(req.body)
+  const {value: {id, ...value}, error} = UpdatePostSchema.validate(req.body)
 
   if (error) {
     return res.status(400).json({error})
   }
 
-  const updated_at = new Date().toString()
+  const updated_at = new Date()
 
-  const result = await supabase.from('posts').update({...value, updated_at})
+  const result = await supabase.from('posts').update({...value, updated_at}).eq('id', id)
 
   if (result.error) {
     return res.status(400).json({result, updated: false})
