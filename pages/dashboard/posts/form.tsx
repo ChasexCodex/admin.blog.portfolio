@@ -1,11 +1,15 @@
 import {useState} from 'react'
+import type {FormEvent} from 'react'
 import axios from 'axios'
+import {useRouter} from 'next/router'
 
 
 const FormPost = () => {
 
-  const [title, setTitle] = useState('The Second Post')
-  const [slug, setSlug] = useState('the-second-post')
+  const router = useRouter()
+
+  const [title, setTitle] = useState('The Third Post')
+  const [slug, setSlug] = useState('the-third-post')
   const [author, setAuthor] = useState('Elyas A. Al-Amri')
   const [content, setContent] = useState('This post was made using my editor.')
 
@@ -14,7 +18,8 @@ const FormPost = () => {
   const changeAuthor = (e: any) => setAuthor(e.target.value)
   const changeContent = (e: any) => setContent(e.target.value)
 
-  const onsubmit = async () => {
+  const onsubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     const input = {
       title,
       slug,
@@ -22,17 +27,22 @@ const FormPost = () => {
       content,
     }
 
+    const data = new FormData()
+    Object.entries(input).forEach(([n, v]) => data.set(n, v))
+
     try {
-      const res = await axios.post(`${process.env.APP_URL}/api/posts/store`, input)
-      console.log(res)
+      await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}/api/posts/store`, input)
     } catch (err) {
       console.log(err)
+      // TODO: display errors
     }
+
+    await router.push('/dashboard/posts')
   }
 
   return (
       <div>
-        <form onSubmit={onsubmit}>
+        <form onSubmit={onsubmit} encType="multipart/form-data" >
           <label htmlFor="title">Title</label>
           <input value={title} onChange={changeTitle} type="text" name="title" required/>
 
