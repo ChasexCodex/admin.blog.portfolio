@@ -98,11 +98,13 @@ const ViewMDX = ({content}: Props) => {
   const [source, setSource] = useState<MDXRemoteSerializeResult | null>(null)
 
   useEffect(() => {
-    (async () => {
-      const {content: render} = matter(content)
-      const source = await serialize(render)
-      setSource(source)
-    })()
+    const {content: render} = matter(content)
+    serialize(render)
+        .then(setSource)
+        .catch(err => {
+          serialize(err.toString())
+              .then(setSource)
+        })
   }, [content])
 
   return (
