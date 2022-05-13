@@ -2,6 +2,10 @@ import {useEffect, useState} from 'react'
 import type {FormEvent} from 'react'
 import axios from 'axios'
 import {useRouter} from 'next/router'
+import {serialize} from 'next-mdx-remote/serialize'
+import matter from 'gray-matter'
+import {MDXRemote} from 'next-mdx-remote'
+import type {MDXRemoteSerializeResult} from 'next-mdx-remote'
 import type {Post} from '../../../types'
 
 type Input = {
@@ -18,6 +22,8 @@ const FormPost = () => {
   const [slug, setSlug] = useState('')
   const [author, setAuthor] = useState('')
   const [content, setContent] = useState('')
+
+  const [tab, setTab] = useState<'edit' | 'view'>('edit')
 
   const changeTitle = (e: any) => setTitle(e.target.value)
   const changeSlug = (e: any) => setSlug(e.target.value)
@@ -59,21 +65,49 @@ const FormPost = () => {
 
   return (
       <div>
-        <form onSubmit={onsubmit} encType="multipart/form-data">
-          <label htmlFor="title">Title</label>
-          <input value={title} onChange={changeTitle} type="text" name="title" required/>
+        <button onClick={() => setTab(t => t == 'view' ? 'edit' : 'view')}>
+          {tab == 'view' ? 'Edit' : 'View'}
+        </button>
+        {tab == 'edit' &&
+          <form onSubmit={onsubmit} encType="multipart/form-data">
+            <label htmlFor="title">Title</label>
+            <input value={title} onChange={changeTitle} type="text" name="title" required/>
 
-          <label htmlFor="slug">Slug</label>
-          <input value={slug} onChange={changeSlug} type="text" name="slug" placeholder="Auto-Generated"/>
+            <label htmlFor="slug">Slug</label>
+            <input value={slug} onChange={changeSlug} type="text" name="slug" placeholder="Auto-Generated"/>
 
-          <label htmlFor="content">Content</label>
-          <textarea value={content} onChange={changeContent} name="content" required/>
+            <label htmlFor="content">Content</label>
+            <textarea value={content} onChange={changeContent} name="content" required/>
 
-          <label htmlFor="author">Author</label>
-          <input value={author} onChange={changeAuthor} type="text" name="author" required/>
+            <label htmlFor="author">Author</label>
+            <input value={author} onChange={changeAuthor} type="text" name="author" required/>
 
-          <input type="submit" value="Submit"/>
-        </form>
+            <input type="submit" value="Submit"/>
+          </form>
+        }
+        {tab === 'view' && <ViewMDX content={content}/>}
+      </div>
+  )
+}
+
+type Props = {
+  content: string
+}
+
+const ViewMDX = ({content}: Props) => {
+  const [source, setSource] = useState<MDXRemoteSerializeResult | null>(null)
+
+  useEffect(() => {
+    (async () => {
+      const {content: render} = matter(content)
+      const source = await serialize(render)
+      setSource(source)
+    })()
+  }, [content])
+
+  return (
+      <div>
+        {source && <MDXRemote {...source}/>}
       </div>
   )
 }
