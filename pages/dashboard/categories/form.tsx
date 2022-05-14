@@ -27,7 +27,7 @@ const Form = () => {
 
   return (
       <div>
-        <form onSubmit={onsubmit}>
+        <form onSubmit={onsubmit} encType="multipart/form-data">
           <input type="text" value={name} onChange={changeName} required/>
           <input type="submit" value="Create"/>
         </form>
