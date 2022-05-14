@@ -8,7 +8,7 @@ const UpdateCategorySchema = Joi
       name: Joi.string().required(),
     })
 
-export default async function UpdatePost(req: NextApiRequest, res: NextApiResponse) {
+export default async function UpdateCategory(req: NextApiRequest, res: NextApiResponse) {
   const {value: {id, ...value}, error} = UpdateCategorySchema.validate(req.body)
 
   if (error) {

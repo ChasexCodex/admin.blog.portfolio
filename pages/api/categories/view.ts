@@ -1,7 +1,7 @@
 import type {NextApiRequest, NextApiResponse} from 'next'
 import prisma from '../../../utils/prisma'
 
-export default async function UpdatePost(req: NextApiRequest, res: NextApiResponse) {
+export default async function UpdateCategory(req: NextApiRequest, res: NextApiResponse) {
   const {id} = req.body
 
   if (!id) {

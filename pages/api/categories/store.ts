@@ -7,7 +7,7 @@ const StoreCategorySchema = Joi
       name: Joi.string().required(),
     })
 
-export default async function StorePost(req: NextApiRequest, res: NextApiResponse) {
+export default async function StoreCategory(req: NextApiRequest, res: NextApiResponse) {
   const {value, error} = StoreCategorySchema.validate(req.body)
 
   if (error) {
