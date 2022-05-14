@@ -1,47 +1,58 @@
-import {useEffect, useState} from 'react'
-import type {FormEvent} from 'react'
+import {useState} from 'react'
+import type {ChangeEvent, FormEvent} from 'react'
 import {useRouter} from 'next/router'
-import {serialize} from 'next-mdx-remote/serialize'
-import matter from 'gray-matter'
-import {MDXRemote} from 'next-mdx-remote'
-import type {MDXRemoteSerializeResult} from 'next-mdx-remote'
 import type {Post} from '../../../types'
 import {http} from '../../../utils/http'
+import type {GetServerSideProps} from 'next'
+import MDXViewer from '../../../components/MDXViewer'
+import prisma from '../../../utils/prisma'
 
-type Input = {
-  type: 'edit' | 'create',
-  id: string | 'new',
+export const getServerSideProps: GetServerSideProps = async ({query}) => {
+  const {id} = query
+
+  if (!id || typeof id !== 'string') {
+    return {
+      props: {
+        post: {},
+      },
+    }
+  }
+
+  try {
+    const post = await prisma.post.findFirst({where: {id: parseInt(id)}})
+    return {
+      props: {
+        post,
+      },
+    }
+  } catch (e) {
+    return {notFound: true}
+  }
 }
 
-const FormPost = () => {
+type Props = {
+  post: Post
+  type: 'edit' | 'create'
+  id: string | 'new'
+}
+
+const FormPost = ({post, type, id}: Props) => {
 
   const router = useRouter()
-  const {type, id} = router.query as Input
 
-  const [title, setTitle] = useState('')
-  const [slug, setSlug] = useState('')
-  const [author, setAuthor] = useState('')
-  const [content, setContent] = useState('')
+  const [title, setTitle] = useState(post.title)
+  const [slug, setSlug] = useState(post.slug)
+  const [author, setAuthor] = useState(post.author)
+  const [content, setContent] = useState(post.content)
+  const [published, setPublished] = useState(post.published)
 
   const [tab, setTab] = useState<'edit' | 'view'>('edit')
 
-  const changeTitle = (e: any) => setTitle(e.target.value)
-  const changeSlug = (e: any) => setSlug(e.target.value)
-  const changeAuthor = (e: any) => setAuthor(e.target.value)
-  const changeContent = (e: any) => setContent(e.target.value)
-
-  useEffect(() => {
-    (async () => {
-      if (type === 'edit' && id !== 'new') {
-        const res = await http.get(`/api/posts/view?id=${id}`)
-        const post = res.data.result.data[0] as Post
-        setTitle(post.title)
-        setSlug(post.slug)
-        setAuthor(post.author)
-        setContent(post.content)
-      }
-    })()
-  }, [type, id])
+  const changeTitle = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)
+  const changeSlug = (e: ChangeEvent<HTMLInputElement>) => setSlug(e.target.value)
+  const changeAuthor = (e: ChangeEvent<HTMLInputElement>) => setAuthor(e.target.value)
+  const changeContent = (e: ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value)
+  const changePublished = () => setPublished(p => !p)
 
   const onsubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -50,6 +61,7 @@ const FormPost = () => {
       slug,
       author,
       content,
+      published,
       id: type === 'edit' ? id : undefined,
     }
 
@@ -82,34 +94,16 @@ const FormPost = () => {
             <label htmlFor="author">Author</label>
             <input value={author} onChange={changeAuthor} type="text" name="author" required/>
 
+            <label htmlFor="published">Published</label>
+            <input type="checkbox" name="published" checked={published} onClick={changePublished}/>
+
+            {/*TODO: add category select*/}
+            {/*TODO: add tags select*/}
+
             <input type="submit" value="Submit"/>
           </form>
         }
-        {tab === 'view' && <ViewMDX content={content}/>}
-      </div>
-  )
-}
-
-type Props = {
-  content: string
-}
-
-const ViewMDX = ({content}: Props) => {
-  const [source, setSource] = useState<MDXRemoteSerializeResult | null>(null)
-
-  useEffect(() => {
-    const {content: render} = matter(content)
-    serialize(render)
-        .then(setSource)
-        .catch(err => {
-          serialize(err.toString())
-              .then(setSource)
-        })
-  }, [content])
-
-  return (
-      <div>
-        {source && <MDXRemote {...source}/>}
+        {tab === 'view' && <MDXViewer content={content}/>}
       </div>
   )
 }
