@@ -10,3 +10,15 @@ export type Post = {
   updated_at: TimeStamp
   author: string
 }
+
+interface SuccessResult<T> {
+  data: T
+  success: true
+}
+
+interface ErrorResult {
+  error: any
+  success: false
+}
+
+export type ApiResult<T> = SuccessResult<T> | ErrorResult
