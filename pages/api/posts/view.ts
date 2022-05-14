@@ -5,13 +5,13 @@ export default async function UpdatePost(req: NextApiRequest, res: NextApiRespon
   const {id} = req.query
 
   if (!id || typeof id !== 'string') {
-    return res.status(400).json({message: 'id is required'})
+    return res.status(400).json({message: 'id is required', success: false})
   }
 
   try {
     const result = await prisma.post.findFirst({where: {id: parseInt(id)}})
-    return res.status(201).json({result, found: true})
+    res.status(201).json({result, success: true})
   } catch (e) {
-    return res.status(400).json({error: e, found: false})
+    res.status(400).json({error: e, success: false})
   }
 }

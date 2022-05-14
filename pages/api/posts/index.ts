@@ -10,9 +10,9 @@ export default async function LoadPosts(req: NextApiRequest, res: NextApiRespons
       skip: offset,
       take: limit,
     })
-    return res.status(200).json({result, found: true})
+    res.status(200).json({result, success: true})
   }
   catch (e) {
-    return res.status(500).json({error: e, found: false})
+    res.status(500).json({error: e, success: false})
   }
 }

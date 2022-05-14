@@ -15,7 +15,8 @@ export default async function UpdatePost(req: NextApiRequest, res: NextApiRespon
   const {value: {id, ...value}, error} = UpdatePostSchema.validate(req.body)
 
   if (error) {
-    return res.status(400).json({error})
+    res.status(400).json({error, success: false})
+    return
   }
 
   const updated_at = new Date()
@@ -28,8 +29,8 @@ export default async function UpdatePost(req: NextApiRequest, res: NextApiRespon
         updated_at,
       },
     })
-    return res.status(201).json({result, updated: true})
+    res.status(201).json({result, success: true})
   } catch (e) {
-    return res.status(400).json({error: e, updated: false})
+    res.status(400).json({error: e, success: false})
   }
 }

@@ -14,13 +14,14 @@ export default async function StorePost(req: NextApiRequest, res: NextApiRespons
   const {value, error} = StorePostSchema.validate(req.body)
 
   if (error) {
-    return res.status(400).json({error, stored: false})
+    res.status(400).json({error, success: false})
+    return
   }
 
   try {
     const result = await prisma.post.create({data: value})
-    return res.status(201).json({result, stored: true})
+    res.status(201).json({result, success: true})
   } catch (e) {
-    return res.status(400).json({error: e, stored: false})
+    res.status(400).json({error: e, success: false})
   }
 }
