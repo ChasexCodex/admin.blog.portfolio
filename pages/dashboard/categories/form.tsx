@@ -1,9 +1,11 @@
 import type {ChangeEvent, FormEvent} from 'react'
 import {useState} from 'react'
 import {http} from '../../../utils/http'
+import {useRouter} from 'next/router'
 
 const Form = () => {
 
+  const router = useRouter()
   const [name, setName] = useState('')
 
   const onsubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -15,6 +17,8 @@ const Form = () => {
       console.log(e)
       // TODO: display errors
     }
+
+    await router.push('/dashboard/categories')
   }
 
   const changeName = (e: ChangeEvent<HTMLInputElement>) => {
