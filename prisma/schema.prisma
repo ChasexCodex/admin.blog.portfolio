@@ -9,6 +9,8 @@ generator client {
 
 model Post {
     id Int @id @default(autoincrement())
+    title String
+    slug String @unique
     content String
     published Boolean @default(false)
     created_at DateTime @default(now())
