@@ -17,7 +17,7 @@ export default async function UpdatePost(req: NextApiRequest, res: NextApiRespon
   }
 
   try {
-    const result = prisma.post.update({
+    const result = prisma.category.update({
       where: {id: parseInt(id)},
       data: value,
     })
