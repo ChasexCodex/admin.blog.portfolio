@@ -14,7 +14,7 @@ const IndexPost = () => {
     )
   }
 
-  if (isError) {
+  if (isError || !result.success) {
     return (
         <div>
           Error

@@ -11,6 +11,17 @@ export type Post = {
   author: string
 }
 
+export type Category = {
+  id: ID
+  name: string
+}
+
+export type Tag = {
+  id: ID
+  name: string
+}
+
+
 interface SuccessResult<T> {
   data: T
   success: true
