@@ -1,7 +1,7 @@
 import {useState} from 'react'
 import type {ChangeEvent, FormEvent} from 'react'
 import {useRouter} from 'next/router'
-import type {Post} from '../../../types'
+import type {PostModelWithRelations, Category, Tag} from '../../../types'
 import {http} from '../../../utils/http'
 import type {GetServerSideProps} from 'next'
 import MDXViewer from '../../../components/MDXViewer'
@@ -14,7 +14,10 @@ export const getServerSideProps: GetServerSideProps = async ({query}) => {
   const tags = await prisma.tag.findMany()
 
   try {
-    const post = id && typeof id === 'string' ? await prisma.post.findFirst({where: {id: parseInt(id)}}) : {}
+    const post = id && typeof id === 'string' ? await prisma.post.findFirst({
+      where: {id: parseInt(id)},
+      include: {tags: true, category: true},
+    }) : {}
 
     return {
       props: {
@@ -29,12 +32,14 @@ export const getServerSideProps: GetServerSideProps = async ({query}) => {
 }
 
 type Props = {
-  post: Post
+  post: PostModelWithRelations
+  categories: Category[]
+  tags: Tag[]
   type: 'edit' | 'create'
   id: string | 'new'
 }
 
-const FormPost = ({post, type, id}: Props) => {
+const FormPost = ({post, categories: allCategories, tags: allTags, type, id}: Props) => {
 
   const router = useRouter()
 
@@ -43,6 +48,8 @@ const FormPost = ({post, type, id}: Props) => {
   const [author, setAuthor] = useState(post.author)
   const [content, setContent] = useState(post.content)
   const [published, setPublished] = useState(post.published)
+  const [categoryId, setCategoryId] = useState(post.categoryId)
+  const [tags, setTags] = useState(post.tags)
 
   const [tab, setTab] = useState<'edit' | 'view'>('edit')
 
@@ -60,6 +67,8 @@ const FormPost = ({post, type, id}: Props) => {
       author,
       content,
       published,
+      categoryId,
+      tags,
       id: type === 'edit' ? id : undefined,
     }
 
@@ -94,8 +103,13 @@ const FormPost = ({post, type, id}: Props) => {
             <label htmlFor="published">Published</label>
             <input type="checkbox" name="published" checked={published} onClick={changePublished}/>
 
-            {/*TODO: add category select*/}
-            {/*TODO: add tags select*/}
+            <select name="categoryId">
+              {allCategories.map(c => <option value={c.id} key={c.id}>{c.name}</option>)}
+            </select>
+
+            <select name="tags" multiple>
+              {allTags.map(t => <option value={t.id} key={t.id}>{t.name}</option>)}
+            </select>
 
             <input type="submit" value="Submit"/>
           </form>

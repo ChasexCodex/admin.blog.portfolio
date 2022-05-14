@@ -22,6 +22,19 @@ export type Tag = {
   name: string
 }
 
+export type PostWithRelations = Post & {
+  category: Category
+  tags: Tag[]
+}
+
+export type PostModel = Post & {
+  categoryId: number
+}
+
+export type PostModelWithRelations = PostModel & {
+  category: Category
+  tags: Tag[]
+}
 
 interface SuccessResult<T> {
   data: T
