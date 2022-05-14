@@ -14,16 +14,19 @@ model Post {
     created_at DateTime @default(now())
     updated_at DateTime @default(now())
     author String?
-    category Category @relation(references: [id])
+    category Category @relation(fields: [categoryId],references: [id])
+    categoryId Int
     tags Tag[] @relation(references: [id])
 }
 
 model Category {
     id Int @id @default(autoincrement())
     name String @unique
+    posts Post[]
 }
 
 model Tag {
     id Int @id @default(autoincrement())
     name String @unique
+    posts Post[] @relation(references: [id])
 }
