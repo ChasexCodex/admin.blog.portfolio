@@ -9,6 +9,7 @@ const UpdatePostSchema = Joi
       slug: Joi.string(),
       content: Joi.string(),
       author: Joi.string(),
+      published: Joi.boolean(),
     })
 
 export default async function UpdatePost(req: NextApiRequest, res: NextApiResponse) {
