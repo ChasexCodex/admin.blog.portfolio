@@ -29,7 +29,7 @@ export default async function UpdatePost(req: NextApiRequest, res: NextApiRespon
         updated_at,
       },
     })
-    res.status(201).json({result, success: true})
+    res.status(201).json({data: result, success: true})
   } catch (e) {
     res.status(400).json({error: e, success: false})
   }

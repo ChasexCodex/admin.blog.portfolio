@@ -20,7 +20,7 @@ export default async function StorePost(req: NextApiRequest, res: NextApiRespons
 
   try {
     const result = await prisma.post.create({data: value})
-    res.status(201).json({result, success: true})
+    res.status(201).json({data: result, success: true})
   } catch (e) {
     res.status(400).json({error: e, success: false})
   }

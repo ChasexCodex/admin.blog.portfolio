@@ -10,7 +10,7 @@ export default async function UpdatePost(req: NextApiRequest, res: NextApiRespon
 
   try {
     const result = await prisma.post.findFirst({where: {id: parseInt(id)}})
-    res.status(201).json({result, success: true})
+    res.status(201).json({data: result, success: true})
   } catch (e) {
     res.status(400).json({error: e, success: false})
   }

@@ -10,7 +10,7 @@ export default async function LoadPosts(req: NextApiRequest, res: NextApiRespons
       skip: offset,
       take: limit,
     })
-    res.status(200).json({result, success: true})
+    res.status(200).json({data: result, success: true})
   }
   catch (e) {
     res.status(500).json({error: e, success: false})
