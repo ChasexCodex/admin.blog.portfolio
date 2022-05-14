@@ -1,6 +1,6 @@
 import type {NextApiRequest, NextApiResponse} from 'next'
-import {supabase} from '../../../utils/supabase'
 import Joi from 'joi'
+import prisma from '../../../utils/prisma'
 
 const UpdatePostSchema = Joi
     .object({
@@ -20,11 +20,16 @@ export default async function UpdatePost(req: NextApiRequest, res: NextApiRespon
 
   const updated_at = new Date()
 
-  const result = await supabase.from('posts').update({...value, updated_at}).eq('id', id)
-
-  if (result.error) {
-    return res.status(400).json({result, updated: false})
+  try {
+    const result = prisma.post.update({
+      where: {id},
+      data: {
+        ...value,
+        updated_at,
+      },
+    })
+    return res.status(201).json({result, updated: true})
+  } catch (e) {
+    return res.status(400).json({error: e, updated: false})
   }
-
-  return res.status(201).json({result, updated: true})
 }

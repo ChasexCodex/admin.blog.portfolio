@@ -1,6 +1,6 @@
 import type {NextApiRequest, NextApiResponse} from 'next'
-import {supabase} from '../../../utils/supabase'
 import Joi from 'joi'
+import prisma from '../../../utils/prisma'
 
 const StorePostSchema = Joi
     .object({
@@ -14,14 +14,13 @@ export default async function StorePost(req: NextApiRequest, res: NextApiRespons
   const {value, error} = StorePostSchema.validate(req.body)
 
   if (error) {
-    return res.status(400).json({error})
+    return res.status(400).json({error, stored: false})
   }
 
-  const result = await supabase.from('posts').insert({...value})
-
-  if (result.error) {
-    return res.status(400).json({result, stored: false})
+  try {
+    const result = await prisma.post.create({data: value})
+    return res.status(201).json({result, stored: true})
+  } catch (e) {
+    return res.status(400).json({error: e, stored: false})
   }
-
-  return res.status(201).json({result, stored: true})
 }
