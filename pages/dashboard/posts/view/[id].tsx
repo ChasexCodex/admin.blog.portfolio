@@ -1,7 +1,6 @@
 import {MDXRemote} from 'next-mdx-remote'
 import matter from 'gray-matter'
 import {serialize} from 'next-mdx-remote/serialize'
-import {supabase} from '../../../../utils/supabase'
 import type {GetServerSideProps} from 'next'
 import type {MDXRemoteSerializeResult} from 'next-mdx-remote'
 import type {Post} from '../../../../types'
@@ -10,16 +9,18 @@ import rehypeHighlight from 'rehype-highlight'
 import rehypeCodeTitles from 'rehype-code-titles'
 import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import prisma from '../../../../utils/prisma'
 
 export const getServerSideProps: GetServerSideProps<any, {id: string}> = async ({params}) => {
   if (!params) {
-    return {
-      notFound: true,
-    }
+    return {notFound: true,}
   }
 
-  const res = await supabase.from('posts').select().eq('id', params.id)
-  const post = res.data?.[0] as Post
+  const post = await prisma.post.findFirst({where: {id: parseInt(params.id)}})
+
+  if (!post) {
+    return {notFound: true}
+  }
 
   const {content, data} = matter(post.content)
   const source = await serialize(content, {
