@@ -1,12 +1,12 @@
 import {useEffect, useState} from 'react'
 import type {FormEvent} from 'react'
-import axios from 'axios'
 import {useRouter} from 'next/router'
 import {serialize} from 'next-mdx-remote/serialize'
 import matter from 'gray-matter'
 import {MDXRemote} from 'next-mdx-remote'
 import type {MDXRemoteSerializeResult} from 'next-mdx-remote'
 import type {Post} from '../../../types'
+import {http} from '../../../utils/http'
 
 type Input = {
   type: 'edit' | 'create',
@@ -33,7 +33,7 @@ const FormPost = () => {
   useEffect(() => {
     (async () => {
       if (type === 'edit' && id !== 'new') {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_APP_URL}/api/posts/view?id=${id}`)
+        const res = await http.get(`/api/posts/view?id=${id}`)
         const post = res.data.result.data[0] as Post
         setTitle(post.title)
         setSlug(post.slug)
@@ -54,7 +54,7 @@ const FormPost = () => {
     }
 
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}/api/posts/${type === 'edit' ? 'update' : 'store'}`, input)
+      await http.post(`/api/posts/${type === 'edit' ? 'update' : 'store'}`, input)
     } catch (err) {
       console.log(err)
       // TODO: display errors

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type {Post} from '../types'
-import axios from 'axios'
+import {http} from '../utils/http'
 
 type Props = {
   post: Post
@@ -10,10 +10,11 @@ const PostRow = ({post}: Props) => {
 
   const deletePost = async () => {
     try {
-      await axios.delete('/api/posts/delete?id=' + post.id)
+      await http.delete('/api/posts/delete?id=' + post.id)
       window.location.reload()
     } catch (err) {
       console.log(err)
+      // TODO: display any errors
     }
   }
 
