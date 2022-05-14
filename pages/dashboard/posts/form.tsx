@@ -10,19 +10,17 @@ import prisma from '../../../utils/prisma'
 export const getServerSideProps: GetServerSideProps = async ({query}) => {
   const {id} = query
 
-  if (!id || typeof id !== 'string') {
-    return {
-      props: {
-        post: {},
-      },
-    }
-  }
+  const categories = await prisma.category.findMany()
+  const tags = await prisma.tag.findMany()
 
   try {
-    const post = await prisma.post.findFirst({where: {id: parseInt(id)}})
+    const post = id && typeof id === 'string' ? await prisma.post.findFirst({where: {id: parseInt(id)}}) : {}
+
     return {
       props: {
         post,
+        categories,
+        tags,
       },
     }
   } catch (e) {
