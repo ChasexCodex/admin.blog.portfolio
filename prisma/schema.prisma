@@ -14,4 +14,16 @@ model Post {
     created_at DateTime @default(now())
     updated_at DateTime @default(now())
     author String?
+    category Category @relation(references: [id])
+    tags Tag[] @relation(references: [id])
+}
+
+model Category {
+    id Int @id @default(autoincrement())
+    name String @unique
+}
+
+model Tag {
+    id Int @id @default(autoincrement())
+    name String @unique
 }
