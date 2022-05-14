@@ -13,12 +13,11 @@ const Form = () => {
 
     try {
       await http.post('/api/tags/store', {name})
+      await router.push('/dashboard/tags')
     } catch (e) {
       console.log(e)
       // TODO: display errors
     }
-
-    await router.push('/dashboard/tags')
   }
 
   const changeName = (e: ChangeEvent<HTMLInputElement>) => {

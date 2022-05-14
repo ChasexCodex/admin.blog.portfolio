@@ -13,12 +13,11 @@ const Form = () => {
 
     try {
       await http.post('/api/categories/store', {name})
+      await router.push('/dashboard/categories')
     } catch (e) {
       console.log(e)
       // TODO: display errors
     }
-
-    await router.push('/dashboard/categories')
   }
 
   const changeName = (e: ChangeEvent<HTMLInputElement>) => {

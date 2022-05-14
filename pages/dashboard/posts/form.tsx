@@ -67,12 +67,11 @@ const FormPost = ({post, type, id}: Props) => {
 
     try {
       await http.post(`/api/posts/${type === 'edit' ? 'update' : 'store'}`, input)
+      await router.push('/dashboard/posts')
     } catch (err) {
       console.log(err)
       // TODO: display errors
     }
-
-    await router.push('/dashboard/posts')
   }
 
   return (
