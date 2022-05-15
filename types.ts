@@ -1,13 +1,18 @@
-type ID = string
-type TimeStamp = string
+type ID = number
+type TimeStamp = {
+  created_at: Date
+  updated_at: Date
+}
+type StringTimeStamp = {
+  created_at: string
+  updated_at: string
+}
 
-export type Post = {
+export type Post = StringTimeStamp & {
   id: ID
   title: string
   slug: string
   content: string
-  created_at: TimeStamp
-  updated_at: TimeStamp
   author: string
   published: boolean
 }
@@ -22,19 +27,16 @@ export type Tag = {
   name: string
 }
 
-export type PostWithRelations = Post & {
+export type PostRelations = {
   category: Category
   tags: Tag[]
 }
 
-export type PostModel = Post & {
-  categoryId: number
-}
+export type PostWithRelations = Post & PostRelations
 
-export type PostModelWithRelations = PostModel & {
-  category: Category
-  tags: Tag[]
-}
+export type PostModel = Omit<Post, keyof StringTimeStamp> & TimeStamp & {categoryId: number}
+
+export type PostModelWithRelations = PostModel & PostRelations
 
 interface SuccessResult<T> {
   data: T
