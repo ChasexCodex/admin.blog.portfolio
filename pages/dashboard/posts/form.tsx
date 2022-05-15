@@ -8,6 +8,7 @@ import MDXViewer from '../../../components/MDXViewer'
 import prisma from '../../../utils/prisma'
 import Link from '../../../components/Link'
 import {toKebabCase} from '../../../utils/string'
+import Select from 'react-select/creatable'
 
 export const getServerSideProps: GetServerSideProps = async ({query}) => {
   const {id} = query
@@ -51,8 +52,11 @@ const FormPost = ({post, categories: allCategories, tags: allTags, type, id}: Pr
   const [author, setAuthor] = useState(post.author ?? '')
   const [content, setContent] = useState(post.content ?? '')
   const [published, setPublished] = useState(post.published ?? '')
-  const [categoryId, setCategoryId] = useState(post.categoryId ?? allCategories[0].id)
-  const [tags, setTags] = useState(post.tags ? post.tags.map(t => t.name) : [])
+  const [category, setCategory] = useState(() => {
+    const v = post.category ?? allCategories[0]
+    return {value: v.id, label: v.name}
+  })
+  const [tags, setTags] = useState(post.tags?.map(t => ({value: t.id, label: t.name})) ?? [])
 
   const [tab, setTab] = useState<Tab>('info')
 
@@ -61,12 +65,6 @@ const FormPost = ({post, categories: allCategories, tags: allTags, type, id}: Pr
   const changeAuthor = (e: ChangeEvent<HTMLInputElement>) => setAuthor(e.target.value)
   const changeContent = (e: ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value)
   const changePublished = () => setPublished(p => !p)
-  const changeCategoryId = (e: ChangeEvent<HTMLSelectElement>) => setCategoryId(parseInt(e.target.value))
-  const changeTags = (e: ChangeEvent<HTMLSelectElement>) => {
-    const {selectedOptions} = e.target
-    const selected = Array.from(selectedOptions, e => e.value)
-    setTags(selected)
-  }
 
   const changeTab = (tab: Tab) => () => setTab(tab)
 
@@ -78,12 +76,10 @@ const FormPost = ({post, categories: allCategories, tags: allTags, type, id}: Pr
       author,
       content,
       published,
-      categoryId,
-      tags: tags.map(t => parseInt(t)),
+      categoryId: category,
+      tags: tags.map(t => ({name: t.label, id: t.value})),
       id: type === 'edit' ? id : undefined,
     }
-
-    console.log(input)
 
     try {
       await http.post(`/api/posts/${type === 'edit' ? 'update' : 'store'}`, input)
@@ -100,21 +96,28 @@ const FormPost = ({post, categories: allCategories, tags: allTags, type, id}: Pr
           <Link href="/dashboard/posts" className="btn bg-black text-white">Back</Link>
         </div>
         {tab === 'info' &&
-          <form onSubmit={onsubmit} encType="multipart/form-data" className="flex flex-col space-y-2 mx-auto w-full xl:max-w-6xl">
+          <form onSubmit={onsubmit} encType="multipart/form-data"
+                className="flex flex-col space-y-2 mx-auto w-full xl:max-w-6xl">
 
             <div>
               <label htmlFor="title">Title</label>
-              <input value={title} onChange={changeTitle} id="title" type="text" name="title" required/>
+              <input value={title} onChange={changeTitle} id="title" type="text" name="title" required
+                     className="rounded-md shadow-md px-2 py-1"
+              />
             </div>
 
             <div>
               <label htmlFor="slug">Slug</label>
-              <input value={slug} onChange={changeSlug} id="slug" type="text" name="slug" placeholder="Auto-Generated"/>
+              <input value={slug} onChange={changeSlug} id="slug" type="text" name="slug" placeholder="Auto-Generated"
+                     className="rounded-md shadow-md px-2 py-1"
+              />
             </div>
 
             <div>
               <label htmlFor="author">Author</label>
-              <input value={author} onChange={changeAuthor} id="author" type="text" name="author" required/>
+              <input value={author} onChange={changeAuthor} id="author" type="text" name="author" required
+                     className="rounded-md shadow-md px-2 py-1"
+              />
             </div>
 
             <div>
@@ -124,16 +127,18 @@ const FormPost = ({post, categories: allCategories, tags: allTags, type, id}: Pr
 
             <div>
               <label htmlFor="categoryId" className="inline mr-4">Category</label>
-              <select value={categoryId} onChange={changeCategoryId} id="categoryId" name="categoryId">
-                {allCategories.map(c => <option value={c.id} key={c.id}>{c.name}</option>)}
-              </select>
+              <Select value={category} isClearable id="categoryId" name="categoryId"
+                      options={allCategories.map(c => ({label: c.name, value: c.id}))}
+                      onChange={(v: any) => setCategory(v)}
+              />
             </div>
 
             <div>
               <label htmlFor="tags">Tags</label>
-              <select value={tags} onChange={changeTags} id="tags" name="tags[]" multiple>
-                {allTags.map(t => <option value={t.id} key={t.id}>{t.name}</option>)}
-              </select>
+              <Select value={tags} isMulti isClearable id="tags" name="tags[]"
+                      onChange={v => setTags([...v])}
+                      options={allTags.map(t => ({value: t.id, label: t.name}))}
+              />
             </div>
 
             <input type="submit" value={type === 'edit' ? 'Update' : 'Create'}
@@ -141,11 +146,11 @@ const FormPost = ({post, categories: allCategories, tags: allTags, type, id}: Pr
           </form>
         }
         {tab === 'content' &&
-          <div className="flex-1 flex flex-col">
+          <div className="flex-pass-col">
             <label htmlFor="content">Content</label>
-            <textarea value={content} onChange={changeContent} id="content" name="content" required
-                      className="flex-1 w-full my-4 p-1"
-            />
+              <textarea value={content} onChange={changeContent} id="content" name="content" required
+                        className=" w-full flex-1 my-4 p-1 rounded-md shadow-lg"
+              />
           </div>
         }
         {tab === 'view' && <MDXViewer content={content}/>}

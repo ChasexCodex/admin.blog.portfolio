@@ -22,9 +22,11 @@ const ViewMDX = ({content}: Props) => {
   }, [content])
 
   return (
-      <article className="bg-red-500 flex-1 my-2 p-4 markdown-body">
-        {source && <MDXRemote {...source}/>}
-      </article>
+      <div className="flex-pass-col my-2">
+        <article className="flex-1 p-4 markdown-body rounded-md">
+          {source && <MDXRemote {...source}/>}
+        </article>
+      </div>
   )
 }
 

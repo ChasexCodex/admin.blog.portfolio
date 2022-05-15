@@ -11,6 +11,10 @@
   @apply justify-center items-center
 }
 
+.flex-pass-col {
+  @apply flex flex-col flex-1
+}
+
 @layer base {
   label {
     display: block;
