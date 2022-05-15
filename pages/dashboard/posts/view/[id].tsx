@@ -13,14 +13,20 @@ import prisma from '../../../../utils/prisma'
 
 export const getServerSideProps: GetServerSideProps<any, {id: string}> = async ({params}) => {
   if (!params) {
-    return {notFound: true,}
+    return {notFound: true}
   }
 
-  const post = await prisma.post.findFirst({where: {id: parseInt(params.id)}})
+  const post = await prisma.post.findFirst({
+    where: {id: parseInt(params.id)},
+    include: {tags: true, category: true},
+  })
 
   if (!post) {
     return {notFound: true}
   }
+
+  post.created_at = JSON.stringify(post.created_at) as any
+  post.updated_at = JSON.stringify(post.updated_at) as any
 
   const {content, data} = matter(post.content)
   const source = await serialize(content, {
