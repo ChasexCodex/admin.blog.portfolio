@@ -3,7 +3,7 @@ import matter from 'gray-matter'
 import {serialize} from 'next-mdx-remote/serialize'
 import type {GetServerSideProps} from 'next'
 import type {MDXRemoteSerializeResult} from 'next-mdx-remote'
-import type {Post} from '../../../../types'
+import type {PostWithRelations} from '../../../../types'
 
 import rehypeHighlight from 'rehype-highlight'
 import rehypeCodeTitles from 'rehype-code-titles'
@@ -54,7 +54,7 @@ export const getServerSideProps: GetServerSideProps<any, {id: string}> = async (
 }
 
 type Props = {
-  post: Post,
+  post: PostWithRelations,
   source: MDXRemoteSerializeResult
 }
 
@@ -71,6 +71,8 @@ const ViewPost = ({post, source}: Props) => {
         <p>{post.created_at}</p>
         <p>{post.updated_at}</p>
         <p>{post.author}</p>
+        <p>{post.category.name}</p>
+        <p>{post.tags.map(t => <span key={t.id}>{t.name},</span>)}</p>
       </div>
   )
 }
