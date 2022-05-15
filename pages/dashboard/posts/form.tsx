@@ -6,7 +6,7 @@ import {http} from '../../../utils/http'
 import type {GetServerSideProps} from 'next'
 import MDXViewer from '../../../components/MDXViewer'
 import prisma from '../../../utils/prisma'
-import Link from 'next/link'
+import Link from '../../../components/Link'
 
 export const getServerSideProps: GetServerSideProps = async ({query}) => {
   const {id} = query
@@ -39,20 +39,21 @@ type Props = {
   type: 'edit' | 'create'
   id: string | 'new'
 }
+type Tab = 'info' | 'content' | 'view'
 
 const FormPost = ({post, categories: allCategories, tags: allTags, type, id}: Props) => {
 
   const router = useRouter()
 
-  const [title, setTitle] = useState(post.title)
-  const [slug, setSlug] = useState(post.slug)
-  const [author, setAuthor] = useState(post.author)
-  const [content, setContent] = useState(post.content)
-  const [published, setPublished] = useState(post.published)
+  const [title, setTitle] = useState(post.title ?? '')
+  const [slug, setSlug] = useState(post.slug ?? '')
+  const [author, setAuthor] = useState(post.author ?? '')
+  const [content, setContent] = useState(post.content ?? '')
+  const [published, setPublished] = useState(post.published ?? '')
   const [categoryId, setCategoryId] = useState(post.categoryId ?? allCategories[0].id)
   const [tags, setTags] = useState(post.tags ? post.tags.map(t => t.name) : [])
 
-  const [tab, setTab] = useState<'edit' | 'view'>('edit')
+  const [tab, setTab] = useState<Tab>('info')
 
   const changeTitle = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)
   const changeSlug = (e: ChangeEvent<HTMLInputElement>) => setSlug(e.target.value)
@@ -62,10 +63,11 @@ const FormPost = ({post, categories: allCategories, tags: allTags, type, id}: Pr
   const changeCategoryId = (e: ChangeEvent<HTMLSelectElement>) => setCategoryId(parseInt(e.target.value))
   const changeTags = (e: ChangeEvent<HTMLSelectElement>) => {
     const {selectedOptions} = e.target
-
     const selected = Array.from(selectedOptions, e => e.value)
     setTags(selected)
   }
+
+  const changeTab = (tab: Tab) => () => setTab(tab)
 
   const onsubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -92,40 +94,71 @@ const FormPost = ({post, categories: allCategories, tags: allTags, type, id}: Pr
   }
 
   return (
-      <div>
-        <Link href="/dashboard/posts"><a>Back</a></Link>
-        <button onClick={() => setTab(t => t == 'view' ? 'edit' : 'view')}>
-          {tab == 'view' ? 'Edit' : 'View'}
-        </button>
-        {tab == 'edit' &&
-          <form onSubmit={onsubmit} encType="multipart/form-data">
-            <label htmlFor="title">Title</label>
-            <input value={title} onChange={changeTitle} type="text" name="title" required/>
+      <div className="my-2 mx-4 flex-1 flex flex-col">
+        <div className="my-2 flex">
+          <Link href="/dashboard/posts" className="btn bg-black text-white">Back</Link>
+        </div>
+        {tab === 'info' &&
+          <form onSubmit={onsubmit} encType="multipart/form-data" className="flex flex-col space-y-2 mx-auto w-full xl:max-w-6xl">
 
-            <label htmlFor="slug">Slug</label>
-            <input value={slug} onChange={changeSlug} type="text" name="slug" placeholder="Auto-Generated"/>
+            <div>
+              <label htmlFor="title">Title</label>
+              <input value={title} onChange={changeTitle} id="title" type="text" name="title" required/>
+            </div>
 
-            <label htmlFor="content">Content</label>
-            <textarea value={content} onChange={changeContent} name="content" required/>
+            <div>
+              <label htmlFor="slug">Slug</label>
+              <input value={slug} onChange={changeSlug} id="slug" type="text" name="slug" placeholder="Auto-Generated"/>
+            </div>
 
-            <label htmlFor="author">Author</label>
-            <input value={author} onChange={changeAuthor} type="text" name="author" required/>
+            <div>
+              <label htmlFor="author">Author</label>
+              <input value={author} onChange={changeAuthor} id="author" type="text" name="author" required/>
+            </div>
 
-            <label htmlFor="published">Published</label>
-            <input checked={published} onChange={changePublished} type="checkbox" name="published"/>
+            <div>
+              <label htmlFor="published" className="inline mr-4">Published</label>
+              <input checked={published} onChange={changePublished} id="published" type="checkbox" name="published"/>
+            </div>
 
-            <select value={categoryId} onChange={changeCategoryId} name="categoryId">
-              {allCategories.map(c => <option value={c.id} key={c.id}>{c.name}</option>)}
-            </select>
+            <div>
+              <label htmlFor="categoryId" className="inline mr-4">Category</label>
+              <select value={categoryId} onChange={changeCategoryId} id="categoryId" name="categoryId">
+                {allCategories.map(c => <option value={c.id} key={c.id}>{c.name}</option>)}
+              </select>
+            </div>
 
-            <select value={tags} onChange={changeTags} name="tags[]" multiple>
-              {allTags.map(t => <option value={t.id} key={t.id}>{t.name}</option>)}
-            </select>
+            <div>
+              <label htmlFor="tags">Tags</label>
+              <select value={tags} onChange={changeTags} id="tags" name="tags[]" multiple>
+                {allTags.map(t => <option value={t.id} key={t.id}>{t.name}</option>)}
+              </select>
+            </div>
 
-            <input type="submit" value="Submit"/>
+            <input type="submit" value={type === 'edit' ? 'Update' : 'Create'}
+                   className="btn bg-blue-500 max-w-max mx-auto my-2"/>
           </form>
         }
+        {tab === 'content' &&
+          <div className="flex-1 flex flex-col">
+            <label htmlFor="content">Content</label>
+            <textarea value={content} onChange={changeContent} id="content" name="content" required
+                      className="flex-1 w-full my-4 p-1"
+            />
+          </div>
+        }
         {tab === 'view' && <MDXViewer content={content}/>}
+        <div className="flex space-x-2">
+          <button onClick={changeTab('info')} className="btn bg-orange-300">
+            Info
+          </button>
+          <button onClick={changeTab('content')} className="btn bg-orange-300">
+            Content
+          </button>
+          <button onClick={changeTab('view')} className="btn bg-orange-300">
+            View
+          </button>
+        </div>
       </div>
   )
 }

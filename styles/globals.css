@@ -10,3 +10,12 @@
 .center {
   @apply justify-center items-center
 }
+
+@layer base {
+  label {
+    display: block;
+  }
+  input:not([type=checkbox]) {
+    @apply w-full
+  }
+}
