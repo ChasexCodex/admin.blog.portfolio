@@ -2,7 +2,7 @@ import type {ChangeEvent, FormEvent} from 'react'
 import React, {useState} from 'react'
 import {http} from '../../../utils/http'
 import {useRouter} from 'next/router'
-import Link from 'next/link'
+import Link from '../../../components/Link'
 
 const Form = () => {
 
@@ -26,11 +26,19 @@ const Form = () => {
   }
 
   return (
-      <div>
-        <Link href="/dashboard/tags"><a>Back</a></Link>
+      <div className="mx-4">
+        <div className="flex my-2">
+          <Link href="/dashboard/tags" className="btn bg-black text-white">Back</Link>
+        </div>
         <form onSubmit={onsubmit} encType="multipart/form-data">
-          <input type="text" value={name} onChange={changeName} required/>
-          <input type="submit" value="Create"/>
+          <div className="my-4">
+            <label htmlFor="name" className="block mr-4 mb-1 ml-2">Name</label>
+            <input value={name} onChange={changeName} type="text" name="name" required
+                   placeholder="Name..."
+                   className="rounded-lg shadow block px-2 py-1"
+            />
+          </div>
+          <input type="submit" value="Create" className="btn bg-green-500"/>
         </form>
       </div>
   )
