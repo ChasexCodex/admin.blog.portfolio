@@ -48,8 +48,8 @@ const FormPost = ({post, categories: allCategories, tags: allTags, type, id}: Pr
   const [author, setAuthor] = useState(post.author)
   const [content, setContent] = useState(post.content)
   const [published, setPublished] = useState(post.published)
-  const [categoryId, setCategoryId] = useState(post.categoryId)
-  const [tags, setTags] = useState(post.tags)
+  const [categoryId, setCategoryId] = useState(post.categoryId ?? allCategories[0].id)
+  const [tags, setTags] = useState(post.tags ? post.tags.map(t => t.name) : [])
 
   const [tab, setTab] = useState<'edit' | 'view'>('edit')
 
@@ -58,6 +58,13 @@ const FormPost = ({post, categories: allCategories, tags: allTags, type, id}: Pr
   const changeAuthor = (e: ChangeEvent<HTMLInputElement>) => setAuthor(e.target.value)
   const changeContent = (e: ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value)
   const changePublished = () => setPublished(p => !p)
+  const changeCategoryId = (e: ChangeEvent<HTMLSelectElement>) => setCategoryId(parseInt(e.target.value))
+  const changeTags = (e: ChangeEvent<HTMLSelectElement>) => {
+    const {selectedOptions} = e.target
+
+    const selected = Array.from(selectedOptions, e => e.value)
+    setTags(selected)
+  }
 
   const onsubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -68,9 +75,11 @@ const FormPost = ({post, categories: allCategories, tags: allTags, type, id}: Pr
       content,
       published,
       categoryId,
-      tags,
+      tags: tags.map(t => parseInt(t)),
       id: type === 'edit' ? id : undefined,
     }
+
+    console.log(input)
 
     try {
       await http.post(`/api/posts/${type === 'edit' ? 'update' : 'store'}`, input)
@@ -101,13 +110,13 @@ const FormPost = ({post, categories: allCategories, tags: allTags, type, id}: Pr
             <input value={author} onChange={changeAuthor} type="text" name="author" required/>
 
             <label htmlFor="published">Published</label>
-            <input type="checkbox" name="published" checked={published} onClick={changePublished}/>
+            <input checked={published} onChange={changePublished} type="checkbox" name="published"/>
 
-            <select name="categoryId">
+            <select value={categoryId} onChange={changeCategoryId} name="categoryId">
               {allCategories.map(c => <option value={c.id} key={c.id}>{c.name}</option>)}
             </select>
 
-            <select name="tags" multiple>
+            <select value={tags} onChange={changeTags} name="tags[]" multiple>
               {allTags.map(t => <option value={t.id} key={t.id}>{t.name}</option>)}
             </select>
 
