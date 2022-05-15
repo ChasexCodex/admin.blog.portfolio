@@ -24,7 +24,7 @@ export default async function StorePost(req: NextApiRequest, res: NextApiRespons
     const result = await prisma.post.create({
       data: {
         ...input,
-        tags: {connect: tags.map(t => ({id: t}))},
+        tags: {connect: tags.map((t: string) => ({id: t}))},
         category: {connect: {id: categoryId}},
       },
     })

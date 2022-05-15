@@ -28,7 +28,7 @@ export const getServerSideProps: GetServerSideProps<any, {id: string}> = async (
   post.created_at = JSON.stringify(post.created_at) as any
   post.updated_at = JSON.stringify(post.updated_at) as any
 
-  const {content, data} = matter(post.content)
+  const {content} = matter(post.content)
   const source = await serialize(content, {
     mdxOptions: {
       rehypePlugins: [
