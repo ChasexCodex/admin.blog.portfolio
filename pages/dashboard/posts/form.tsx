@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import React, {useState} from 'react'
 import type {ChangeEvent, FormEvent} from 'react'
 import {useRouter} from 'next/router'
 import type {PostModelWithRelations, Category, Tag} from '../../../types'
@@ -6,6 +6,7 @@ import {http} from '../../../utils/http'
 import type {GetServerSideProps} from 'next'
 import MDXViewer from '../../../components/MDXViewer'
 import prisma from '../../../utils/prisma'
+import Link from 'next/link'
 
 export const getServerSideProps: GetServerSideProps = async ({query}) => {
   const {id} = query
@@ -92,6 +93,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, type, id}: Pr
 
   return (
       <div>
+        <Link href="/dashboard/posts"><a>Back</a></Link>
         <button onClick={() => setTab(t => t == 'view' ? 'edit' : 'view')}>
           {tab == 'view' ? 'Edit' : 'View'}
         </button>

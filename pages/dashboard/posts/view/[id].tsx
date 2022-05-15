@@ -10,6 +10,8 @@ import rehypeCodeTitles from 'rehype-code-titles'
 import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import prisma from '../../../../utils/prisma'
+import Link from 'next/link'
+import React from 'react'
 
 export const getServerSideProps: GetServerSideProps<any, {id: string}> = async ({params}) => {
   if (!params) {
@@ -64,6 +66,8 @@ const ViewPost = ({post, source}: Props) => {
 
   return (
       <div>
+        <Link href="/dashboard/posts"><a>Back</a></Link>
+
         <p>{post.id}</p>
         <p>{post.title}</p>
         <p>{post.slug}</p>

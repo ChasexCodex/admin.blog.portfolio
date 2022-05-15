@@ -21,6 +21,7 @@ type Props = {
 const IndexCategory = ({categories}: Props) => {
   return (
       <div>
+        <Link href="/dashboard"><a>Back</a></Link>
         <Link href="/dashboard/categories/form"><a>Create</a></Link>
         {categories.map(c => <p key={c.id}>{c.name}</p>)}
       </div>

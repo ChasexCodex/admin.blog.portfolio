@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import usePosts from '../../../hooks/usePosts'
 import PostRow from '../../../components/post-row'
+import React from 'react'
 
 
 const IndexPost = () => {
@@ -25,6 +26,7 @@ const IndexPost = () => {
   return (
       <div>
         Posts Index
+        <Link href="/dashboard"><a>Back</a></Link>
         <Link href="/dashboard/posts/form"><a>Create</a></Link>
         <Link href="/dashboard/posts/view"><a>View</a></Link>
         <div>

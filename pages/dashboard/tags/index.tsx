@@ -22,6 +22,7 @@ const IndexTag = ({tags}: Props) => {
   return (
       <div>
         <Link href="/dashboard/tags/form"><a>Create</a></Link>
+        <Link href="/dashboard"><a>Back</a></Link>
         {tags.map(c => <p key={c.id}>{c.name}</p>)}
       </div>
   )
