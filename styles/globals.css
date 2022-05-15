@@ -2,3 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @tailwind screens;
+
+.btn {
+  @apply px-2 py-2 rounded-xl block font-semibold
+}
