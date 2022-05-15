@@ -7,6 +7,7 @@ import type {GetServerSideProps} from 'next'
 import MDXViewer from '../../../components/MDXViewer'
 import prisma from '../../../utils/prisma'
 import Link from '../../../components/Link'
+import {toKebabCase} from '../../../utils/string'
 
 export const getServerSideProps: GetServerSideProps = async ({query}) => {
   const {id} = query
@@ -73,7 +74,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, type, id}: Pr
     e.preventDefault()
     const input = {
       title,
-      slug,
+      slug: slug || toKebabCase(title),
       author,
       content,
       published,
