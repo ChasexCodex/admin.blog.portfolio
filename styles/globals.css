@@ -4,5 +4,9 @@
 @tailwind screens;
 
 .btn {
-  @apply px-2 py-2 rounded-xl block font-semibold
+  @apply px-2 py-1 rounded-xl block font-semibold
+}
+
+.center {
+  @apply justify-center items-center
 }

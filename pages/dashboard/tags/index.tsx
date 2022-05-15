@@ -27,7 +27,7 @@ const IndexTag = ({tags}: Props) => {
         <div className="border border-gray-500 rounded">
           <table className="table-auto w-full text-center">
             <thead>
-            <tr className="h-10 bg-gray-400 ">
+            <tr className="h-10 bg-gray-400">
               <th>#</th>
               <th>Name</th>
             </tr>
