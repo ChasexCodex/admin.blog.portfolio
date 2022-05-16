@@ -6,7 +6,7 @@ import {Category, PostModelWithRelations, Tag} from '@/types'
 export const getServerSideProps: GetServerSideProps<any, {id: string}> = async ({params}) => {
 
   if (!params) {
-    throw null
+    return {notFound: true}
   }
 
   const id = parseInt(params.id)
@@ -18,6 +18,13 @@ export const getServerSideProps: GetServerSideProps<any, {id: string}> = async (
     where: {id},
     include: {tags: true, category: true},
   })
+
+  if (!post) {
+    return {notFound: true}
+  }
+
+  post.created_at = JSON.stringify(post.created_at) as any
+  post.updated_at = JSON.stringify(post.updated_at) as any
 
   return {
     props: {
