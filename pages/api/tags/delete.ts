@@ -1,5 +1,5 @@
 import {NextApiRequest, NextApiResponse} from 'next'
-import prisma from '../../../utils/prisma'
+import {prisma} from '@/prisma'
 
 export default async function UpdateTag(req: NextApiRequest, res: NextApiResponse) {
   const {id} = req.body

@@ -1,5 +1,5 @@
 import type {NextApiRequest, NextApiResponse} from 'next'
-import prisma from '../../../utils/prisma'
+import {prisma} from '@/prisma'
 import StorePostSchema from '../../../schemas/store-post-schema'
 import type {CanBeCreatedTag} from '../../../types'
 

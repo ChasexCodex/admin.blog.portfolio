@@ -1,5 +1,5 @@
 import type {NextApiRequest, NextApiResponse} from 'next'
-import prisma from '../../../utils/prisma'
+import {prisma} from '@/prisma'
 
 export default async function LoadPosts(req: NextApiRequest, res: NextApiResponse) {
   const limit = parseInt((req.query['limit'] as string) ?? '10')

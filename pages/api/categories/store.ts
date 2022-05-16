@@ -1,6 +1,6 @@
 import type {NextApiRequest, NextApiResponse} from 'next'
 import Joi from 'joi'
-import prisma from '../../../utils/prisma'
+import {prisma} from '@/prisma'
 
 const StoreCategorySchema = Joi
     .object({
