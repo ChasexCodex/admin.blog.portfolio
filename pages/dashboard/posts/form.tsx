@@ -7,8 +7,8 @@ import type {GetServerSideProps} from 'next'
 import MDXViewer from '../../../components/MDXViewer'
 import prisma from '../../../utils/prisma'
 import Link from '../../../components/Link'
-import {toKebabCase} from '../../../utils/string'
 import Select from 'react-select/creatable'
+import {FormatNew} from '../../../utils'
 
 export const getServerSideProps: GetServerSideProps = async ({query}) => {
   const {id} = query
@@ -51,7 +51,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, type, id}: Pr
   const [slug, setSlug] = useState(post.slug ?? '')
   const [author, setAuthor] = useState(post.author ?? '')
   const [content, setContent] = useState(post.content ?? '')
-  const [published, setPublished] = useState(post.published ?? '')
+  const [published, setPublished] = useState(post.published ?? false)
   const [category, setCategory] = useState(() => {
     const v = post.category ?? allCategories[0]
     return {value: v.id, label: v.name}
@@ -72,16 +72,17 @@ const FormPost = ({post, categories: allCategories, tags: allTags, type, id}: Pr
     e.preventDefault()
     const input = {
       title,
-      slug: slug || toKebabCase(title),
+      slug,
       author,
       content,
       published,
-      categoryId: category,
-      tags: tags.map(t => ({name: t.label, id: t.value})),
+      category: FormatNew({name: category.label, id: category.value}),
+      tags: tags.map(t => FormatNew({name: t.label, id: t.value})),
       id: type === 'edit' ? id : undefined,
     }
 
     try {
+      console.log(input)
       await http.post(`/api/posts/${type === 'edit' ? 'update' : 'store'}`, input)
       await router.push('/dashboard/posts')
     } catch (err) {
@@ -108,14 +109,16 @@ const FormPost = ({post, categories: allCategories, tags: allTags, type, id}: Pr
 
             <div>
               <label htmlFor="slug">Slug</label>
-              <input value={slug} onChange={changeSlug} id="slug" type="text" name="slug" placeholder="Auto-Generated"
+              <input value={slug} onChange={changeSlug} id="slug" type="text" name="slug"
+                     placeholder="Auto-Generated"
                      className="rounded-md shadow-md px-2 py-1"
               />
             </div>
 
             <div>
               <label htmlFor="author">Author</label>
-              <input value={author} onChange={changeAuthor} id="author" type="text" name="author" required
+              <input value={author} onChange={changeAuthor} id="author" type="text" name="author"
+                     placeholder={process.env.NEXT_PUBLIC_DEFAULT_AUTHOR}
                      className="rounded-md shadow-md px-2 py-1"
               />
             </div>
@@ -148,9 +151,9 @@ const FormPost = ({post, categories: allCategories, tags: allTags, type, id}: Pr
         {tab === 'content' &&
           <div className="flex-pass-col">
             <label htmlFor="content">Content</label>
-              <textarea value={content} onChange={changeContent} id="content" name="content" required
-                        className=" w-full flex-1 my-4 p-1 rounded-md shadow-lg"
-              />
+            <textarea value={content} onChange={changeContent} id="content" name="content" required
+                      className=" w-full flex-1 my-4 p-1 rounded-md shadow-lg"
+            />
           </div>
         }
         {tab === 'view' && <MDXViewer content={content}/>}

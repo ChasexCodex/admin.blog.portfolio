@@ -1,31 +1,35 @@
 import type {NextApiRequest, NextApiResponse} from 'next'
-import Joi from 'joi'
 import prisma from '../../../utils/prisma'
+import StorePostSchema from '../../../schemas/store-post-schema'
+import type {CanBeCreated} from '../../../types'
 
-const StorePostSchema = Joi.object({
-  title: Joi.string().min(3).max(50).required(),
-  slug: Joi.string().required(),
-  content: Joi.string().required(),
-  author: Joi.string().required(),
-  categoryId: Joi.number().required(),
-  tags: Joi.array().items(Joi.number()).default([]),
-  published: Joi.boolean().default(false),
-})
 
 export default async function StorePost(req: NextApiRequest, res: NextApiResponse) {
-  const {value: {tags, categoryId, ...input}, error} = StorePostSchema.validate(req.body)
+  const {value, error} = StorePostSchema.validate(req.body)
 
   if (error) {
     res.status(400).json({error, success: false})
     return
   }
 
+  const {tags, category, ...input} = value
+
+  const newTags = tags.filter((tag: CanBeCreated<{name: string} | any>) => tag.name) as {name: string}[]
+  const oldTags = tags.filter((tag: CanBeCreated<{name: string} | any>) => tag.id) as {id: number}[]
+
+  // @ts-ignore
+  const categoryQuery = category.name ? {create: category} : {connect: {where: category}}
+
   try {
     const result = await prisma.post.create({
       data: {
         ...input,
-        tags: {connect: tags.map((t: string) => ({id: t}))},
-        category: {connect: {id: categoryId}},
+        tags: {
+          create: newTags,
+          connect: oldTags,
+        },
+        // @ts-ignore
+        category: categoryQuery,
       },
     })
     res.status(201).json({data: result, success: true})

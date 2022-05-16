@@ -38,6 +38,18 @@ export type PostModel = Omit<Post, keyof StringTimeStamp> & TimeStamp & {categor
 
 export type PostModelWithRelations = PostModel & PostRelations
 
+export type CanBeCreated<T> = {id: number} | T
+
+export type CreatePostValidationResult = {
+  title: string
+  slug: string
+  content: string
+  author: string
+  category: CanBeCreated<{name: string}>
+  tags: CanBeCreated<{name: string}>[]
+  published: boolean
+}
+
 interface SuccessResult<T> {
   data: T
   success: true
