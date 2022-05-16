@@ -1,25 +1,37 @@
-import {usePosts} from '@/hooks'
+import {GetServerSideProps} from 'next'
 import {PostRow, Link} from '@/components'
+import {prisma} from '@/prisma'
+import {Post, PostModelWithRelations} from '@/types'
 
+const perPage = 10
 
-const IndexPost = () => {
-  const {result, isLoading, isError} = usePosts(0, 10)
+export const getServerSideProps: GetServerSideProps = async ({query}) => {
+  const page = query.page ? parseInt(query.page as string) : 1
 
-  if (isLoading) {
-    return (
-        <div>
-          Loading...
-        </div>
-    )
+  const posts = (await prisma.post.findMany({
+    skip: (page - 1) * perPage,
+    take: perPage,
+    include: {category: true, tags: true},
+  }))
+      // @ts-ignore
+      .map((post: PostModelWithRelations) => ({
+        ...post,
+        created_at: JSON.stringify(post.created_at),
+        updated_at: JSON.stringify(post.created_at),
+      }))
+
+  return {
+    props: {
+      posts,
+    },
   }
+}
 
-  if (isError || !result.success) {
-    return (
-        <div>
-          Error
-        </div>
-    )
-  }
+type Props = {
+  posts: Post[]
+}
+
+const IndexPost = ({posts}: Props) => {
 
   return (
       <div className="mx-4 my-2">
@@ -41,7 +53,7 @@ const IndexPost = () => {
             </tr>
             </thead>
             <tbody>
-            {result.data.map(post => <PostRow key={post.id} post={post}/>)}
+            {posts.map(post => <PostRow key={post.id} post={post}/>)}
             </tbody>
           </table>
         </div>
