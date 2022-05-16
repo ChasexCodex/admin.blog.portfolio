@@ -14,11 +14,8 @@ export default async function StorePost(req: NextApiRequest, res: NextApiRespons
 
   const {tags, category, ...input} = value
 
-  const newTags = tags.filter((tag: CanBeCreated<{name: string} | any>) => tag.name) as {name: string}[]
-  const oldTags = tags.filter((tag: CanBeCreated<{name: string} | any>) => tag.id) as {id: number}[]
-
-  // @ts-ignore
-  const categoryQuery = category.name ? {create: category} : {connect: {where: category}}
+  const newTags = tags.filter((tag: CanBeCreated<{name: string}>) => 'name' in tag) as {name: string}[]
+  const oldTags = tags.filter((tag: CanBeCreated<{name: string}>) => 'id' in tag) as {id: number}[]
 
   try {
     const result = await prisma.post.create({
@@ -28,8 +25,7 @@ export default async function StorePost(req: NextApiRequest, res: NextApiRespons
           create: newTags,
           connect: oldTags,
         },
-        // @ts-ignore
-        category: categoryQuery,
+        category: {['name' in category ? 'create' : 'connect']: category},
       },
     })
     res.status(201).json({data: result, success: true})
