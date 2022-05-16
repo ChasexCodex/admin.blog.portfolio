@@ -1,5 +1,5 @@
 import {ReactElement} from 'react'
-import Link from '../components/Link'
+import {Link} from '@/components'
 
 const NavBar = () => {
   return (

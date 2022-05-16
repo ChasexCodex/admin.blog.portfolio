@@ -1,5 +1,5 @@
 import {NextRequest, NextResponse} from 'next/server'
-import {checkUser} from '../../utils/auth'
+import {checkUser} from '@/utils'
 
 export async function middleware(req: NextRequest) {
 

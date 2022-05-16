@@ -1,7 +1,7 @@
 import type {GetServerSideProps} from 'next'
-import prisma from '../../../utils/prisma'
-import {Tag} from '../../../types'
-import Link from '../../../components/Link'
+import {prisma} from '@/prisma'
+import {Tag} from '@/types'
+import {Link} from '@/components'
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const tags = await prisma.tag.findMany()

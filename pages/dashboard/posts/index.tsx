@@ -1,6 +1,5 @@
-import usePosts from '../../../hooks/usePosts'
-import PostRow from '../../../components/post-row'
-import Link from '../../../components/Link'
+import {usePosts} from '@/hooks'
+import {PostRow, Link} from '@/components'
 
 
 const IndexPost = () => {

@@ -1,6 +1,6 @@
-import type {Post} from '../types'
-import {http} from '../utils/http'
-import Link from '../components/Link'
+import type {Post} from '@/types'
+import {http} from '@/utils'
+import {Link} from './'
 
 type Props = {
   post: Post

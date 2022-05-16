@@ -3,15 +3,14 @@ import matter from 'gray-matter'
 import {serialize} from 'next-mdx-remote/serialize'
 import type {GetServerSideProps} from 'next'
 import type {MDXRemoteSerializeResult} from 'next-mdx-remote'
-import type {PostWithRelations} from '../../../../types'
+import type {PostWithRelations} from '@/types'
 
 import rehypeHighlight from 'rehype-highlight'
 import rehypeCodeTitles from 'rehype-code-titles'
 import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
-import prisma from '../../../../utils/prisma'
+import {prisma} from '@/prisma'
 import Link from 'next/link'
-import React from 'react'
 
 export const getServerSideProps: GetServerSideProps<any, {id: string}> = async ({params}) => {
   if (!params) {

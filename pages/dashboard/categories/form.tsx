@@ -1,8 +1,8 @@
 import type {ChangeEvent, FormEvent} from 'react'
-import React, {useState} from 'react'
-import {http} from '../../../utils/http'
+import {useState} from 'react'
+import {http} from '@/utils'
 import {useRouter} from 'next/router'
-import Link from '../../../components/Link'
+import {Link} from '@/components'
 
 const Form = () => {
 

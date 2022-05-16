@@ -1,7 +1,7 @@
 import type {GetServerSideProps} from 'next'
-import prisma from '../../../utils/prisma'
-import {Category} from '../../../types'
-import Link from '../../../components/Link'
+import {prisma} from '@/prisma'
+import {Category} from '@/types'
+import {Link} from '@/components'
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const categories = await prisma.category.findMany()

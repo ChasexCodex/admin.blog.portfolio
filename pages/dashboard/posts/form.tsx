@@ -1,14 +1,12 @@
 import React, {useState} from 'react'
 import type {ChangeEvent, FormEvent} from 'react'
 import {useRouter} from 'next/router'
-import type {PostModelWithRelations, Category, Tag} from '../../../types'
-import {http} from '../../../utils/http'
+import type {PostModelWithRelations, Category, Tag} from '@/types'
 import type {GetServerSideProps} from 'next'
-import MDXViewer from '../../../components/MDXViewer'
-import prisma from '../../../utils/prisma'
-import Link from '../../../components/Link'
+import {MDXViewer, Link} from '@/components'
+import {prisma} from '@/prisma'
 import Select from 'react-select/creatable'
-import {FormatNew} from '../../../utils'
+import {FormatNew, http} from '@/utils'
 
 export const getServerSideProps: GetServerSideProps = async ({query}) => {
   const {id} = query

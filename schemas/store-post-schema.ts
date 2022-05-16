@@ -1,6 +1,6 @@
 import Joi from 'joi'
-import {toKebabCase} from '../utils/string'
-import {CreatePostValidationResult} from '../types'
+import {toKebabCase} from '@/utils'
+import {CreatePostValidationResult} from '@/types'
 
 const StorePostSchema = Joi.object<CreatePostValidationResult>({
   title: Joi.string().min(3).max(50).required(),
