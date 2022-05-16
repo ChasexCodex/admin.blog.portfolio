@@ -1,60 +1,36 @@
-import React, {useState} from 'react'
+import {useState} from 'react'
 import type {ChangeEvent, FormEvent} from 'react'
 import {useRouter} from 'next/router'
 import type {PostModelWithRelations, Category, Tag} from '@/types'
-import type {GetServerSideProps} from 'next'
 import {MDXViewer, Link} from '@/components'
-import {prisma} from '@/prisma'
 import Select from 'react-select/creatable'
 import {FormatNew, http} from '@/utils'
 
-export const getServerSideProps: GetServerSideProps = async ({query}) => {
-  const {id} = query
-
-  const categories = await prisma.category.findMany()
-  const tags = await prisma.tag.findMany()
-
-  try {
-    const post = id && typeof id === 'string' ? await prisma.post.findFirst({
-      where: {id: parseInt(id)},
-      include: {tags: true, category: true},
-    }) : {}
-
-    return {
-      props: {
-        post,
-        categories,
-        tags,
-      },
-    }
-  } catch (e) {
-    return {notFound: true}
-  }
-}
-
 type Props = {
-  post: PostModelWithRelations
+  post?: PostModelWithRelations
   categories: Category[]
   tags: Tag[]
-  type: 'edit' | 'create'
-  id: string | 'new'
+  id?: string
 }
+
 type Tab = 'info' | 'content' | 'view'
 
-const FormPost = ({post, categories: allCategories, tags: allTags, type, id}: Props) => {
+const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) => {
+
+  const isEdit = !!id
 
   const router = useRouter()
 
-  const [title, setTitle] = useState(post.title ?? '')
-  const [slug, setSlug] = useState(post.slug ?? '')
-  const [author, setAuthor] = useState(post.author ?? '')
-  const [content, setContent] = useState(post.content ?? '')
-  const [published, setPublished] = useState(post.published ?? false)
+  const [title, setTitle] = useState(post?.title ?? '')
+  const [slug, setSlug] = useState(post?.slug ?? '')
+  const [author, setAuthor] = useState(post?.author ?? '')
+  const [content, setContent] = useState(post?.content ?? '')
+  const [published, setPublished] = useState(post?.published ?? false)
   const [category, setCategory] = useState(() => {
-    const v = post.category ?? allCategories[0]
+    const v = post?.category ?? allCategories[0]
     return {value: v.id, label: v.name}
   })
-  const [tags, setTags] = useState(post.tags?.map(t => ({value: t.id, label: t.name})) ?? [])
+  const [tags, setTags] = useState(post?.tags?.map(t => ({value: t.id, label: t.name})) ?? [])
 
   const [tab, setTab] = useState<Tab>('info')
 
@@ -69,6 +45,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, type, id}: Pr
   const onsubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const input = {
+      id,
       title,
       slug,
       author,
@@ -76,12 +53,11 @@ const FormPost = ({post, categories: allCategories, tags: allTags, type, id}: Pr
       published,
       category: FormatNew({name: category.label, id: category.value}),
       tags: tags.map(t => FormatNew({name: t.label, id: t.value})),
-      id: type === 'edit' ? id : undefined,
     }
 
     try {
       console.log(input)
-      await http.post(`/api/posts/${type === 'edit' ? 'update' : 'store'}`, input)
+      await http.post(`/api/posts/${isEdit ? 'update' : 'store'}`, input)
       await router.push('/dashboard/posts')
     } catch (err) {
       console.log(err)
@@ -142,7 +118,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, type, id}: Pr
               />
             </div>
 
-            <input type="submit" value={type === 'edit' ? 'Update' : 'Create'}
+            <input type="submit" value={isEdit ? 'Update' : 'Create'}
                    className="btn bg-blue-500 max-w-max mx-auto my-2"/>
           </form>
         }
