@@ -53,6 +53,8 @@ export type CreatePostValidationResult = {
   published: boolean
 }
 
+export type UpdatePostValidationResult = CreatePostValidationResult & {id: ID}
+
 interface SuccessResult<T> {
   data: T
   success: true

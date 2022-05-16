@@ -1,19 +1,10 @@
 import type {NextApiRequest, NextApiResponse} from 'next'
-import Joi from 'joi'
 import {prisma} from '@/prisma'
-
-const UpdatePostSchema = Joi
-    .object({
-      id: Joi.string().required(),
-      title: Joi.string().min(3).max(50),
-      slug: Joi.string(),
-      content: Joi.string(),
-      author: Joi.string(),
-      published: Joi.boolean(),
-    })
+import {UpdatePostSchema} from '@/schemas'
+import {CanBeCreatedTag} from '@/types'
 
 export default async function UpdatePost(req: NextApiRequest, res: NextApiResponse) {
-  const {value: {id, ...value}, error} = UpdatePostSchema.validate(req.body)
+  const {value, error} = UpdatePostSchema.validate(req.body)
 
   if (error) {
     res.status(400).json({error, success: false})
@@ -21,12 +12,23 @@ export default async function UpdatePost(req: NextApiRequest, res: NextApiRespon
   }
 
   const updated_at = new Date()
+  const {id, category, tags, ...data} = value
+
+  const newTags = tags.filter((tag: CanBeCreatedTag) => 'name' in tag) as {name: string}[]
+  const oldTags = tags.filter((tag: CanBeCreatedTag) => 'id' in tag) as {id: number}[]
 
   try {
-    const result = prisma.post.update({
+    const result = await prisma.post.update({
       where: {id},
       data: {
-        ...value,
+        ...data,
+        category: {
+          update: category,
+        },
+        tags: {
+          updateMany: oldTags.map(t => ({data: t, where: {id: t.id}})),
+          create: newTags,
+        },
         updated_at,
       },
     })
