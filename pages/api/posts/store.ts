@@ -1,7 +1,7 @@
 import type {NextApiRequest, NextApiResponse} from 'next'
 import prisma from '../../../utils/prisma'
 import StorePostSchema from '../../../schemas/store-post-schema'
-import type {CanBeCreated} from '../../../types'
+import type {CanBeCreatedTag} from '../../../types'
 
 
 export default async function StorePost(req: NextApiRequest, res: NextApiResponse) {
@@ -14,8 +14,8 @@ export default async function StorePost(req: NextApiRequest, res: NextApiRespons
 
   const {tags, category, ...input} = value
 
-  const newTags = tags.filter((tag: CanBeCreated<{name: string}>) => 'name' in tag) as {name: string}[]
-  const oldTags = tags.filter((tag: CanBeCreated<{name: string}>) => 'id' in tag) as {id: number}[]
+  const newTags = tags.filter((tag: CanBeCreatedTag) => 'name' in tag) as {name: string}[]
+  const oldTags = tags.filter((tag: CanBeCreatedTag) => 'id' in tag) as {id: number}[]
 
   try {
     const result = await prisma.post.create({

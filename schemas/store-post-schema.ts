@@ -4,9 +4,9 @@ import {CreatePostValidationResult} from '../types'
 
 const StorePostSchema = Joi.object<CreatePostValidationResult>({
   title: Joi.string().min(3).max(50).required(),
-  slug: Joi.string().allow('', null).empty(['', null]).default(parent => toKebabCase(parent.title)),
-  content: Joi.string().required(),
-  author: Joi.string().allow('', null).empty(['', null]).default(process.env.NEXT_PUBLIC_DEFAULT_AUTHOR),
+  slug: Joi.string().empty(['', null]).default(parent => toKebabCase(parent.title)),
+  content: Joi.string(),
+  author: Joi.string().empty(['', null]).default(process.env.NEXT_PUBLIC_DEFAULT_AUTHOR),
 
   // Accept either with id (existing) or name (new)
   category: Joi.alternatives(
@@ -18,7 +18,7 @@ const StorePostSchema = Joi.object<CreatePostValidationResult>({
   tags: Joi.array().items(Joi.alternatives(
       Joi.object({id: Joi.number().required()}),
       Joi.object({name: Joi.string().required()}),
-  )),
+  )).min(0),
   published: Joi.boolean().default(false),
 })
 
