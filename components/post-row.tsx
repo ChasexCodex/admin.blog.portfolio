@@ -28,8 +28,8 @@ const PostRow = ({post}: Props) => {
         <td>{post.updated_at}</td>
         <td>
           <div className="flex center space-x-2">
-            <Link href={'/dashboard/posts/form?type=edit&id=' + post.id} className="btn bg-yellow-400">Edit</Link>
-            <Link href={'/dashboard/posts/view/' + post.id} className="btn bg-blue-500">View</Link>
+            <Link href={`/dashboard/posts/${post.id}/edit`} prefetch={false} className="btn bg-yellow-400">Edit</Link>
+            <Link href={`/dashboard/posts/${post.id}/view`} prefetch={false} className="btn bg-blue-500">View</Link>
             <button onClick={deletePost} className="btn bg-red-600">Delete</button>
           </div>
         </td>
