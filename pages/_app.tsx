@@ -15,5 +15,9 @@ type AppPropsWithLayout = AppProps & {
 export default function MyApp({Component, pageProps}: AppPropsWithLayout) {
   const Layout = Component.Layout ?? MainLayout
 
+  if(Component.displayName === 'ErrorPage') {
+    return <Component {...pageProps}/>
+  }
+
   return Layout(<Component {...pageProps} />)
 }
