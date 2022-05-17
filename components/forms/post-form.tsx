@@ -27,8 +27,8 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
   const [content, setContent] = useState(post?.content ?? '')
   const [published, setPublished] = useState(post?.published ?? false)
   const [category, setCategory] = useState(() => {
-    const v = post?.category ?? allCategories[0]
-    return {value: v.id, label: v.name}
+    const v = post?.category
+    return v ? {value: v.id, label: v.name} : null
   })
   const [tags, setTags] = useState(post?.tags?.map(t => ({value: t.id, label: t.name})) ?? [])
 
@@ -51,7 +51,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
       author,
       content,
       published,
-      category: FormatNew({name: category.label, id: category.value}),
+      category: category ? FormatNew({name: category.label, id: category.value}) : undefined,
       tags: tags.map(t => FormatNew({name: t.label, id: t.value})),
     }
 
@@ -103,10 +103,11 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
             </div>
 
             <div>
-              <label htmlFor="categoryId" className="inline mr-4">Category</label>
-              <Select value={category} isClearable id="categoryId" name="categoryId"
+              <label htmlFor="category" className="inline mr-4">Category</label>
+              <Select value={category} isClearable id="category" name="category"
                       options={allCategories.map(c => ({label: c.name, value: c.id}))}
                       onChange={(v: any) => setCategory(v)}
+                      placeholder="Select Category..."
               />
             </div>
 
@@ -115,6 +116,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
               <Select value={tags} isMulti isClearable id="tags" name="tags[]"
                       onChange={v => setTags([...v])}
                       options={allTags.map(t => ({value: t.id, label: t.name}))}
+                      placeholder="Select Tag..."
               />
             </div>
 
