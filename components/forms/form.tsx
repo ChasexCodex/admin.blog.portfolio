@@ -3,11 +3,16 @@ import {useState} from 'react'
 import {http} from '@/utils'
 import {useRouter} from 'next/router'
 import {Link} from '@/components'
+import {Tag} from '@/types'
 
-const Form = () => {
+type Props = {
+  tag?: Tag
+}
+
+const Form = ({tag}: Props) => {
 
   const router = useRouter()
-  const [name, setName] = useState('')
+  const [name, setName] = useState(tag?.name ?? '')
 
   const onsubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
