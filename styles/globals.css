@@ -3,22 +3,33 @@
 @tailwind utilities;
 @tailwind screens;
 
-.btn {
-  @apply px-2 py-1 rounded-xl block font-semibold
-}
+@layer utilities {
+  .btn {
+    @apply px-2 py-1 rounded-xl block font-semibold
+  }
 
-.center {
-  @apply justify-center items-center
-}
+  .center {
+    @apply justify-center items-center
+  }
 
-.flex-pass-col {
-  @apply flex flex-col flex-1
+  .flex-pass-col {
+    @apply flex flex-col flex-1
+  }
+
+  .pill {
+    @apply px-1 text-white font-extrabold pb-1 pt-0.5
+  }
+
+  .tag {
+    @apply pill text-xs bg-green-500
+  }
 }
 
 @layer base {
   label {
     display: block;
   }
+
   input:not([type=checkbox]) {
     @apply w-full
   }
