@@ -1,7 +1,7 @@
 import {GetServerSideProps} from 'next'
 import {prisma} from '@/prisma'
 import {Category, Tag} from '@/types'
-import {FormPost} from '@/components/forms'
+import {PostForm} from '@/components/forms'
 
 export const getServerSideProps: GetServerSideProps = async () => {
 
@@ -22,7 +22,7 @@ type Props = {
 }
 
 const CreatePost = (props: Props) => {
-  return <FormPost {...props}/>
+  return <PostForm {...props}/>
 }
 
 export default CreatePost
