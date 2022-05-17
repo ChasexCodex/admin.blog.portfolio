@@ -40,11 +40,11 @@ const IndexPost = ({posts}: Props) => {
           <Link href="/dashboard/posts/create" className="btn bg-green-500">Create</Link>
         </div>
         {!!posts.length &&
-          <div className="border border-gray-500 rounded">
+          <div className="rounded shadow overflow-hidden">
             <table className="table-auto w-full text-center">
               <thead>
               <tr className="h-10 bg-gray-400">
-                <th>#</th>
+                <th className="w-8">#</th>
                 <th>Title</th>
                 <th>Slug</th>
                 <th>Author</th>

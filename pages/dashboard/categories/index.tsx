@@ -24,17 +24,17 @@ const IndexCategory = ({categories}: Props) => {
           <Link href="/dashboard/categories/form" className="btn bg-green-400">Create</Link>
           <Link href="/dashboard" className="btn bg-black text-white">Back</Link>
         </div>
-        <div className="border border-gray-500 rounded">
+        <div className="rounded shadow overflow-hidden">
           <table className="table-auto w-full text-center">
             <thead>
-            <tr className="h-10 bg-gray-400 ">
+            <tr className="h-10 bg-gray-400">
               <th>#</th>
               <th>Name</th>
             </tr>
             </thead>
             <tbody>
             {categories.map(({id, name}) => (
-                <tr key={id} className="border-t even:bg-gray-200">
+                <tr key={id} className="border-t even:bg-gray-200 h-14">
                   <td>{id}</td>
                   <td>{name}</td>
                 </tr>
