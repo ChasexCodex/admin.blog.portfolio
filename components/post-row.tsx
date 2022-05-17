@@ -8,14 +8,27 @@ type Props = {
 
 const PostRow = ({post}: Props) => {
 
-  const deletePost = async () => {
-    try {
-      await http.delete('/api/posts/delete?id=' + post.id)
-      window.location.reload()
-    } catch (err) {
-      console.log(err)
-      // TODO: display any errors
-    }
+  const deletePost = () => {
+    http.delete('/api/posts/delete?id=' + post.id)
+        .then(() => {
+          window.location.reload()
+        })
+        .catch(err => {
+          console.log(err)
+          // TODO: display errors
+        })
+  }
+
+
+  const revalidate = () => {
+    http.post(`/api/posts/revalidate`, {
+      id: post.id,
+    })
+        .then(() => {})
+        .catch(err => {
+          console.log(err)
+          // TODO: display errors
+        })
   }
 
   return (
@@ -31,6 +44,7 @@ const PostRow = ({post}: Props) => {
             <Link href={`/dashboard/posts/${post.id}/edit`} className="btn bg-yellow-400">Edit</Link>
             <Link href={`/dashboard/posts/${post.id}/view`} className="btn bg-blue-500">View</Link>
             <button onClick={deletePost} className="btn bg-red-600">Delete</button>
+            <button onClick={revalidate} className="btn bg-white">Revalidate</button>
           </div>
         </td>
       </tr>
