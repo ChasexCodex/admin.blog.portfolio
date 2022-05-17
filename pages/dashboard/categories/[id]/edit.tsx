@@ -1,4 +1,4 @@
-import CategoriesForm from '@/components/forms/categories-form'
+import CategoryForm from '@/components/forms/category-form'
 import {Category} from '@/types'
 import {GetServerSideProps} from 'next'
 import {prisma} from '@/prisma'
@@ -27,7 +27,7 @@ export const getServerSideProps: GetServerSideProps = async ({params}) => {
 }
 
 const EditCategory = ({category}: Props) => {
-  return <CategoriesForm category={category}/>
+  return <CategoryForm category={category}/>
 }
 
 export default EditCategory

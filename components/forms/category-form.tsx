@@ -9,7 +9,7 @@ type Props = {
   category?: Category
 }
 
-const CategoriesForm = ({category}: Props) => {
+const CategoryForm = ({category}: Props) => {
 
   const router = useRouter()
   const [name, setName] = useState(category?.name ?? '')
@@ -49,4 +49,4 @@ const CategoriesForm = ({category}: Props) => {
   )
 }
 
-export default CategoriesForm
+export default CategoryForm

@@ -1,7 +1,7 @@
-import CategoriesForm from '@/components/forms/categories-form'
+import CategoryForm from '@/components/forms/category-form'
 
 const CreateCategory = () => {
-  return <CategoriesForm/>
+  return <CategoryForm/>
 }
 
 export default CreateCategory
