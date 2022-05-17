@@ -1,6 +1,6 @@
 import {GetServerSideProps} from 'next'
 import {prisma} from '@/prisma'
-import PostForm from '@/components/forms/post-form'
+import {PostForm} from '@/components/forms'
 import {Category, PostModelWithRelations, Tag} from '@/types'
 
 export const getServerSideProps: GetServerSideProps<any, {id: string}> = async ({params}) => {

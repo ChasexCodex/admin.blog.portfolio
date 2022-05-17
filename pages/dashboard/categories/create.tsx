@@ -1,4 +1,4 @@
-import CategoryForm from '@/components/forms/category-form'
+import {CategoryForm} from '@/components/forms'
 
 const CreateCategory = () => {
   return <CategoryForm/>

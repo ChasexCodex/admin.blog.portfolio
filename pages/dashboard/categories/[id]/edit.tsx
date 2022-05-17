@@ -1,4 +1,4 @@
-import CategoryForm from '@/components/forms/category-form'
+import {CategoryForm} from '@/components/forms'
 import {Category} from '@/types'
 import {GetServerSideProps} from 'next'
 import {prisma} from '@/prisma'

@@ -1,4 +1,4 @@
-import TagForm from '@/components/forms/tag-form'
+import {TagForm} from '@/components/forms'
 
 const CreateTag = () => {
   return <TagForm/>

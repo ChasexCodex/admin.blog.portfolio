@@ -1,7 +1,7 @@
 import {GetServerSideProps} from 'next'
 import {prisma} from '@/prisma'
 import {Category, Tag} from '@/types'
-import FormPost from '@/components/forms/post-form'
+import {FormPost} from '@/components/forms'
 
 export const getServerSideProps: GetServerSideProps = async () => {
 

@@ -1,4 +1,4 @@
-import TagForm from '@/components/forms/tag-form'
+import {TagForm} from '@/components/forms'
 import {Tag} from '@/types'
 import {GetServerSideProps} from 'next'
 import {prisma} from '@/prisma'
