@@ -3,11 +3,16 @@ import {useState} from 'react'
 import {http} from '@/utils'
 import {useRouter} from 'next/router'
 import {Link} from '@/components'
+import {Category} from '@/types'
 
-const Form = () => {
+type Props = {
+  category?: Category
+}
+
+const CategoriesForm = ({category}: Props) => {
 
   const router = useRouter()
-  const [name, setName] = useState('')
+  const [name, setName] = useState(category?.name ?? '')
 
   const onsubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -44,4 +49,4 @@ const Form = () => {
   )
 }
 
-export default Form
+export default CategoriesForm
