@@ -9,7 +9,7 @@ type Props = {
   tag?: Tag
 }
 
-const Form = ({tag}: Props) => {
+const TagForm = ({tag}: Props) => {
 
   const router = useRouter()
   const [name, setName] = useState(tag?.name ?? '')
@@ -49,4 +49,4 @@ const Form = ({tag}: Props) => {
   )
 }
 
-export default Form
+export default TagForm
