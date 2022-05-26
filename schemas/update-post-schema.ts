@@ -6,6 +6,7 @@ const UpdatePostSchema = Joi.object<UpdatePostValidationResult>({
   id: Joi.number().required(),
   title: Joi.string().min(3).max(50).required(),
   slug: Joi.string().empty(['', null]).default(parent => toKebabCase(parent.title)),
+  description: Joi.string().optional(),
   content: Joi.string(),
   author: Joi.string().empty(['', null]).default(process.env.NEXT_PUBLIC_DEFAULT_AUTHOR),
 

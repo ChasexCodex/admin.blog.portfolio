@@ -6,6 +6,7 @@ const StorePostSchema = Joi.object<CreatePostValidationResult>({
   title: Joi.string().min(3).max(50).required(),
   slug: Joi.string().empty(['', null]).default(parent => toKebabCase(parent.title)),
   content: Joi.string(),
+  description: Joi.string().optional(),
   author: Joi.string().empty(['', null]).default(process.env.NEXT_PUBLIC_DEFAULT_AUTHOR),
 
   // Accept either with id (existing) or name (new)

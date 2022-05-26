@@ -47,6 +47,7 @@ export type CanBeCreatedCategory = CanBeCreated<{name: string}>
 export type CreatePostValidationResult = {
   title: string
   slug: string
+  description: string
   content: string
   author: string
   category: CanBeCreatedCategory
