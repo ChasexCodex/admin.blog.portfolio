@@ -13,7 +13,7 @@ type Props = {
   id?: string
 }
 
-type Tab = 'info' | 'content' | 'view'
+type Tab = 'info' | 'content'
 
 const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) => {
 
@@ -56,20 +56,28 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
     }
 
     try {
-      console.log(input)
       await http.post(`/api/posts/${isEdit ? 'update' : 'store'}`, input)
       await router.push('/dashboard/posts')
     } catch (err) {
-      console.log(err)
       // TODO: display errors
     }
   }
 
   return (
-      <div className="my-2 mx-4 flex-1 flex flex-col">
-        <div className="my-2 flex">
+      <div className="py-2 px-4 flex-1 flex flex-col">
+        <div className="py-2 flex">
           <Link href="/dashboard/posts" className="btn bg-black text-white">Back</Link>
         </div>
+
+        <div className="flex space-x-2">
+          <button onClick={changeTab('info')} className="btn bg-orange-300">
+            Info
+          </button>
+          <button onClick={changeTab('content')} className="btn bg-orange-300">
+            Content
+          </button>
+        </div>
+
         {tab === 'info' &&
           <form onSubmit={onsubmit} encType="multipart/form-data"
                 className="flex flex-col space-y-2 mx-auto w-full xl:max-w-6xl">
@@ -125,25 +133,17 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
           </form>
         }
         {tab === 'content' &&
-          <div className="flex-pass-col">
-            <label htmlFor="content">Content</label>
-            <textarea value={content} onChange={changeContent} id="content" name="content" required
-                      className=" w-full flex-1 my-4 p-1 rounded-md shadow-lg"
-            />
+          <div className="flex-pass-row px-0 py-2">
+            <div className="flex-pass-col">
+              <textarea value={content} onChange={changeContent} id="content" name="content" required
+                        className=" w-full flex-1 p-1 rounded-md shadow-lg"
+              />
+            </div>
+            <div className="flex-1 ml-4">
+              <MDXViewer content={content}/>
+            </div>
           </div>
         }
-        {tab === 'view' && <MDXViewer content={content}/>}
-        <div className="flex space-x-2">
-          <button onClick={changeTab('info')} className="btn bg-orange-300">
-            Info
-          </button>
-          <button onClick={changeTab('content')} className="btn bg-orange-300">
-            Content
-          </button>
-          <button onClick={changeTab('view')} className="btn bg-orange-300">
-            View
-          </button>
-        </div>
       </div>
   )
 }
