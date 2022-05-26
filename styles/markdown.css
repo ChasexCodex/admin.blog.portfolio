@@ -1,0 +1,15 @@
+@media (prefers-color-scheme: light) {
+	.markdown {
+		background-color: rgb(242, 243, 245) !important;
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	.markdown {
+		background-color: rgb(23, 23, 23) !important;
+	}
+}
+
+.markdown ol, .markdown li {
+	list-style: initial;
+}
