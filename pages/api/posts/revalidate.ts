@@ -1,6 +1,7 @@
 import {NextApiRequest, NextApiResponse} from 'next'
 import Joi from 'joi'
 import {prisma} from '@/prisma'
+import {axios} from '@/utils'
 
 const RevalidatePostSchema = Joi.object({
   id: Joi.number().required(),
@@ -25,19 +26,15 @@ export default async function RevalidatePost(req: NextApiRequest, res: NextApiRe
 	}
 
   const input = {
-    body: {
-      token: process.env.ADMIN_TOKEN,
-      slug: post.slug,
-    },
-  } as unknown as BodyInit
+    token: process.env.REVALIDATE_TOKEN,
+    path: `posts/${post.slug}`,
+  }
 
   try {
-    const response = await fetch(`${process.env.BLOG_URL}/revalidate`, {method: 'POST', body: input})
-    const data = await response.json()
-
-    res.status(200).json(data)
+    const response = await axios.post(`${process.env.BLOG_URL}/api/revalidate`, input)
+    res.status(response.status).json(response.data)
   }
   catch (e) {
-    res.status(400).json({message: 'Error: blog response failed', error: e, success: false})
+    res.status(500).json({message: 'Error: blog response failed', error: e, success: false})
   }
 }
