@@ -23,6 +23,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 
   const [title, setTitle] = useState(post?.title ?? '')
   const [slug, setSlug] = useState(post?.slug ?? '')
+  const [description, setDescription] = useState(post?.description ?? '')
   const [author, setAuthor] = useState(post?.author ?? '')
   const [content, setContent] = useState(post?.content ?? '')
   const [published, setPublished] = useState(post?.published ?? false)
@@ -36,6 +37,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 
   const changeTitle = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)
   const changeSlug = (e: ChangeEvent<HTMLInputElement>) => setSlug(e.target.value)
+  const changeDescription = (e: ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)
   const changeAuthor = (e: ChangeEvent<HTMLInputElement>) => setAuthor(e.target.value)
   const changeContent = (e: ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value)
   const changePublished = () => setPublished(p => !p)
@@ -48,6 +50,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
       id,
       title,
       slug,
+      description,
       author,
       content,
       published,
@@ -94,6 +97,13 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
               <input value={slug} onChange={changeSlug} id="slug" type="text" name="slug"
                      placeholder="Auto-Generated"
                      className="rounded-md shadow-md px-2 py-1"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="description">Description</label>
+              <textarea value={description} onChange={changeDescription} id="description" name="description"
+                     className="rounded-md shadow-md px-2 py-1 w-full"
               />
             </div>
 
