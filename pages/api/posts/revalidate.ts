@@ -9,7 +9,7 @@ export default async function RevalidatePost(req: NextApiRequest, res: NextApiRe
   const {value, error} = RevalidatePostSchema.validate(req.body)
 
   if (error) {
-    res.status(400).json({error, success: false})
+    res.status(400).json({message: 'Error: invalid input', error, success: false})
     return
   }
 
@@ -25,6 +25,6 @@ export default async function RevalidatePost(req: NextApiRequest, res: NextApiRe
         res.status(200).json({success: true})
       })
       .catch(e => {
-        res.status(400).json({error: e, success: false})
+        res.status(400).json({message: 'Error: blog response failed', error: e, success: false})
       })
 }
