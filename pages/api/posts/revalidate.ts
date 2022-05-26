@@ -31,11 +31,13 @@ export default async function RevalidatePost(req: NextApiRequest, res: NextApiRe
     },
   } as unknown as BodyInit
 
-  return fetch(`${process.env.BLOG_URL}/revalidate`, {method: 'POST', body: input})
-      .then(() => {
-        res.status(200).json({success: true})
-      })
-      .catch(e => {
-        res.status(400).json({message: 'Error: blog response failed', error: e, success: false})
-      })
+  try {
+    const response = await fetch(`${process.env.BLOG_URL}/revalidate`, {method: 'POST', body: input})
+    const data = await response.json()
+
+    res.status(200).json(data)
+  }
+  catch (e) {
+    res.status(400).json({message: 'Error: blog response failed', error: e, success: false})
+  }
 }
