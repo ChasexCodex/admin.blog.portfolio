@@ -1,5 +1,6 @@
 import {NextApiRequest, NextApiResponse} from 'next'
 import Joi from 'joi'
+import {prisma} from '@/prisma'
 
 const RevalidatePostSchema = Joi.object({
   id: Joi.number().required(),
@@ -13,14 +14,24 @@ export default async function RevalidatePost(req: NextApiRequest, res: NextApiRe
     return
   }
 
+  const post = await prisma.post.findUnique({
+    where: {id: value.id},
+    select: {slug: true},
+  })
+
+	if(!post) {
+		res.status(404).json({message: 'Error: no such input exists', success: false})
+		return
+	}
+
   const input = {
     body: {
       token: process.env.ADMIN_TOKEN,
-      id: value.id,
+      slug: post.slug,
     },
-  } as unknown as RequestInit
+  } as unknown as BodyInit
 
-  return fetch(`${process.env.BLOG_URL}/revalidate`, input)
+  return fetch(`${process.env.BLOG_URL}/revalidate`, {method: 'POST', body: input})
       .then(() => {
         res.status(200).json({success: true})
       })
