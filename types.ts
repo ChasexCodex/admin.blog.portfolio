@@ -12,6 +12,7 @@ export type Post = StringTimeStamp & {
   id: ID
   title: string
   slug: string
+  description: string
   content: string
   author: string
   published: boolean
