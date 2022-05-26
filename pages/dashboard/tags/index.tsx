@@ -54,7 +54,6 @@ const IndexTag = ({tags}: Props) => {
                   <td>
                     <div className="flex center space-x-2">
                       <Link href={`/dashboard/tags/${id}/edit`} className="btn bg-yellow-400">Edit</Link>
-                      <Link href={`/dashboard/tags/${id}/view`} className="btn bg-blue-500">View</Link>
                       <button onClick={deleteTag(id)} className="btn bg-red-600">Delete</button>
                     </div>
                   </td>

@@ -54,7 +54,6 @@ const IndexCategory = ({categories}: Props) => {
                   <td>
                     <div className="flex center space-x-2">
                       <Link href={`/dashboard/categories/${id}/edit`} className="btn bg-yellow-400">Edit</Link>
-                      <Link href={`/dashboard/categories/${id}/view`} className="btn bg-blue-500">View</Link>
                       <button onClick={deleteCategory(id)} className="btn bg-red-600">Delete</button>
                     </div>
                   </td>
