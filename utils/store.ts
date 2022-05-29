@@ -58,6 +58,12 @@ export const loadFromStore = (key: string) => {
 	return JSON.parse(data)
 }
 
+export const changeKey = (oldKey: string, newKey: string) => {
+	const data = loadFromStore(oldKey)
+	clearStore(oldKey)
+	saveToStore(newKey, data)
+}
+
 export const clearStore = (key: string) => {
 	throwIfLocalStoreUnsupported()
 
