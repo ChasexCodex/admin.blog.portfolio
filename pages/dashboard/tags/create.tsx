@@ -1,7 +1,5 @@
 import {TagForm} from '@/components/forms'
 
-const CreateTag = () => {
-	return <TagForm/>
-}
+const CreateTag = () => <TagForm/>
 
 export default CreateTag
