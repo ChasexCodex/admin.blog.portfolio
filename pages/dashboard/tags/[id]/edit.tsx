@@ -7,9 +7,8 @@ type Props = {
 	tag: Tag
 }
 
-export const getServerSideProps: GetServerSideProps = async ({params}) => {
-
-	if (!params || typeof params.id !== 'string') {
+export const getServerSideProps: GetServerSideProps<any, {id: string}> = async ({params}) => {
+	if (!params) {
 		return {notFound: true}
 	}
 
@@ -26,8 +25,6 @@ export const getServerSideProps: GetServerSideProps = async ({params}) => {
 	}
 }
 
-const EditTag = ({tag}: Props) => {
-	return <TagForm tag={tag}/>
-}
+const EditTag = ({tag}: Props) => <TagForm tag={tag}/>
 
 export default EditTag
