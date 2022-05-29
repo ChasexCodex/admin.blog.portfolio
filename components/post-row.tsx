@@ -41,7 +41,7 @@ const PostRow = ({post}: Props) => {
 			<td>{post.created_at}</td>
 			<td>{post.updated_at}</td>
 			<td>
-				<div className="flex center space-x-2">
+				<div className="flex center space-x-0.5">
 					<Link href={`/dashboard/posts/${post.id}/edit`} className="btn bg-yellow-400">Edit</Link>
 					<Link href={`/dashboard/posts/${post.id}/view`} className="btn bg-blue-500">View</Link>
 					<button onClick={deletePost} className="btn bg-red-600">Delete</button>
