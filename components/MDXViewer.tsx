@@ -17,6 +17,14 @@ const ViewMDX = ({content}: Props) => {
 			.then(setSource)
 	}, [content])
 
+	if (!content) {
+		return (
+			<p className="w-full text-center text-4xl">
+				Write something...
+			</p>
+		)
+	}
+
 	return (
 		<div className="flex-pass-col">
 			<article className="flex-1 p-4 markdown-body rounded-md">
