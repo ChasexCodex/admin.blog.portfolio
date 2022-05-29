@@ -1,7 +1,5 @@
 import {CategoryForm} from '@/components/forms'
 
-const CreateCategory = () => {
-  return <CategoryForm/>
-}
+const CreateCategory = () => <CategoryForm/>
 
 export default CreateCategory
