@@ -3,17 +3,12 @@ import {Category} from '@/types'
 import {GetServerSideProps} from 'next'
 import {prisma} from '@/prisma'
 
-type Props = {
-	category: Category
-}
-
-export const getServerSideProps: GetServerSideProps = async ({params}) => {
-
-	if (!params || typeof params.id !== 'string') {
+export const getServerSideProps: GetServerSideProps<any, {id: string}> = async ({params}) => {
+	if (!params) {
 		return {notFound: true}
 	}
 
-	const category = await prisma.category.findFirst({
+	const category = await prisma.category.findUnique({
 		where: {
 			id: parseInt(params.id),
 		},
@@ -26,8 +21,10 @@ export const getServerSideProps: GetServerSideProps = async ({params}) => {
 	}
 }
 
-const EditCategory = ({category}: Props) => {
-	return <CategoryForm category={category}/>
+type Props = {
+	category: Category
 }
+
+const EditCategory = ({category}: Props) => <CategoryForm category={category}/>
 
 export default EditCategory
