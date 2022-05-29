@@ -1,5 +1,4 @@
-import {useState} from 'react'
-import {ChangeEvent, FormEvent} from 'react'
+import {ChangeEvent, FormEvent, useState} from 'react'
 import {useRouter} from 'next/router'
 import {PostModelWithRelations, Category, Tag} from '@/types'
 import {MDXViewer, Link} from '@/components'
@@ -82,10 +81,9 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 				</button>
 			</div>
 
-			{tab === 'info' &&
-				<form onSubmit={onsubmit}
-							className="flex flex-col space-y-2 mx-auto w-full xl:max-w-6xl">
-
+			<form onSubmit={onsubmit} className="flex-pass-col">
+				{/*Info*/}
+				<div className={`space-y-2 mx-auto w-full xl:max-w-6xl ${tab !== 'info' ? 'hidden' : ''}`}>
 					<div>
 						<label htmlFor="title">Title</label>
 						<input value={title} onChange={changeTitle} id="title" type="text" name="title" required
@@ -141,10 +139,10 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 
 					<input type="submit" value={isEdit ? 'Update' : 'Create'}
 								 className="btn bg-blue-500 max-w-max mx-auto my-2"/>
-				</form>
-			}
-			{tab === 'content' &&
-				<div className="flex-pass-row px-0 py-2">
+				</div>
+
+				{/*Content*/}
+				<div className={`flex-row flex-1 px-0 py-2 ${tab === 'content' ? 'flex' : 'hidden'}`}>
 					<div className="flex-pass-col">
               <textarea value={content} onChange={changeContent} id="content" name="content" required
 												className=" w-full flex-1 p-1 rounded-sm shadow-lg"
@@ -154,7 +152,9 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 						<MDXViewer content={content}/>
 					</div>
 				</div>
-			}
+
+			</form>
+
 		</div>
 	)
 }
