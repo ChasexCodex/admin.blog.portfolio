@@ -2,9 +2,9 @@ import {GetServerSideProps} from 'next'
 import {prisma} from '@/prisma'
 import {PostForm} from '@/components/forms'
 import {Category, PostModelWithRelations, Tag} from '@/types'
+import {convertTimestampToMoment} from '@/utils'
 
 export const getServerSideProps: GetServerSideProps<any, {id: string}> = async ({params}) => {
-
 	if (!params) {
 		return {notFound: true}
 	}
@@ -14,17 +14,16 @@ export const getServerSideProps: GetServerSideProps<any, {id: string}> = async (
 	const categories = await prisma.category.findMany()
 	const tags = await prisma.tag.findMany()
 
-	const post = await prisma.post.findFirst({
+	const res = await prisma.post.findUnique({
 		where: {id},
 		include: {tags: true, category: true},
 	})
 
-	if (!post) {
+	if (!res) {
 		return {notFound: true}
 	}
 
-	post.created_at = JSON.stringify(post.created_at) as any
-	post.updated_at = JSON.stringify(post.updated_at) as any
+	const post = convertTimestampToMoment(res)
 
 	return {
 		props: {
@@ -43,8 +42,6 @@ type Props = {
 	id: string
 }
 
-const EditPost = ({id, ...props}: Props) => {
-	return <PostForm {...props} id={id}/>
-}
+const EditPost = ({id, ...props}: Props) => <PostForm {...props} id={id}/>
 
 export default EditPost
