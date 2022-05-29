@@ -4,3 +4,6 @@ export const toKebabCase = (str: string) => (
 		?.map(x => x.toLowerCase())
 		.join('-')
 )
+
+export const convertBoolean = (condition: boolean, yes = 'Yes', no = 'No') =>
+	condition ? yes : no
