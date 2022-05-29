@@ -35,7 +35,7 @@ const CategoryForm = ({category}: Props) => {
 			<div className="flex my-2">
 				<Link href="/dashboard/categories" className="btn bg-black text-white">Back</Link>
 			</div>
-			<form onSubmit={onsubmit} encType="multipart/form-data">
+			<form onSubmit={onsubmit}>
 				<div className="my-4">
 					<label htmlFor="name" className="block mr-4 mb-1 ml-2">Name</label>
 					<input value={name} onChange={changeName} type="text" name="name" required

@@ -82,7 +82,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 			</div>
 
 			{tab === 'info' &&
-				<form onSubmit={onsubmit} encType="multipart/form-data"
+				<form onSubmit={onsubmit}
 							className="flex flex-col space-y-2 mx-auto w-full xl:max-w-6xl">
 
 					<div>
