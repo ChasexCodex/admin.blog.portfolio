@@ -10,7 +10,7 @@ type Props = {
 	post?: PostModelWithRelations
 	categories: Category[]
 	tags: Tag[]
-	id?: string
+	id: string
 }
 
 type ChangeInput = ChangeEvent<HTMLInputElement>
@@ -18,7 +18,7 @@ type ChangeTextarea = ChangeEvent<HTMLTextAreaElement>
 type Tab = 'info' | 'content'
 
 const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) => {
-	const isEdit = !!id
+	const isEdit = id !== 'new'
 
 	const router = useRouter()
 

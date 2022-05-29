@@ -39,9 +39,9 @@ type Props = {
 	post: PostModelWithRelations
 	categories: Category[]
 	tags: Tag[]
-	id: string
+	id: number
 }
 
-const EditPost = ({id, ...props}: Props) => <PostForm {...props} id={id}/>
+const EditPost = ({id, ...props}: Props) => <PostForm {...props} id={id ? id.toString() : 'new'}/>
 
 export default EditPost
