@@ -1,9 +1,10 @@
-import {ChangeEvent, FormEvent, useState} from 'react'
+import {ChangeEvent, FormEvent, useCallback, useEffect, useState} from 'react'
 import {useRouter} from 'next/router'
 import {PostModelWithRelations, Category, Tag} from '@/types'
 import {MDXViewer, Link} from '@/components'
 import Select from 'react-select/creatable'
 import {FormatNew, FormatOld, http} from '@/utils'
+import {changeKey, localStoreSupported, saveToStore} from '@/utils/store'
 
 type Props = {
 	post?: PostModelWithRelations
@@ -21,6 +22,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 
 	const router = useRouter()
 
+	// Input
 	const [title, setTitle] = useState(post?.title ?? '')
 	const [slug, setSlug] = useState(post?.slug ?? '')
 	const [description, setDescription] = useState(post?.description ?? '')
@@ -30,8 +32,6 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 	const [category, setCategory] = useState(post?.category ? FormatOld(post.category) : null)
 	const [tags, setTags] = useState(post?.tags?.map(t => ({value: t.id, label: t.name})) ?? [])
 
-	const [tab, setTab] = useState<Tab>('info')
-
 	const changeTitle = (e: ChangeInput) => setTitle(e.target.value)
 	const changeSlug = (e: ChangeInput) => setSlug(e.target.value)
 	const changeDescription = (e: ChangeTextarea) => setDescription(e.target.value)
@@ -39,24 +39,67 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 	const changeContent = (e: ChangeTextarea) => setContent(e.target.value)
 	const changePublished = () => setPublished(p => !p)
 
+	// Controls
+	const [tab, setTab] = useState<Tab>('info')
+	const [key, setKey] = useState(post?.title ?? null)
+
 	const changeTab = (tab: Tab) => () => setTab(tab)
+
+	const onTitleBlur = () => {
+		if (!title) return
+		if (key) {
+			changeKey(key, title)
+		}
+		setKey(title ? title : null)
+	}
+
+	const getInput = useCallback(() => ({
+		id,
+		title,
+		slug,
+		description,
+		author,
+		content,
+		published,
+		category,
+		tags,
+	}), [
+		id,
+		title,
+		slug,
+		description,
+		author,
+		content,
+		published,
+		category,
+		tags,
+	])
+
+	useEffect(() => {
+		const saveDraft = (key: string | null) => () => {
+			if (!key) return
+			if (!localStoreSupported()) return
+
+			const payload = getInput()
+
+			saveToStore(key, payload)
+		}
+
+		const interval = setInterval(saveDraft(key), 10000)
+		return () => clearInterval(interval)
+	}, [key, getInput])
 
 	const onsubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		const input = {
-			id,
-			title,
-			slug,
-			description,
-			author,
-			content,
-			published,
+		const input = getInput()
+		const data = {
+			...input,
 			category: category ? FormatNew({name: category.label, id: category.value}) : undefined,
 			tags: tags.map(t => FormatNew({name: t.label, id: t.value})),
 		}
 
 		try {
-			await http.post(`/api/posts/${isEdit ? 'update' : 'store'}`, input)
+			await http.post(`/api/posts/${isEdit ? 'update' : 'store'}`, data)
 			await router.push('/dashboard/posts')
 		} catch (err) {
 			// TODO: display errors
@@ -83,7 +126,8 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 				<div className={`space-y-2 mx-auto w-full xl:max-w-6xl ${tab !== 'info' ? 'hidden' : ''}`}>
 					<div>
 						<label htmlFor="title">Title</label>
-						<input value={title} onChange={changeTitle} id="title" type="text" name="title" required
+						<input value={title} onChange={changeTitle} onBlur={onTitleBlur}
+									 id="title" type="text" name="title" required
 									 className="rounded-sm shadow-md px-2 py-1"
 						/>
 					</div>
