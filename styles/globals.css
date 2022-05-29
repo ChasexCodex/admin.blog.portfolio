@@ -3,11 +3,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@tailwind screens;
+/*@tailwind screens;*/
 
 @layer utilities {
 	.btn {
-		@apply px-2 py-1 block font-semibold shadow
+		@apply px-2 py-1 block font-semibold shadow ring-indigo-400 transition
+		hover:ring-2
 	}
 
 	.center {
