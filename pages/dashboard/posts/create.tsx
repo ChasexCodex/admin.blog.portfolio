@@ -21,6 +21,6 @@ type Props = {
 	tags: Tag[]
 }
 
-const CreatePost = (props: Props) => <PostForm {...props}/>
+const CreatePost = (props: Props) => <PostForm {...props} id="new"/>
 
 export default CreatePost

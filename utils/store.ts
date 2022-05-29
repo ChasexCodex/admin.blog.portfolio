@@ -1,5 +1,3 @@
-import moment from 'moment'
-
 export const localStoreSupported = () => {
 	return 'localStorage' in window && window['localStorage'] !== null
 }
@@ -39,19 +37,19 @@ const removeKey = (key: string) => {
 export const saveToStore = <T extends {[p: string]: any}>(key: string, data: T) => {
 	throwIfLocalStoreUnsupported()
 
-	const stringData = JSON.stringify({...data, lastEdit: moment.now()})
+	const stringData = JSON.stringify(data)
 	localStorage.setItem(key, stringData)
 
 	updateKeys(key)
 }
 
-export const loadFromStore = (key: string) => {
+export const loadFromStore = (key: string, error = false) => {
 	throwIfLocalStoreUnsupported()
 
 	const data = localStorage.getItem(key)
 
 	if (!data) {
-		console.error(`Cannot find object with key ${key} in the localStorage`)
+		if (error) console.error(`Cannot find object with key ${key} in the localStorage`)
 		return false
 	}
 

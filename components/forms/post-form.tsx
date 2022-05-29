@@ -4,7 +4,8 @@ import {PostModelWithRelations, Category, Tag} from '@/types'
 import {MDXViewer, Link} from '@/components'
 import Select from 'react-select/creatable'
 import {FormatNew, FormatOld, http} from '@/utils'
-import {changeKey, localStoreSupported, saveToStore} from '@/utils/store'
+import {loadFromStore, localStoreSupported, saveToStore} from '@/utils/store'
+import _ from 'lodash'
 
 type Props = {
 	post?: PostModelWithRelations
@@ -41,17 +42,8 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 
 	// Controls
 	const [tab, setTab] = useState<Tab>('info')
-	const [key, setKey] = useState(post?.title ?? null)
 
 	const changeTab = (tab: Tab) => () => setTab(tab)
-
-	const onTitleBlur = () => {
-		if (!title) return
-		if (key) {
-			changeKey(key, title)
-		}
-		setKey(title ? title : null)
-	}
 
 	const getInput = useCallback(() => ({
 		id,
@@ -76,26 +68,46 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 	])
 
 	useEffect(() => {
-		const saveDraft = (key: string | null) => () => {
-			if (!key) return
-			if (!localStoreSupported()) return
-
+		if (!localStoreSupported()) return
+		const saveDraft = (key: string) => () => {
 			const payload = getInput()
 
 			saveToStore(key, payload)
 		}
 
-		const interval = setInterval(saveDraft(key), 10000)
+		const interval = setInterval(saveDraft(id), 1000)
 		return () => clearInterval(interval)
-	}, [key, getInput])
+	}, [id, getInput])
+
+	useEffect(() => {
+		const data = loadFromStore(id)
+
+		if (!data) return
+
+		const input = getInput()
+
+		if(_.isEqual(data, input)) return
+
+		// TODO: diplay a pop up instead of browser dialog
+		if (confirm('local draft has been found. Do you want to load it?')) {
+			setTitle(data.title)
+			setSlug(data.slug)
+			setDescription(data.description)
+			setAuthor(data.author)
+			setContent(data.content)
+			setPublished(data.published)
+			setCategory(data.category)
+			setTags(data.tags)
+		}
+	}, [])
 
 	const onsubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		const input = getInput()
 		const data = {
 			...input,
-			category: category ? FormatNew({name: category.label, id: category.value}) : undefined,
-			tags: tags.map(t => FormatNew({name: t.label, id: t.value})),
+			category: input.category ? FormatNew({name: input.category.label, id: input.category.value}) : undefined,
+			tags: input.tags.map(t => FormatNew({name: t.label, id: t.value})),
 		}
 
 		try {
@@ -126,7 +138,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 				<div className={`space-y-2 mx-auto w-full xl:max-w-6xl ${tab !== 'info' ? 'hidden' : ''}`}>
 					<div>
 						<label htmlFor="title">Title</label>
-						<input value={title} onChange={changeTitle} onBlur={onTitleBlur}
+						<input value={title} onChange={changeTitle}
 									 id="title" type="text" name="title" required
 									 className="rounded-sm shadow-md px-2 py-1"
 						/>
