@@ -3,7 +3,7 @@ import {useRouter} from 'next/router'
 import {PostModelWithRelations, Category, Tag} from '@/types'
 import {MDXViewer, Link} from '@/components'
 import Select from 'react-select/creatable'
-import {FormatNew, http} from '@/utils'
+import {FormatNew, FormatOld, http} from '@/utils'
 
 type Props = {
 	post?: PostModelWithRelations
@@ -27,10 +27,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 	const [author, setAuthor] = useState(post?.author ?? '')
 	const [content, setContent] = useState(post?.content ?? '')
 	const [published, setPublished] = useState(post?.published ?? false)
-	const [category, setCategory] = useState(() => {
-		const v = post?.category
-		return v ? {value: v.id, label: v.name} : null
-	})
+	const [category, setCategory] = useState(post?.category ? FormatOld(post.category) : null)
 	const [tags, setTags] = useState(post?.tags?.map(t => ({value: t.id, label: t.name})) ?? [])
 
 	const [tab, setTab] = useState<Tab>('info')

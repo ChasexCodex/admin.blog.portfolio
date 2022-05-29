@@ -5,6 +5,10 @@ export const FormatNew = <T>({id, name}: {id: number | string, name: string}) =>
 	return id === name ? {name} : {id}
 }
 
+export const FormatOld = <T>({id, name}: {id: number, name: string}) => {
+	return {value: id, label: name}
+}
+
 export const convertTimestampToMoment = <T extends TimeStamp>(model: T, format = 'MMMM Do YYYY, h:mm:ss a') => {
 	return {
 		...model,
