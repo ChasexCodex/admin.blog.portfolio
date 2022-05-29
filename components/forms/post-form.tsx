@@ -13,6 +13,8 @@ type Props = {
 	id?: string
 }
 
+type ChangeInput = ChangeEvent<HTMLInputElement>
+type ChangeTextarea = ChangeEvent<HTMLTextAreaElement>
 type Tab = 'info' | 'content'
 
 const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) => {
@@ -34,11 +36,11 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 
 	const [tab, setTab] = useState<Tab>('info')
 
-	const changeTitle = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)
-	const changeSlug = (e: ChangeEvent<HTMLInputElement>) => setSlug(e.target.value)
-	const changeDescription = (e: ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)
-	const changeAuthor = (e: ChangeEvent<HTMLInputElement>) => setAuthor(e.target.value)
-	const changeContent = (e: ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value)
+	const changeTitle = (e: ChangeInput) => setTitle(e.target.value)
+	const changeSlug = (e: ChangeInput) => setSlug(e.target.value)
+	const changeDescription = (e: ChangeTextarea) => setDescription(e.target.value)
+	const changeAuthor = (e: ChangeInput) => setAuthor(e.target.value)
+	const changeContent = (e: ChangeTextarea) => setContent(e.target.value)
 	const changePublished = () => setPublished(p => !p)
 
 	const changeTab = (tab: Tab) => () => setTab(tab)
