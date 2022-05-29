@@ -1,4 +1,4 @@
-import type {ChangeEvent, FormEvent} from 'react'
+import {ChangeEvent, FormEvent} from 'react'
 import {useState} from 'react'
 import {http} from '@/utils'
 import {useRouter} from 'next/router'

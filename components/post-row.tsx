@@ -1,4 +1,4 @@
-import type {Post} from '@/types'
+import {Post} from '@/types'
 import {http} from '@/utils'
 import {Link} from './'
 

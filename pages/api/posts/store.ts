@@ -1,7 +1,7 @@
-import type {NextApiRequest, NextApiResponse} from 'next'
+import {NextApiRequest, NextApiResponse} from 'next'
 import {prisma} from '@/prisma'
 import {StorePostSchema} from '@/schemas'
-import type {CanBeCreatedTag} from '@/types'
+import {CanBeCreatedTag} from '@/types'
 
 
 export default async function StorePost(req: NextApiRequest, res: NextApiResponse) {

@@ -1,4 +1,4 @@
-import type {GetServerSideProps} from 'next'
+import {GetServerSideProps} from 'next'
 import {prisma} from '@/prisma'
 import {Category} from '@/types'
 import {Link} from '@/components'

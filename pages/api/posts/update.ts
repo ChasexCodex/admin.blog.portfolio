@@ -1,4 +1,4 @@
-import type {NextApiRequest, NextApiResponse} from 'next'
+import {NextApiRequest, NextApiResponse} from 'next'
 import {prisma} from '@/prisma'
 import {UpdatePostSchema} from '@/schemas'
 import {CanBeCreatedTag} from '@/types'

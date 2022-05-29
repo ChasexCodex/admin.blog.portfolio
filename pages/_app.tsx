@@ -1,6 +1,6 @@
-import type {ReactElement, ReactNode} from 'react'
-import type {NextPage} from 'next'
-import type {AppProps} from 'next/app'
+import {ReactElement, ReactNode} from 'react'
+import {NextPage} from 'next'
+import {AppProps} from 'next/app'
 import '@/styles/globals.css'
 import {MainLayout} from '@/layouts'
 

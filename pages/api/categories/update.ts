@@ -1,4 +1,4 @@
-import type {NextApiRequest, NextApiResponse} from 'next'
+import {NextApiRequest, NextApiResponse} from 'next'
 import Joi from 'joi'
 import {prisma} from '@/prisma'
 
