@@ -1,5 +1,5 @@
 type ID = number
-type TimeStamp = {
+export type TimeStamp = {
 	created_at: Date
 	updated_at: Date
 }

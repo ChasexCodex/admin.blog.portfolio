@@ -2,6 +2,7 @@ import {GetServerSideProps} from 'next'
 import {PostRow, Link} from '@/components'
 import {prisma} from '@/prisma'
 import {Post, PostModelWithRelations} from '@/types'
+import {convertTimestampToMoment} from '@/utils'
 
 const perPage = 10
 
@@ -13,13 +14,7 @@ export const getServerSideProps: GetServerSideProps = async ({query}) => {
 		take: perPage,
 		include: {category: true, tags: true},
 	}))
-		// @ts-ignore
-		.map((post: PostModelWithRelations) => ({
-			...post,
-			created_at: JSON.stringify(post.created_at),
-			updated_at: JSON.stringify(post.created_at),
-		}))
-
+		.map(p => convertTimestampToMoment(p))
 	return {
 		props: {
 			posts,
