@@ -460,9 +460,9 @@
   integrity sha512-eC4U9MlIcu2q0KQmXszyn5Akca/0jrQmwDRgpAMJai7qBWq4amIQhZyNau4VYGtCeALvW1/NtjzJJ567aZxfKA==
 
 "@types/mdx@^2.0.0":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@types/mdx/-/mdx-2.0.1.tgz#e4c05d355d092d7b58db1abfe460e53f41102ac8"
-  integrity sha512-JPEv4iAl0I+o7g8yVWDwk30es8mfVrjkvh5UeVR2sYPpZCK44vrAPsbJpIS+rJAUxLgaSAMKTEH5Vn5qd9XsrQ==
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@types/mdx/-/mdx-2.0.2.tgz#64be19baddba4323ae7893e077e98759316fe279"
+  integrity sha512-mJGfgj4aWpiKb8C0nnJJchs1sHBHn0HugkVfqqyQi7Wn6mBRksLeQsPOFvih/Pu8L1vlDzfe/LidhVHBeUk3aQ==
 
 "@types/ms@*":
   version "0.7.31"
@@ -1059,9 +1059,9 @@ didyoumean@^1.2.2:
   integrity sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw==
 
 diff@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/diff/-/diff-5.0.0.tgz#7ed6ad76d859d030787ec35855f5b1daf31d852b"
-  integrity sha512-/VTCrvm5Z0JGty/BWHljh+BAiw3IK+2j87NGMu8Nwc/f48WoDAC395uomO9ZD117ZOBaHmkX1oyLvkVM/aIT3w==
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/diff/-/diff-5.1.0.tgz#bc52d298c5ea8df9194800224445ed43ffc87e40"
+  integrity sha512-D+mk+qE8VC/PAUrlAU34N+VfXev0ghe5ywmpqrawphmVZc1bEfn56uo9qpyGp1p4xpzOHkSW4ztBd6L7Xx4ACw==
 
 dir-glob@^3.0.1:
   version "3.0.1"
@@ -1411,9 +1411,9 @@ estree-util-attach-comments@^2.0.0:
     "@types/estree" "^0.0.46"
 
 estree-util-build-jsx@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/estree-util-build-jsx/-/estree-util-build-jsx-2.0.0.tgz#4903e2a923ebc791f86e78ec3687d01715dec902"
-  integrity sha512-d49hPGqBCJF/bF06g1Ywg7zjH1mrrUdPPrixBlKBxcX4WvMYlUUJ8BkrwlzWc8/fm6XqGgk5jilhgeZBDEGwOQ==
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/estree-util-build-jsx/-/estree-util-build-jsx-2.1.0.tgz#629aa81fbb1b16ed628c7a9334d37bc8a2a3726f"
+  integrity sha512-gsBGfsY6LOJUIDwmMkTOcgCX+3r/LUjRBccgHMSW55PHjhZsV13RmPl/iwpAvW8KcQqoN9P0FEFWTSS2Zc5bGA==
   dependencies:
     "@types/estree-jsx" "^0.0.1"
     estree-util-is-identifier-name "^2.0.0"
@@ -2479,9 +2479,9 @@ micromark-util-events-to-acorn@^1.0.0:
     vfile-message "^3.0.0"
 
 micromark-util-html-tag-name@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/micromark-util-html-tag-name/-/micromark-util-html-tag-name-1.0.0.tgz#75737e92fef50af0c6212bd309bc5cb8dbd489ed"
-  integrity sha512-NenEKIshW2ZI/ERv9HtFNsrn3llSPZtY337LID/24WeLqMzeZhBEE6BQ0vS2ZBjshm5n40chKtJ3qjAbVV8S0g==
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/micromark-util-html-tag-name/-/micromark-util-html-tag-name-1.1.0.tgz#eb227118befd51f48858e879b7a419fc0df20497"
+  integrity sha512-BKlClMmYROy9UiV03SwNmckkjn8QHVaWkqoAqzivabvdGcwNGMMMH/5szAnywmsTBUzDsU57/mFi0sp4BQO6dA==
 
 micromark-util-normalize-identifier@^1.0.0:
   version "1.0.0"
