@@ -5,24 +5,24 @@ import {PostForm} from '@/components/forms'
 
 export const getServerSideProps: GetServerSideProps = async () => {
 
-  const categories = await prisma.category.findMany()
-  const tags = await prisma.tag.findMany()
+	const categories = await prisma.category.findMany()
+	const tags = await prisma.tag.findMany()
 
-  return {
-    props: {
-      categories,
-      tags,
-    },
-  }
+	return {
+		props: {
+			categories,
+			tags,
+		},
+	}
 }
 
 type Props = {
-  categories: Category[]
-  tags: Tag[]
+	categories: Category[]
+	tags: Tag[]
 }
 
 const CreatePost = (props: Props) => {
-  return <PostForm {...props}/>
+	return <PostForm {...props}/>
 }
 
 export default CreatePost

@@ -1,36 +1,36 @@
 type ID = number
 type TimeStamp = {
-  created_at: Date
-  updated_at: Date
+	created_at: Date
+	updated_at: Date
 }
 type StringTimeStamp = {
-  created_at: string
-  updated_at: string
+	created_at: string
+	updated_at: string
 }
 
 export type Post = StringTimeStamp & {
-  id: ID
-  title: string
-  slug: string
-  description: string
-  content: string
-  author: string
-  published: boolean
+	id: ID
+	title: string
+	slug: string
+	description: string
+	content: string
+	author: string
+	published: boolean
 }
 
 export type Category = {
-  id: ID
-  name: string
+	id: ID
+	name: string
 }
 
 export type Tag = {
-  id: ID
-  name: string
+	id: ID
+	name: string
 }
 
 export type PostRelations = {
-  category: Category
-  tags: Tag[]
+	category: Category
+	tags: Tag[]
 }
 
 export type PostWithRelations = Post & PostRelations
@@ -45,26 +45,26 @@ export type CanBeCreatedTag = CanBeCreated<{name: string}>
 export type CanBeCreatedCategory = CanBeCreated<{name: string}>
 
 export type CreatePostValidationResult = {
-  title: string
-  slug: string
-  description: string
-  content: string
-  author: string
-  category: CanBeCreatedCategory
-  tags: CanBeCreatedTag[]
-  published: boolean
+	title: string
+	slug: string
+	description: string
+	content: string
+	author: string
+	category: CanBeCreatedCategory
+	tags: CanBeCreatedTag[]
+	published: boolean
 }
 
 export type UpdatePostValidationResult = CreatePostValidationResult & {id: ID}
 
 interface SuccessResult<T> {
-  data: T
-  success: true
+	data: T
+	success: true
 }
 
 interface ErrorResult {
-  error: any
-  success: false
+	error: any
+	success: false
 }
 
 export type ApiResult<T> = SuccessResult<T> | ErrorResult

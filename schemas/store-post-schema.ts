@@ -3,24 +3,24 @@ import {toKebabCase} from '@/utils'
 import {CreatePostValidationResult} from '@/types'
 
 const StorePostSchema = Joi.object<CreatePostValidationResult>({
-  title: Joi.string().min(3).max(50).required(),
-  slug: Joi.string().empty(['', null]).default(parent => toKebabCase(parent.title)),
-  content: Joi.string(),
-  description: Joi.string().optional(),
-  author: Joi.string().empty(['', null]).default(process.env.NEXT_PUBLIC_DEFAULT_AUTHOR),
+	title: Joi.string().min(3).max(50).required(),
+	slug: Joi.string().empty(['', null]).default(parent => toKebabCase(parent.title)),
+	content: Joi.string(),
+	description: Joi.string().optional(),
+	author: Joi.string().empty(['', null]).default(process.env.NEXT_PUBLIC_DEFAULT_AUTHOR),
 
-  // Accept either with id (existing) or name (new)
-  category: Joi.alternatives(
-      Joi.object({id: Joi.number().required()}),
-      Joi.object({name: Joi.string().required()}),
-  ),
+	// Accept either with id (existing) or name (new)
+	category: Joi.alternatives(
+		Joi.object({id: Joi.number().required()}),
+		Joi.object({name: Joi.string().required()}),
+	),
 
-  // Accept either with id (existing) or name (new)
-  tags: Joi.array().items(Joi.alternatives(
-      Joi.object({id: Joi.number().required()}),
-      Joi.object({name: Joi.string().required()}),
-  )).min(0),
-  published: Joi.boolean().default(false),
+	// Accept either with id (existing) or name (new)
+	tags: Joi.array().items(Joi.alternatives(
+		Joi.object({id: Joi.number().required()}),
+		Joi.object({name: Joi.string().required()}),
+	)).min(0),
+	published: Joi.boolean().default(false),
 })
 
 export default StorePostSchema
