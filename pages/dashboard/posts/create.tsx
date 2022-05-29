@@ -21,8 +21,6 @@ type Props = {
 	tags: Tag[]
 }
 
-const CreatePost = (props: Props) => {
-	return <PostForm {...props}/>
-}
+const CreatePost = (props: Props) => <PostForm {...props}/>
 
 export default CreatePost

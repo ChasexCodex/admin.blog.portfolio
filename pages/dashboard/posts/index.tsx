@@ -1,7 +1,7 @@
 import {GetServerSideProps} from 'next'
 import {PostRow, Link} from '@/components'
 import {prisma} from '@/prisma'
-import {Post, PostModelWithRelations} from '@/types'
+import {Post} from '@/types'
 import {convertTimestampToMoment} from '@/utils'
 
 const perPage = 10
@@ -15,6 +15,7 @@ export const getServerSideProps: GetServerSideProps = async ({query}) => {
 		include: {category: true, tags: true},
 	}))
 		.map(p => convertTimestampToMoment(p))
+
 	return {
 		props: {
 			posts,
