@@ -16,7 +16,6 @@ type Props = {
 type Tab = 'info' | 'content'
 
 const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) => {
-
 	const isEdit = !!id
 
 	const router = useRouter()
@@ -88,7 +87,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 					<div>
 						<label htmlFor="title">Title</label>
 						<input value={title} onChange={changeTitle} id="title" type="text" name="title" required
-									 className="rounded-md shadow-md px-2 py-1"
+									 className="rounded-sm shadow-md px-2 py-1"
 						/>
 					</div>
 
@@ -96,14 +95,14 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 						<label htmlFor="slug">Slug</label>
 						<input value={slug} onChange={changeSlug} id="slug" type="text" name="slug"
 									 placeholder="Auto-Generated"
-									 className="rounded-md shadow-md px-2 py-1"
+									 className="rounded-sm shadow-md px-2 py-1"
 						/>
 					</div>
 
 					<div>
 						<label htmlFor="description">Description</label>
 						<textarea value={description} onChange={changeDescription} id="description" name="description"
-											className="rounded-md shadow-md px-2 py-1 w-full"
+											className="rounded-sm shadow-md px-2 py-1 w-full"
 						/>
 					</div>
 
@@ -111,7 +110,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 						<label htmlFor="author">Author</label>
 						<input value={author} onChange={changeAuthor} id="author" type="text" name="author"
 									 placeholder={process.env.NEXT_PUBLIC_DEFAULT_AUTHOR}
-									 className="rounded-md shadow-md px-2 py-1"
+									 className="rounded-sm shadow-md px-2 py-1"
 						/>
 					</div>
 
@@ -146,7 +145,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 				<div className="flex-pass-row px-0 py-2">
 					<div className="flex-pass-col">
               <textarea value={content} onChange={changeContent} id="content" name="content" required
-												className=" w-full flex-1 p-1 rounded-md shadow-lg"
+												className=" w-full flex-1 p-1 rounded-sm shadow-lg"
 							/>
 					</div>
 					<div className="flex-1 ml-4">
