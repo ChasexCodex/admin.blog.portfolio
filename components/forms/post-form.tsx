@@ -75,8 +75,8 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 			saveToStore(key, payload)
 		}
 
-		const interval = setInterval(saveDraft(id), 1000)
-		return () => clearInterval(interval)
+		const interval = setTimeout(saveDraft(id), 500)
+		return () => clearTimeout(interval)
 	}, [id, getInput])
 
 	useEffect(() => {
