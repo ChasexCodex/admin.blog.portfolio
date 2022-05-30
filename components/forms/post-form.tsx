@@ -4,7 +4,7 @@ import {PostModelWithRelations, Category, Tag} from '@/types'
 import {MDXViewer, Link} from '@/components'
 import Select from 'react-select/creatable'
 import {FormatNew, FormatOld, http} from '@/utils'
-import {loadFromStore, localStoreSupported, saveToStore} from '@/utils/store'
+import {clearStore, loadFromStore, localStoreSupported, saveToStore} from '@/utils/store'
 import _ from 'lodash'
 
 type Props = {
@@ -86,7 +86,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 
 		const input = getInput()
 
-		if(_.isEqual(data, input)) return
+		if (_.isEqual(data, input)) return
 
 		// TODO: diplay a pop up instead of browser dialog
 		if (confirm('local draft has been found. Do you want to load it?')) {
@@ -106,12 +106,15 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 		const input = getInput()
 		const data = {
 			...input,
-			category: input.category ? FormatNew({name: input.category.label, id: input.category.value}) : undefined,
+			category: input.category
+				? FormatNew({name: input.category.label, id: input.category.value})
+				: undefined,
 			tags: input.tags.map(t => FormatNew({name: t.label, id: t.value})),
 		}
 
 		try {
 			await http.post(`/api/posts/${isEdit ? 'update' : 'store'}`, data)
+			clearStore(id)
 			await router.push('/dashboard/posts')
 		} catch (err) {
 			// TODO: display errors
