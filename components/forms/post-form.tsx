@@ -178,7 +178,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 
 					<div>
 						<label htmlFor="category" className="inline mr-4">Category</label>
-						<Select value={category} isClearable id="category" name="category"
+						<Select value={category} isClearable id="category" name="category" instanceId={1}
 										options={allCategories.map(c => ({label: c.name, value: c.id}))}
 										onChange={(v: any) => setCategory(v)}
 										placeholder="Select Category..."
@@ -187,7 +187,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 
 					<div>
 						<label htmlFor="tags">Tags</label>
-						<Select value={tags} isMulti isClearable id="tags" name="tags[]"
+						<Select value={tags} isMulti isClearable id="tags" name="tags[]" instanceId={2}
 										onChange={v => setTags([...v])}
 										options={allTags.map(t => ({value: t.id, label: t.name}))}
 										placeholder="Select Tag..."
