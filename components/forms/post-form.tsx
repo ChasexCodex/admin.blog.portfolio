@@ -43,8 +43,17 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 	const changeAuthor = (e: ChangeInput) => setAuthor(e.target.value)
 	const changeContent = (e: ChangeTextarea) => setContent(e.target.value)
 	const changePublished = () => setPublished(p => !p)
-	const changeThumbnail = (e: ChangeInput) => {
-		setThumbnail(e.target.files?.[0] ?? null)
+	const changeThumbnail = async (e: ChangeInput) => {
+		const file = e.target.files?.[0] ?? null
+		setThumbnail(file)
+		if (!file) return
+
+		const reader = new FileReader()
+		reader.onload = (e) => {
+			const td = document.querySelector('#thumbnail-display')!
+			td.setAttribute('src', e.target?.result as string)
+		}
+		reader.readAsDataURL(file)
 	}
 
 	// Controls
@@ -193,13 +202,14 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 						/>
 					</InputLabel>
 
-					<InputLabel htmlFor="thumbnail" className="max-w-max inline-block mr-2 btn-style bg-green-400"
+					<InputLabel htmlFor="thumbnail" className="max-w-max inline-block mr-2 mt-4 btn-style bg-green-400"
 											text="Thumbnail">
 						<input id="thumbnail" name="thumbnail" type="file" onChange={changeThumbnail} hidden/>
 						<p className="inline-block">
 							{thumbnail instanceof File && thumbnail.name}
 							{typeof thumbnail === 'string' && thumbnail}
 						</p>
+						<img className="w-full h-60 object-cover my-2" id="thumbnail-display" alt="Thumbnail Display"/>
 					</InputLabel>
 
 				</div>
