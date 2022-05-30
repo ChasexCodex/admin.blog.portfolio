@@ -121,6 +121,11 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 		if (thumbnail instanceof File)
 			data['thumbnail'] = thumbnail
 
+		if (!isEdit) {
+			data['id'] = undefined
+			delete data['id']
+		}
+
 		try {
 			await http.post(`/api/posts/${isEdit ? 'update' : 'store'}`, data)
 			PostStore.clearStore(id)
