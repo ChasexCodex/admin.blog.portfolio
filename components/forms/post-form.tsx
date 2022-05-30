@@ -6,6 +6,7 @@ import Select from 'react-select/creatable'
 import {FormatNew, FormatOld, http} from '@/utils'
 import {clearStore, loadFromStore, localStoreSupported, saveToStore} from '@/utils/store'
 import _ from 'lodash'
+import {useEffectOnce} from '@/hooks'
 
 type Props = {
 	post?: PostModelWithRelations
@@ -79,7 +80,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 		return () => clearTimeout(interval)
 	}, [id, getInput])
 
-	useEffect(() => {
+	useEffectOnce(() => {
 		const data = loadFromStore(id)
 
 		if (!data) return
@@ -99,7 +100,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 			setCategory(data.category)
 			setTags(data.tags)
 		}
-	}, [])
+	})
 
 	const onsubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
