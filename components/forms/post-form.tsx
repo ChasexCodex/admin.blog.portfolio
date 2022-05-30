@@ -193,7 +193,8 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 						/>
 					</InputLabel>
 
-					<InputLabel htmlFor="thumbnail" className="max-w-max inline-block mr-2 btn-style bg-green-400" text="Thumbnail">
+					<InputLabel htmlFor="thumbnail" className="max-w-max inline-block mr-2 btn-style bg-green-400"
+											text="Thumbnail">
 						<input id="thumbnail" name="thumbnail" type="file" onChange={changeThumbnail} hidden/>
 						<p className="inline-block">
 							{thumbnail instanceof File && thumbnail.name}
@@ -204,15 +205,11 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 				</div>
 
 				{/*Content*/}
-				<div className={`flex-row flex-1 px-0 py-2 ${tab === 'content' ? 'flex' : 'hidden'}`}>
-					<div className="flex-pass-col">
-              <textarea value={content} onChange={changeContent} id="content" name="content" required
-												className=" w-full flex-1 p-1 rounded-sm shadow-lg"
-							/>
-					</div>
-					<div className="flex-1 ml-4">
-						<MDXViewer content={content}/>
-					</div>
+				<div className={`grid grid-cols-2 gap-x-4 flex-1 px-0 py-2 ${tab === 'content' ? 'flex' : 'hidden'}`}>
+					<textarea value={content} onChange={changeContent} id="content" name="content" required
+										className=" w-full flex-1 p-1 rounded-sm shadow-lg"
+					/>
+					<MDXViewer content={content}/>
 				</div>
 
 				<input type="submit" value={isEdit ? 'Update' : 'Create'}
