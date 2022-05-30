@@ -11,6 +11,10 @@
 		hover:ring-2
 	}
 
+	.btn-style {
+		@apply px-2 py-1 shadow ring-indigo-400 transition hover:ring-2
+	}
+
 	.center {
 		@apply justify-center items-center
 	}

@@ -1,7 +1,7 @@
 import {ChangeEvent, FormEvent, useCallback, useEffect, useState} from 'react'
 import {useRouter} from 'next/router'
 import {PostModelWithRelations, Category, Tag} from '@/types'
-import {MDXViewer, Link} from '@/components'
+import {MDXViewer, Link, InputLabel} from '@/components'
 import Select from 'react-select/creatable'
 import {FormatNew, FormatOld, http} from '@/utils'
 import {Store, localStoreSupported} from '@/utils/store'
@@ -146,62 +146,60 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 			<form onSubmit={onsubmit} className="flex-pass-col">
 				{/*Info*/}
 				<div className={`space-y-2 mx-auto w-full xl:max-w-6xl ${tab !== 'info' ? 'hidden' : ''}`}>
-					<div>
-						<label htmlFor="title">Title</label>
+					<InputLabel htmlFor="title" text="Title">
 						<input value={title} onChange={changeTitle}
 									 id="title" type="text" name="title" required
 									 className="rounded-sm shadow-md px-2 py-1"
 						/>
-					</div>
+					</InputLabel>
 
-					<div>
-						<label htmlFor="slug">Slug</label>
+					<InputLabel htmlFor="slug" text="Slug">
 						<input value={slug} onChange={changeSlug} id="slug" type="text" name="slug"
 									 placeholder="Auto-Generated"
 									 className="rounded-sm shadow-md px-2 py-1"
 						/>
-					</div>
+					</InputLabel>
 
-					<div>
-						<label htmlFor="description">Description</label>
+					<InputLabel htmlFor="description" text="Description">
 						<textarea value={description} onChange={changeDescription} id="description" name="description"
 											className="rounded-sm shadow-md px-2 py-1 w-full"
 						/>
-					</div>
+					</InputLabel>
 
-					<div>
-						<label htmlFor="author">Author</label>
+					<InputLabel htmlFor="author" text="Author">
 						<input value={author} onChange={changeAuthor} id="author" type="text" name="author"
 									 placeholder={process.env.NEXT_PUBLIC_DEFAULT_AUTHOR}
 									 className="rounded-sm shadow-md px-2 py-1"
 						/>
-					</div>
+					</InputLabel>
 
-					<div>
-						<label htmlFor="published" className="inline mr-4">Published</label>
+					<InputLabel htmlFor="published" text="Published" className="inline mr-4">
 						<input checked={published} onChange={changePublished} id="published" type="checkbox" name="published"/>
-					</div>
+					</InputLabel>
 
-					<div>
-						<label htmlFor="category" className="inline mr-4">Category</label>
+					<InputLabel htmlFor="category" className="inline mr-4" text="Category">
 						<Select value={category} isClearable id="category" name="category" instanceId={1}
 										options={allCategories.map(c => ({label: c.name, value: c.id}))}
 										onChange={(v: any) => setCategory(v)}
 										placeholder="Select Category..."
 						/>
-					</div>
+					</InputLabel>
 
-					<div>
-						<label htmlFor="tags">Tags</label>
+					<InputLabel htmlFor="tags" text="Tags">
 						<Select value={tags} isMulti isClearable id="tags" name="tags[]" instanceId={2}
 										onChange={v => setTags([...v])}
 										options={allTags.map(t => ({value: t.id, label: t.name}))}
 										placeholder="Select Tag..."
 						/>
-					<div>
-						<label htmlFor="thumbnail" className="btn max-w-max" style={{fontWeight: 'normal'}}>Thumbnail</label>
+					</InputLabel>
+
+					<InputLabel htmlFor="thumbnail" className="max-w-max inline-block mr-2 btn-style bg-green-400" text="Thumbnail">
 						<input id="thumbnail" name="thumbnail" type="file" onChange={changeThumbnail} hidden/>
-					</div>
+						<p className="inline-block">
+							{thumbnail instanceof File && thumbnail.name}
+							{typeof thumbnail === 'string' && thumbnail}
+						</p>
+					</InputLabel>
 
 				</div>
 
