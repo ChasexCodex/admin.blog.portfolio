@@ -1,6 +1,6 @@
 import {ChangeEvent, FormEvent, useCallback, useEffect, useState} from 'react'
 import {useRouter} from 'next/router'
-import {PostModelWithRelations, Category, Tag} from '@/types'
+import {PostModelWithRelations, Category, Tag, AnyObject} from '@/types'
 import {MDXViewer, Link, InputLabel, ReactiveImage} from '@/components'
 import Select from 'react-select/creatable'
 import {FormatNew, FormatOld, http} from '@/utils'
@@ -109,13 +109,17 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 	const onsubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		const input = getInput()
+
 		const data = {
 			...input,
 			category: input.category
 				? FormatNew({name: input.category.label, id: input.category.value})
 				: undefined,
 			tags: input.tags.map(t => FormatNew({name: t.label, id: t.value})),
-		}
+		} as AnyObject
+
+		if (thumbnail instanceof File)
+			data['thumbnail'] = thumbnail
 
 		try {
 			await http.post(`/api/posts/${isEdit ? 'update' : 'store'}`, data)
