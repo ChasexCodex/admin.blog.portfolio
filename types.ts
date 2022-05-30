@@ -54,6 +54,7 @@ export type CreatePostValidationResult = {
 	category: CanBeCreatedCategory
 	tags: CanBeCreatedTag[]
 	published: boolean
+	thumbnail: object
 }
 
 export type UpdatePostValidationResult = CreatePostValidationResult & {id: ID}

@@ -21,6 +21,8 @@ const StorePostSchema = Joi.object<CreatePostValidationResult>({
 		Joi.object({name: Joi.string().required()}),
 	)).min(0),
 	published: Joi.boolean().default(false),
+
+	thumbnail: Joi.any().optional()
 })
 
 export default StorePostSchema

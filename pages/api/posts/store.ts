@@ -12,7 +12,7 @@ export default async function StorePost(req: NextApiRequest, res: NextApiRespons
 		return
 	}
 
-	const {tags, category, ...input} = value
+	const {tags, category, thumbnail, ...input} = value
 
 	const newTags = tags.filter((tag: CanBeCreatedTag) => 'name' in tag) as {name: string}[]
 	const oldTags = tags.filter((tag: CanBeCreatedTag) => 'id' in tag) as {id: number}[]
