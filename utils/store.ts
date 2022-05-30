@@ -8,64 +8,36 @@ const throwIfLocalStoreUnsupported = () => {
 	}
 }
 
-const updateKeys = (key: string) => {
-	const storageKeys = localStorage.getItem('keys')
+export class Store {
+	static globalPrefix = process.env.NEXT_PUBLIC_APP_NAME ?? ''
 
-	const currentKeys = storageKeys ? JSON.parse(storageKeys) as string[] : []
+	constructor(private readonly prefix: string) {}
 
-	if (!currentKeys.includes(key)) {
-		currentKeys.push(key)
+	saveToStore = <T extends {[p: string]: any}>(key: string, data: T) => {
+		throwIfLocalStoreUnsupported()
+
+		const stringData = JSON.stringify(data)
+		localStorage.setItem(this.getAccessor(key), stringData)
 	}
 
-	localStorage.setItem('keys', JSON.stringify(currentKeys))
-}
+	loadFromStore = (key: string, error = false) => {
+		throwIfLocalStoreUnsupported()
 
-const removeKey = (key: string) => {
-	const storageKeys = localStorage.getItem('keys')
+		const data = localStorage.getItem(this.getAccessor(key))
 
-	if (!storageKeys) {
-		return
+		if (!data) {
+			if (error) console.error(`Cannot find object with key ${key} in the localStorage`)
+			return false
+		}
+
+		return JSON.parse(data)
 	}
 
-	const currentKeys = JSON.parse(storageKeys) as string[]
+	clearStore = (key: string) => {
+		throwIfLocalStoreUnsupported()
 
-	const newKeys = currentKeys.filter(k => k !== key)
-
-	localStorage.setItem('keys', JSON.stringify(newKeys))
-}
-
-export const saveToStore = <T extends {[p: string]: any}>(key: string, data: T) => {
-	throwIfLocalStoreUnsupported()
-
-	const stringData = JSON.stringify(data)
-	localStorage.setItem(key, stringData)
-
-	updateKeys(key)
-}
-
-export const loadFromStore = (key: string, error = false) => {
-	throwIfLocalStoreUnsupported()
-
-	const data = localStorage.getItem(key)
-
-	if (!data) {
-		if (error) console.error(`Cannot find object with key ${key} in the localStorage`)
-		return false
+		localStorage.removeItem(this.getAccessor(key))
 	}
 
-	return JSON.parse(data)
-}
-
-export const changeKey = (oldKey: string, newKey: string) => {
-	const data = loadFromStore(oldKey)
-	clearStore(oldKey)
-	saveToStore(newKey, data)
-}
-
-export const clearStore = (key: string) => {
-	throwIfLocalStoreUnsupported()
-
-	localStorage.removeItem(key)
-
-	removeKey(key)
+	private getAccessor = (key: string) => `${Store.globalPrefix}.${this.prefix}:${key}`
 }

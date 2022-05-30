@@ -4,9 +4,11 @@ import {PostModelWithRelations, Category, Tag} from '@/types'
 import {MDXViewer, Link} from '@/components'
 import Select from 'react-select/creatable'
 import {FormatNew, FormatOld, http} from '@/utils'
-import {clearStore, loadFromStore, localStoreSupported, saveToStore} from '@/utils/store'
+import {Store, localStoreSupported} from '@/utils/store'
 import _ from 'lodash'
 import {useEffectOnce} from '@/hooks'
+
+const PostStore = new Store('posts')
 
 type Props = {
 	post?: PostModelWithRelations
@@ -73,7 +75,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 		const saveDraft = (key: string) => () => {
 			const payload = getInput()
 
-			saveToStore(key, payload)
+			PostStore.saveToStore(key, payload)
 		}
 
 		const interval = setTimeout(saveDraft(id), 500)
@@ -81,7 +83,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 	}, [id, getInput])
 
 	useEffectOnce(() => {
-		const data = loadFromStore(id)
+		const data = PostStore.loadFromStore(id)
 
 		if (!data) return
 
@@ -115,7 +117,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 
 		try {
 			await http.post(`/api/posts/${isEdit ? 'update' : 'store'}`, data)
-			clearStore(id)
+			PostStore.clearStore(id)
 			await router.push('/dashboard/posts')
 		} catch (err) {
 			// TODO: display errors
