@@ -1,12 +1,13 @@
 import {ChangeEvent, FormEvent, useCallback, useEffect, useState} from 'react'
 import {useRouter} from 'next/router'
 import {PostModelWithRelations, Category, Tag} from '@/types'
-import {MDXViewer, Link, InputLabel} from '@/components'
+import {MDXViewer, Link, InputLabel, ReactiveImage} from '@/components'
 import Select from 'react-select/creatable'
 import {FormatNew, FormatOld, http} from '@/utils'
 import {Store, localStoreSupported} from '@/utils/store'
 import _ from 'lodash'
 import {useEffectOnce} from '@/hooks'
+import Dropzone from 'react-dropzone'
 
 const PostStore = new Store('posts')
 
@@ -43,18 +44,6 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 	const changeAuthor = (e: ChangeInput) => setAuthor(e.target.value)
 	const changeContent = (e: ChangeTextarea) => setContent(e.target.value)
 	const changePublished = () => setPublished(p => !p)
-	const changeThumbnail = async (e: ChangeInput) => {
-		const file = e.target.files?.[0] ?? null
-		setThumbnail(file)
-		if (!file) return
-
-		const reader = new FileReader()
-		reader.onload = (e) => {
-			const td = document.querySelector('#thumbnail-display')!
-			td.setAttribute('src', e.target?.result as string)
-		}
-		reader.readAsDataURL(file)
-	}
 
 	// Controls
 	const [tab, setTab] = useState<Tab>('info')
@@ -202,14 +191,26 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 						/>
 					</InputLabel>
 
-					<InputLabel htmlFor="thumbnail" className="max-w-max inline-block mr-2 mt-4 btn-style bg-green-400"
-											text="Thumbnail">
-						<input id="thumbnail" name="thumbnail" type="file" onChange={changeThumbnail} hidden/>
-						<p className="inline-block">
-							{thumbnail instanceof File && thumbnail.name}
-							{typeof thumbnail === 'string' && thumbnail}
-						</p>
-						<img className="w-full h-60 object-cover my-2" id="thumbnail-display" alt="Thumbnail Display"/>
+					<InputLabel htmlFor="thumbnail" text="Thumbnail"
+											className="max-w-max inline-block mr-2 mt-4 btn-style bg-green-400"
+					>
+						<Dropzone onDrop={file => setThumbnail(file[0])} maxFiles={1}
+											multiple={false} accept={{'image/*': ['.jpeg', '.png']}}
+						>
+							{({getRootProps, getInputProps, acceptedFiles: files}) => (
+								<section>
+									<div {...getRootProps()} className="mt-2">
+										<input id="thumbnail" name="thumbnail" {...getInputProps()}/>
+										{files.length ?
+											<ReactiveImage file={files[0]} alt="Thumbnail" className="w-full h-60 object-cover"/> :
+											<div className="border-8 opacity-80 border-dashed w-full h-40 flex center text-4xl">
+												<p className="opacity-50 font-extrabold">+</p>
+											</div>
+										}
+									</div>
+								</section>
+							)}
+						</Dropzone>
 					</InputLabel>
 
 				</div>
