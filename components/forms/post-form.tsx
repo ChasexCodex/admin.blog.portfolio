@@ -35,6 +35,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 	const [published, setPublished] = useState(post?.published ?? false)
 	const [category, setCategory] = useState(post?.category ? FormatOld(post.category) : null)
 	const [tags, setTags] = useState(post?.tags?.map(t => ({value: t.id, label: t.name})) ?? [])
+	const [thumbnail, setThumbnail] = useState<string | File | null>(post?.thumbnail ?? null)
 
 	const changeTitle = (e: ChangeInput) => setTitle(e.target.value)
 	const changeSlug = (e: ChangeInput) => setSlug(e.target.value)
@@ -42,6 +43,9 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 	const changeAuthor = (e: ChangeInput) => setAuthor(e.target.value)
 	const changeContent = (e: ChangeTextarea) => setContent(e.target.value)
 	const changePublished = () => setPublished(p => !p)
+	const changeThumbnail = (e: ChangeInput) => {
+		setThumbnail(e.target.files?.[0] ?? null)
+	}
 
 	// Controls
 	const [tab, setTab] = useState<Tab>('info')
@@ -194,10 +198,11 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 										options={allTags.map(t => ({value: t.id, label: t.name}))}
 										placeholder="Select Tag..."
 						/>
+					<div>
+						<label htmlFor="thumbnail" className="btn max-w-max" style={{fontWeight: 'normal'}}>Thumbnail</label>
+						<input id="thumbnail" name="thumbnail" type="file" onChange={changeThumbnail} hidden/>
 					</div>
 
-					<input type="submit" value={isEdit ? 'Update' : 'Create'}
-								 className="btn bg-blue-500 max-w-max mx-auto my-2"/>
 				</div>
 
 				{/*Content*/}
@@ -212,6 +217,8 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 					</div>
 				</div>
 
+				<input type="submit" value={isEdit ? 'Update' : 'Create'}
+							 className="btn bg-blue-500 max-w-max mx-auto my-2"/>
 			</form>
 
 		</div>

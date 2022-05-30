@@ -16,6 +16,7 @@ export type Post = StringTimeStamp & {
 	content: string
 	author: string
 	published: boolean
+	thumbnail: string
 }
 
 export type Category = {
