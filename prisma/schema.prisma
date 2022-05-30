@@ -12,6 +12,7 @@ model Post {
     title String
     slug String @unique
     description String?
+    thumbnail String?
     content String
     published Boolean @default(false)
     created_at DateTime @default(now())
