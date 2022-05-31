@@ -153,38 +153,38 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 			<form onSubmit={onsubmit} className="flex-pass-col">
 				{/*Info*/}
 				<div className={`space-y-2 mx-auto w-full xl:max-w-6xl ${tab !== 'info' ? 'hidden' : ''}`}>
-					<InputLabel htmlFor="title" text="Title">
+					<InputLabel htmlFor="title" text="Title" className="dark:text-white">
 						<input value={title} onChange={changeTitle}
 									 id="title" type="text" name="title" required
 									 className="rounded-sm shadow-md px-2 py-1"
 						/>
 					</InputLabel>
 
-					<InputLabel htmlFor="slug" text="Slug">
+					<InputLabel htmlFor="slug" text="Slug" className="dark:text-white">
 						<input value={slug} onChange={changeSlug} id="slug" type="text" name="slug"
 									 placeholder="Auto-Generated"
 									 className="rounded-sm shadow-md px-2 py-1"
 						/>
 					</InputLabel>
 
-					<InputLabel htmlFor="description" text="Description">
+					<InputLabel htmlFor="description" text="Description" className="dark:text-white">
 						<textarea value={description} onChange={changeDescription} id="description" name="description"
 											className="rounded-sm shadow-md px-2 py-1 w-full"
 						/>
 					</InputLabel>
 
-					<InputLabel htmlFor="author" text="Author">
+					<InputLabel htmlFor="author" text="Author" className="dark:text-white">
 						<input value={author} onChange={changeAuthor} id="author" type="text" name="author"
 									 placeholder={process.env.NEXT_PUBLIC_DEFAULT_AUTHOR}
 									 className="rounded-sm shadow-md px-2 py-1"
 						/>
 					</InputLabel>
 
-					<InputLabel htmlFor="published" text="Published" className="inline mr-4">
+					<InputLabel htmlFor="published" text="Published" className="inline mr-4 dark:text-white">
 						<input checked={published} onChange={changePublished} id="published" type="checkbox" name="published"/>
 					</InputLabel>
 
-					<InputLabel htmlFor="category" className="inline mr-4" text="Category">
+					<InputLabel htmlFor="category" text="Category" className="inline mr-4 dark:text-white">
 						<Select value={category} isClearable id="category" name="category" instanceId={1}
 										options={allCategories.map(c => ({label: c.name, value: c.id}))}
 										onChange={(v: any) => setCategory(v)}
@@ -192,7 +192,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 						/>
 					</InputLabel>
 
-					<InputLabel htmlFor="tags" text="Tags">
+					<InputLabel htmlFor="tags" text="Tags" className="dark:text-white">
 						<Select value={tags} isMulti isClearable id="tags" name="tags[]" instanceId={2}
 										onChange={v => setTags([...v])}
 										options={allTags.map(t => ({value: t.id, label: t.name}))}
@@ -213,7 +213,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 										{files.length ?
 											<ReactiveImage file={files[0]} alt="Thumbnail" className="w-full h-60 object-cover"/> :
 											<div className="border-8 opacity-80 border-dashed w-full h-40 flex center text-4xl">
-												<p className="opacity-50 font-extrabold">+</p>
+												<p className="opacity-50 font-extrabold dark:text-white">+</p>
 											</div>
 										}
 									</div>
@@ -225,9 +225,9 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 				</div>
 
 				{/*Content*/}
-				<div className={`grid grid-cols-2 gap-x-4 flex-1 px-0 py-2 ${tab === 'content' ? 'flex' : 'hidden'}`}>
+				<div className={`grid-rows-2 gap-y-4 xl:grid-rows-none xl:grid-cols-2 xl:gap-x-4 flex-1 px-0 py-2 ${tab === 'content' ? 'grid' : 'hidden'}`}>
 					<textarea value={content} onChange={changeContent} id="content" name="content" required
-										className=" w-full flex-1 p-1 rounded-sm shadow-lg"
+										className=" w-full flex-1 p-1 rounded-sm shadow-lg row-start-2 xl:row-start-auto"
 					/>
 					<MDXViewer content={content}/>
 				</div>
