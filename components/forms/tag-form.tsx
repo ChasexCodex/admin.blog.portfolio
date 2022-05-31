@@ -37,10 +37,10 @@ const TagForm = ({tag}: Props) => {
 			</div>
 			<form onSubmit={onsubmit}>
 				<div className="my-4">
-					<label htmlFor="name" className="block mr-4 mb-1 ml-2">Name</label>
+					<label htmlFor="name" className="block mr-4 mb-1 ml-2 dark:text-white">Name</label>
 					<input value={name} onChange={changeName} type="text" name="name" required
 								 placeholder="Name..."
-								 className="rounded-lg shadow block px-2 py-1"
+								 className="rounded-sm shadow block px-2 py-1"
 					/>
 				</div>
 				<input type="submit" value="Create" className="btn bg-green-500"/>
