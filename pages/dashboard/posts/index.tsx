@@ -54,20 +54,20 @@ const PostRow = ({post}: RowProps) => (
 			className="border-t even:bg-gray-200 h-14
 								 dark:bg-neutral-500 dark:even:bg-neutral-600 dark:border-gray-500
 								 ">
-		<td className="hidden xl:table-cell">{post.id}</td>
+		<td className="hidden xl:table-cell pl-2">{post.id}</td>
 		<td>{post.title}</td>
 		<td className="hidden xl:table-cell">{post.slug}</td>
 		<td className="hidden xl:table-cell">{post.author}</td>
 		<td className="hidden xl:table-cell">{post.created_at}</td>
 		<td className="hidden xl:table-cell">{post.updated_at}</td>
 		<td>
-			<div className="flex flex-col center space-y-0.5 text-black
+			<div className="flex flex-col center space-y-0.5 text-black pr-2 text-center
 											xl:flex-row xl:space-x-0.5 xl:space-y-0
 											">
-				<Link href={`/dashboard/posts/${post.id}/edit`} className="btn w-full bg-yellow-400">Edit</Link>
-				<Link href={`/dashboard/posts/${post.id}/view`} className="btn w-full bg-blue-500">View</Link>
-				<button onClick={deletePost(post.id)} className="btn w-full bg-red-600">Delete</button>
-				<button onClick={revalidate(post.id)} className="btn w-full bg-white">Revalidate</button>
+				<Link href={`/dashboard/posts/${post.id}/edit`} className="btn w-full xl:max-w-max bg-yellow-400">Edit</Link>
+				<Link href={`/dashboard/posts/${post.id}/view`} className="btn w-full xl:max-w-max bg-blue-500">View</Link>
+				<button onClick={deletePost(post.id)} className="btn w-full xl:max-w-max bg-red-600">Delete</button>
+				<button onClick={revalidate(post.id)} className="btn w-full xl:max-w-max bg-white">Revalidate</button>
 			</div>
 		</td>
 	</tr>
@@ -85,20 +85,20 @@ const IndexPost = ({posts}: Props) => (
 		</div>
 		{!!posts.length &&
 			<div className="shadow overflow-hidden">
-				<table className="table-auto w-full text-center
+				<table className="table-auto w-full text-left
 			 										dark:text-white
 			 										">
 					<thead>
 					<tr className="h-10 bg-gray-400
 												 dark:bg-gray-800
 												 ">
-						<th className="w-8 hidden xl:table-cell">#</th>
+						<th className="w-8 hidden xl:table-cell pl-2">#</th>
 						<th>Title</th>
 						<th className="hidden xl:table-cell">Slug</th>
 						<th className="hidden xl:table-cell">Author</th>
 						<th className="hidden xl:table-cell">Created At</th>
 						<th className="hidden xl:table-cell">Updated At</th>
-						<th>Actions</th>
+						<th className="text-center">Actions</th>
 					</tr>
 					</thead>
 					<tbody>
