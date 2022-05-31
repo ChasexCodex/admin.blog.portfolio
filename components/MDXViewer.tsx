@@ -9,18 +9,31 @@ type Props = {
 }
 
 const ViewMDX = ({content}: Props) => {
-	const [source, setSource] = useState<MDXRemoteSerializeResult | null>(null)
+	const [source, setSource] = useState<MDXRemoteSerializeResult | null | 'error'>(null)
 
 	useEffect(() => {
-		(async () => await serialize(matter(content).content))()
+		(async () => {
+			const render = matter(content).content
+
+			return await serialize(render)
+		})()
 			.catch(err => serialize(err.toString()))
 			.then(setSource)
+			.catch(_ => setSource('error'))
 	}, [content])
 
 	if (!content) {
 		return (
-			<p className="w-full text-center text-4xl">
+			<p className="w-full text-center text-4xl dark:text-white">
 				Write something...
+			</p>
+		)
+	}
+
+	if (source === 'error') {
+		return (
+			<p className="w-full text-center text-4xl dark:text-white">
+				An error occurred
 			</p>
 		)
 	}
