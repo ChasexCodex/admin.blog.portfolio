@@ -36,7 +36,7 @@ const TagForm = ({tag}: Props) => {
 				<Link href="/dashboard/tags" className="btn bg-black text-white">Back</Link>
 			</div>
 			<form onSubmit={onsubmit}>
-				<InputLabel htmlFor="name" className="block mr-4 mb-1 ml-2 dark:text-white" text="Name">
+				<InputLabel htmlFor="name" className="block mb-1 dark:text-white" text="Name">
 					<input value={name} onChange={changeName} type="text" name="name" required
 								 placeholder="Name..."
 								 className="rounded-sm shadow block px-2 py-1 mb-1"
