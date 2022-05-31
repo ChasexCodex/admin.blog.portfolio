@@ -21,6 +21,16 @@ const MainLayout = (page: ReactElement) => {
 			<main className="flex flex-col flex-1 w-screen">
 				{page}
 			</main>
+
+			{process.env.NODE_ENV === 'development' &&
+				<div className="fixed bottom-2 left-2 bg-white px-1 ring">
+					<p className="sm:hidden">{'<'}sm</p>
+					<p className="hidden sm:block md:hidden">sm</p>
+					<p className="hidden md:block lg:hidden">md</p>
+					<p className="hidden lg:block xl:hidden">lg</p>
+					<p className="hidden xl:block">xl</p>
+				</div>
+			}
 		</div>
 	)
 }
