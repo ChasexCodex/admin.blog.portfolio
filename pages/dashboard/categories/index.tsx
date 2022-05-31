@@ -33,7 +33,7 @@ const IndexCategory = ({categories}: Props) => (
 	<div className="mx-4">
 		<div className="flex space-x-0.5 my-2">
 			<Link href="/dashboard" className="btn bg-black text-white">Back</Link>
-			<Link href="/dashboard/categories/form" className="btn bg-green-500">Create</Link>
+			<Link href="/dashboard/categories/create" className="btn bg-green-500">Create</Link>
 		</div>
 		<div className="shadow overflow-hidden">
 			<table className="table-auto w-full text-center
