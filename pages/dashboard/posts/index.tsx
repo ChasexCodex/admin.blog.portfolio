@@ -35,15 +35,19 @@ const IndexPost = ({posts}: Props) => (
 		</div>
 		{!!posts.length &&
 			<div className="shadow overflow-hidden">
-				<table className="table-auto w-full text-center">
+				<table className="table-auto w-full text-center
+			 									dark:text-white
+			 									">
 					<thead>
-					<tr className="h-10 bg-gray-400">
-						<th className="w-8">#</th>
+					<tr className="h-10 bg-gray-400
+											 dark:bg-gray-800
+											 ">
+						<th className="w-8 hidden xl:table-cell">#</th>
 						<th>Title</th>
-						<th>Slug</th>
-						<th>Author</th>
-						<th>Created At</th>
-						<th>Updated At</th>
+						<th className="hidden xl:table-cell">Slug</th>
+						<th className="hidden xl:table-cell">Author</th>
+						<th className="hidden xl:table-cell">Created At</th>
+						<th className="hidden xl:table-cell">Updated At</th>
 						<th>Actions</th>
 					</tr>
 					</thead>

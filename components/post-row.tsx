@@ -33,19 +33,23 @@ const PostRow = ({post}: Props) => {
 	}
 
 	return (
-		<tr className="even:bg-gray-300 h-14">
-			<td>{post.id}</td>
+		<tr key={post.id} className="border-t even:bg-gray-200 h-14
+																	dark:bg-neutral-500 dark:even:bg-neutral-600 dark:border-gray-500
+																	">
+			<td className="hidden xl:table-cell">{post.id}</td>
 			<td>{post.title}</td>
-			<td>{post.slug}</td>
-			<td>{post.author}</td>
-			<td>{post.created_at}</td>
-			<td>{post.updated_at}</td>
+			<td className="hidden xl:table-cell">{post.slug}</td>
+			<td className="hidden xl:table-cell">{post.author}</td>
+			<td className="hidden xl:table-cell">{post.created_at}</td>
+			<td className="hidden xl:table-cell">{post.updated_at}</td>
 			<td>
-				<div className="flex center space-x-0.5">
-					<Link href={`/dashboard/posts/${post.id}/edit`} className="btn bg-yellow-400">Edit</Link>
-					<Link href={`/dashboard/posts/${post.id}/view`} className="btn bg-blue-500">View</Link>
-					<button onClick={deletePost} className="btn bg-red-600">Delete</button>
-					<button onClick={revalidate} className="btn bg-white">Revalidate</button>
+				<div className="flex flex-col center space-y-0.5 text-black
+												xl:flex-row xl:space-x-0.5 xl:space-y-0
+												">
+					<Link href={`/dashboard/posts/${post.id}/edit`} className="btn w-full bg-yellow-400">Edit</Link>
+					<Link href={`/dashboard/posts/${post.id}/view`} className="btn w-full bg-blue-500">View</Link>
+					<button onClick={deletePost} className="btn w-full bg-red-600">Delete</button>
+					<button onClick={revalidate} className="btn w-full bg-white">Revalidate</button>
 				</div>
 			</td>
 		</tr>
