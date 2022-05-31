@@ -72,3 +72,5 @@ interface ErrorResult {
 export type ApiResult<T> = SuccessResult<T> | ErrorResult
 
 export type AnyObject = {[p: string]: any}
+
+export type Errors = {[name: string]: string}

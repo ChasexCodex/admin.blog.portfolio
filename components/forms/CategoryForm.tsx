@@ -3,7 +3,8 @@ import {useState} from 'react'
 import {http} from '@/utils'
 import {useRouter} from 'next/router'
 import {InputLabel, Link} from '@/components'
-import {Category} from '@/types'
+import {Category, Errors} from '@/types'
+import {AxiosResponse} from 'axios'
 
 type Props = {
 	category?: Category
@@ -13,6 +14,7 @@ const CategoryForm = ({category}: Props) => {
 
 	const router = useRouter()
 	const [name, setName] = useState(category?.name ?? '')
+	const [errors, setErrors] = useState<Errors>({})
 
 	const onsubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -21,14 +23,11 @@ const CategoryForm = ({category}: Props) => {
 			await http.post('/api/categories/store', {name})
 			await router.push('/dashboard/categories')
 		} catch (e) {
-			console.log(e)
-			// TODO: display errors
+			setErrors((e as AxiosResponse).data.errors)
 		}
 	}
 
-	const changeName = (e: ChangeEvent<HTMLInputElement>) => {
-		return setName(e.target.value)
-	}
+	const changeName = (e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)
 
 	return (
 		<div className="mx-4">
@@ -41,6 +40,9 @@ const CategoryForm = ({category}: Props) => {
 								 placeholder="Name..."
 								 className="rounded-sm shadow block px-2 py-1"
 					/>
+					{errors.name &&
+						<p className="bg-red-500 max-w-max px-2 border border-gray-300">{errors.name}</p>
+					}
 				</InputLabel>
 				<input type="submit" value="Create" className="btn bg-green-500 mt-2"/>
 			</form>
