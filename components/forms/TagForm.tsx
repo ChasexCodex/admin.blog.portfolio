@@ -2,7 +2,7 @@ import {ChangeEvent, FormEvent} from 'react'
 import {useState} from 'react'
 import {http} from '@/utils'
 import {useRouter} from 'next/router'
-import {Link} from '@/components'
+import {InputLabel, Link} from '@/components'
 import {Tag} from '@/types'
 
 type Props = {
@@ -36,14 +36,13 @@ const TagForm = ({tag}: Props) => {
 				<Link href="/dashboard/tags" className="btn bg-black text-white">Back</Link>
 			</div>
 			<form onSubmit={onsubmit}>
-				<div className="my-4">
-					<label htmlFor="name" className="block mr-4 mb-1 ml-2 dark:text-white">Name</label>
+				<InputLabel htmlFor="name" className="block mr-4 mb-1 ml-2 dark:text-white" text="Name">
 					<input value={name} onChange={changeName} type="text" name="name" required
 								 placeholder="Name..."
 								 className="rounded-sm shadow block px-2 py-1"
 					/>
-				</div>
-				<input type="submit" value="Create" className="btn bg-green-500"/>
+				</InputLabel>
+				<input type="submit" value="Create" className="btn bg-green-500 mt-2"/>
 			</form>
 		</div>
 	)
