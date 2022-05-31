@@ -36,9 +36,13 @@ const IndexTag = ({tags}: Props) => (
 			<Link href="/dashboard/tags/form" className="btn bg-green-500">Create</Link>
 		</div>
 		<div className="shadow overflow-hidden">
-			<table className="table-auto w-full text-center">
+			<table className="table-auto w-full text-center
+			 									dark:text-white
+			 									">
 				<thead>
-				<tr className="h-10 bg-gray-400">
+				<tr className="h-10 bg-gray-400
+											 dark:bg-gray-800
+											 ">
 					<th>#</th>
 					<th>Name</th>
 					<th>Actions</th>
@@ -46,11 +50,13 @@ const IndexTag = ({tags}: Props) => (
 				</thead>
 				<tbody>
 				{tags.map(({id, name}) => (
-					<tr key={id} className="border-t even:bg-gray-200 h-14">
+					<tr key={id} className="border-t even:bg-gray-200 h-14
+																	dark:bg-neutral-500 dark:even:bg-neutral-600 dark:border-gray-500
+																	">
 						<td>{id}</td>
 						<td>{name}</td>
 						<td>
-							<div className="flex center space-x-0.5">
+							<div className="flex center space-x-0.5 text-black">
 								<Link href={`/dashboard/tags/${id}/edit`} className="btn bg-yellow-400">Edit</Link>
 								<button onClick={deleteTag(id)} className="btn bg-red-600">Delete</button>
 							</div>
