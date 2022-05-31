@@ -245,7 +245,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 				<ErrorLine error={errors.content}/>
 
 				<input type="submit" value={isEdit ? 'Update' : 'Create'}
-							 className="btn bg-blue-500 max-w-max mx-auto my-2"/>
+							 className="btn bg-blue-500 max-w-max mt-auto mb-2"/>
 			</form>
 
 		</div>
