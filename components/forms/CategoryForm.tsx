@@ -1,6 +1,6 @@
-import {ChangeEvent, FormEvent} from 'react'
+import {ChangeEvent} from 'react'
 import {useState} from 'react'
-import {http} from '@/utils'
+import {http, submission} from '@/utils'
 import {useRouter} from 'next/router'
 import {InputLabel, Link} from '@/components'
 import {Category, Errors} from '@/types'
@@ -17,9 +17,7 @@ const CategoryForm = ({category}: Props) => {
 	const [name, setName] = useState(category?.name ?? '')
 	const [errors, setErrors] = useState<Errors>({})
 
-	const onsubmit = async (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault()
-
+	const onsubmit = async () => {
 		try {
 			await http.post('/api/categories/store', {name})
 			await router.push('/dashboard/categories')
@@ -35,7 +33,7 @@ const CategoryForm = ({category}: Props) => {
 			<div className="flex my-2">
 				<Link href="/dashboard/categories" className="btn bg-black text-white">Back</Link>
 			</div>
-			<form onSubmit={onsubmit} className="max-w-md">
+			<form onSubmit={submission(onsubmit)} className="max-w-md">
 				<InputLabel htmlFor="name" className="block mb-1 dark:text-white" text="Name">
 					<input value={name} onChange={changeName} type="text" name="name" required
 								 placeholder="Name..."

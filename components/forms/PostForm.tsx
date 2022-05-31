@@ -1,9 +1,9 @@
-import {ChangeEvent, FormEvent, useCallback, useEffect, useState} from 'react'
+import {ChangeEvent, useCallback, useEffect, useState} from 'react'
 import {useRouter} from 'next/router'
 import {PostModelWithRelations, Category, Tag, AnyObject, Errors} from '@/types'
 import {MDXViewer, Link, InputLabel, ReactiveImage} from '@/components'
 import Select from 'react-select/creatable'
-import {FormatNew, FormatOld, http} from '@/utils'
+import {FormatNew, FormatOld, http, submission} from '@/utils'
 import {Store, localStoreSupported} from '@/utils/store'
 import _ from 'lodash'
 import {useEffectOnce} from '@/hooks'
@@ -109,8 +109,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 		}
 	})
 
-	const onsubmit = async (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault()
+	const onsubmit = async () => {
 		const input = getInput()
 
 		const data = {
@@ -153,7 +152,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 				</button>
 			</div>
 
-			<form onSubmit={onsubmit} className="flex-pass-col">
+			<form onSubmit={submission(onsubmit)} className="flex-pass-col">
 				{/*Info*/}
 				<div className={`space-y-2 mt-2 w-full xl:max-w-2xl ${tab !== 'info' ? 'hidden' : ''}`}>
 					<InputLabel htmlFor="title" text="Title" className="mb-1 dark:text-white">
@@ -236,7 +235,8 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 				</div>
 
 				{/*Content*/}
-				<div className={`grid-rows-2 gap-y-4 xl:grid-rows-none xl:grid-cols-2 xl:gap-x-4 flex-1 px-0 py-2 ${tab === 'content' ? 'grid' : 'hidden'}`}>
+				<div
+					className={`grid-rows-2 gap-y-4 xl:grid-rows-none xl:grid-cols-2 xl:gap-x-4 flex-1 px-0 py-2 ${tab === 'content' ? 'grid' : 'hidden'}`}>
 					<textarea value={content} onChange={changeContent} id="content" name="content" required
 										className=" w-full flex-1 p-1 rounded-sm shadow-lg row-start-2 xl:row-start-auto"
 					/>
