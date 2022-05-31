@@ -155,7 +155,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 
 			<form onSubmit={onsubmit} className="flex-pass-col">
 				{/*Info*/}
-				<div className={`space-y-2 mx-auto w-full xl:max-w-6xl ${tab !== 'info' ? 'hidden' : ''}`}>
+				<div className={`space-y-2 mt-2 w-full xl:max-w-2xl ${tab !== 'info' ? 'hidden' : ''}`}>
 					<InputLabel htmlFor="title" text="Title" className="mb-1 dark:text-white">
 						<input value={title} onChange={changeTitle}
 									 id="title" type="text" name="title" required

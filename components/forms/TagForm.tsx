@@ -35,7 +35,7 @@ const TagForm = ({tag}: Props) => {
 			<div className="flex my-2">
 				<Link href="/dashboard/tags" className="btn bg-black text-white">Back</Link>
 			</div>
-			<form onSubmit={onsubmit}>
+			<form onSubmit={onsubmit} className="max-w-md">
 				<InputLabel htmlFor="name" className="block mb-1 dark:text-white" text="Name">
 					<input value={name} onChange={changeName} type="text" name="name" required
 								 placeholder="Name..."
