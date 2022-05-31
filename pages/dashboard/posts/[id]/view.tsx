@@ -1,18 +1,12 @@
 import {MDXRemote} from 'next-mdx-remote'
 import matter from 'gray-matter'
-import {serialize} from 'next-mdx-remote/serialize'
 import {GetServerSideProps} from 'next'
 import {MDXRemoteSerializeResult} from 'next-mdx-remote'
 import {PostWithRelations} from '@/types'
-
-import rehypeHighlight from 'rehype-highlight'
-import rehypeCodeTitles from 'rehype-code-titles'
-import rehypeSlug from 'rehype-slug'
-import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import {prisma} from '@/prisma'
 import {Link} from '@/components'
 import {ReactNode, useState} from 'react'
-import {convertBoolean, convertTimestampToMoment} from '@/utils'
+import {convertBoolean, convertTimestampToMoment, serialize} from '@/utils'
 
 export const getServerSideProps: GetServerSideProps<any, {id: string}> = async ({params}) => {
 	if (!params) {
@@ -31,22 +25,8 @@ export const getServerSideProps: GetServerSideProps<any, {id: string}> = async (
 	const post = convertTimestampToMoment(res)
 
 	const {content} = matter(post.content)
-	const source = await serialize(content, {
-		mdxOptions: {
-			rehypePlugins: [
-				rehypeSlug,
-				[
-					rehypeAutolinkHeadings,
-					{
-						properties: {className: ['anchor']},
-					},
-					{behaviour: 'wrap'},
-				],
-				rehypeHighlight,
-				rehypeCodeTitles,
-			],
-		},
-	})
+	const source = await serialize(content)
+
 	return {
 		props: {
 			post,

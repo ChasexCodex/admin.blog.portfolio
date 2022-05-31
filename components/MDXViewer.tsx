@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 import {MDXRemote, MDXRemoteSerializeResult} from 'next-mdx-remote'
 import matter from 'gray-matter'
-import {serialize} from 'next-mdx-remote/serialize'
+import {serialize} from '@/utils'
 import 'github-markdown-css/github-markdown.css'
 
 type Props = {
@@ -39,10 +39,8 @@ const ViewMDX = ({content}: Props) => {
 	}
 
 	return (
-		<div className="flex-pass-col">
-			<article className="flex-1 p-4 markdown-body rounded-md">
-				{source && <MDXRemote {...source}/>}
-			</article>
+		<div className="flex-1 p-4 markdown-body markdown rounded-md">
+			{source && <MDXRemote {...source}/>}
 		</div>
 	)
 }
