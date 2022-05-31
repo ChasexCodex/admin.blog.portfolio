@@ -1,3 +1,3 @@
-export {default as CategoryForm} from './category-form'
-export {default as PostForm} from './post-form'
-export {default as TagForm} from './tag-form'
+export {default as CategoryForm} from './CategoryForm'
+export {default as PostForm} from './PostForm'
+export {default as TagForm} from './TagForm'
