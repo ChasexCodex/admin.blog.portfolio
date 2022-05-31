@@ -5,6 +5,7 @@ import {useRouter} from 'next/router'
 import {InputLabel, Link} from '@/components'
 import {Errors, Tag} from '@/types'
 import {AxiosResponse} from 'axios'
+import ErrorLine from '@/components/ErrorLine'
 
 type Props = {
 	tag?: Tag
@@ -40,9 +41,7 @@ const TagForm = ({tag}: Props) => {
 								 placeholder="Name..."
 								 className="rounded-sm shadow block px-2 py-1 mb-1"
 					/>
-					{errors.name &&
-						<p className="bg-red-500 max-w-max px-2 border border-gray-300">{errors.name}</p>
-					}
+					<ErrorLine error={errors.name}/>
 				</InputLabel>
 				<input type="submit" value="Create" className="btn bg-green-500 mt-2"/>
 			</form>
