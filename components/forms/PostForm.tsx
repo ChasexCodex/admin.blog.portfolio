@@ -1,6 +1,6 @@
 import {ChangeEvent, FormEvent, useCallback, useEffect, useState} from 'react'
 import {useRouter} from 'next/router'
-import {PostModelWithRelations, Category, Tag, AnyObject} from '@/types'
+import {PostModelWithRelations, Category, Tag, AnyObject, Errors} from '@/types'
 import {MDXViewer, Link, InputLabel, ReactiveImage} from '@/components'
 import Select from 'react-select/creatable'
 import {FormatNew, FormatOld, http} from '@/utils'
@@ -8,6 +8,8 @@ import {Store, localStoreSupported} from '@/utils/store'
 import _ from 'lodash'
 import {useEffectOnce} from '@/hooks'
 import Dropzone from 'react-dropzone'
+import ErrorLine from '@/components/ErrorLine'
+import {AxiosResponse} from 'axios'
 
 const PostStore = new Store('posts')
 
@@ -37,6 +39,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 	const [category, setCategory] = useState(post?.category ? FormatOld(post.category) : null)
 	const [tags, setTags] = useState(post?.tags?.map(t => ({value: t.id, label: t.name})) ?? [])
 	const [thumbnail, setThumbnail] = useState<string | File | null>(post?.thumbnail ?? null)
+	const [errors, setErrors] = useState<Errors>({})
 
 	const changeTitle = (e: ChangeInput) => setTitle(e.target.value)
 	const changeSlug = (e: ChangeInput) => setSlug(e.target.value)
@@ -130,8 +133,8 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 			await http.post(`/api/posts/${isEdit ? 'update' : 'store'}`, data)
 			PostStore.clearStore(id)
 			await router.push('/dashboard/posts')
-		} catch (err) {
-			// TODO: display errors
+		} catch (e) {
+			setErrors((e as AxiosResponse).data.errors)
 		}
 	}
 
@@ -158,6 +161,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 									 id="title" type="text" name="title" required
 									 className="rounded-sm shadow-md px-2 py-1"
 						/>
+						<ErrorLine error={errors.title}/>
 					</InputLabel>
 
 					<InputLabel htmlFor="slug" text="Slug" className="dark:text-white">
@@ -165,12 +169,14 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 									 placeholder="Auto-Generated"
 									 className="rounded-sm shadow-md px-2 py-1"
 						/>
+						<ErrorLine error={errors.slug}/>
 					</InputLabel>
 
 					<InputLabel htmlFor="description" text="Description" className="dark:text-white">
 						<textarea value={description} onChange={changeDescription} id="description" name="description"
 											className="rounded-sm shadow-md px-2 py-1 w-full"
 						/>
+						<ErrorLine error={errors.description}/>
 					</InputLabel>
 
 					<InputLabel htmlFor="author" text="Author" className="dark:text-white">
@@ -178,10 +184,12 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 									 placeholder={process.env.NEXT_PUBLIC_DEFAULT_AUTHOR}
 									 className="rounded-sm shadow-md px-2 py-1"
 						/>
+						<ErrorLine error={errors.author}/>
 					</InputLabel>
 
 					<InputLabel htmlFor="published" text="Published" className="inline mr-4 dark:text-white">
 						<input checked={published} onChange={changePublished} id="published" type="checkbox" name="published"/>
+						<ErrorLine error={errors.published}/>
 					</InputLabel>
 
 					<InputLabel htmlFor="category" text="Category" className="inline mr-4 dark:text-white">
@@ -190,6 +198,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 										onChange={(v: any) => setCategory(v)}
 										placeholder="Select Category..."
 						/>
+						<ErrorLine error={errors.category}/>
 					</InputLabel>
 
 					<InputLabel htmlFor="tags" text="Tags" className="dark:text-white">
@@ -198,6 +207,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 										options={allTags.map(t => ({value: t.id, label: t.name}))}
 										placeholder="Select Tag..."
 						/>
+						<ErrorLine error={errors.tags}/>
 					</InputLabel>
 
 					<InputLabel htmlFor="thumbnail" text="Thumbnail"
@@ -220,6 +230,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 								</section>
 							)}
 						</Dropzone>
+						<ErrorLine error={errors.thumbnail}/>
 					</InputLabel>
 
 				</div>
@@ -231,6 +242,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 					/>
 					<MDXViewer content={content}/>
 				</div>
+				<ErrorLine error={errors.content}/>
 
 				<input type="submit" value={isEdit ? 'Update' : 'Create'}
 							 className="btn bg-blue-500 max-w-max mx-auto my-2"/>
