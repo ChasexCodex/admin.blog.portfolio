@@ -52,6 +52,10 @@
 		scrollbar-width: none;
 	}
 
+	::-webkit-scrollbar {
+		display: none;
+	}
+
 	li, ol {
 		list-style: initial;
 	}
