@@ -34,3 +34,11 @@ model Tag {
     name String @unique
     posts Post[] @relation(references: [id])
 }
+
+model Contact {
+    id Int @id @default(autoincrement())
+    name String
+    email String
+    subject String
+    details String
+}
