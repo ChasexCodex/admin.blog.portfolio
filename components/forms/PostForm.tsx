@@ -225,6 +225,9 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 												<p className="opacity-50 font-extrabold dark:text-white">+</p>
 											</div>
 										}
+										{typeof thumbnail === 'string' &&
+											<img src={thumbnail} alt="Post Thumbnail"/>
+										}
 									</div>
 								</section>
 							)}
@@ -238,7 +241,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 				<div
 					className={`grid-rows-2 gap-y-4 xl:grid-rows-none xl:grid-cols-2 xl:gap-x-4 flex-1 px-0 py-2 ${tab === 'content' ? 'grid' : 'hidden'}`}>
 					<textarea value={content} onChange={changeContent} id="content" name="content" required
-										className=" w-full flex-1 p-1 rounded-sm shadow-lg row-start-2 xl:row-start-auto"
+										className=" w-full flex-1 p-1 rounded-sm shadow-lg row-start-2 xl:row-start-auto dark:bg-stone-400"
 					/>
 					<MDXViewer content={content}/>
 				</div>
