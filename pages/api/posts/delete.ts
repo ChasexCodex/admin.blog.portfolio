@@ -2,7 +2,7 @@ import {NextApiRequest, NextApiResponse} from 'next'
 import {prisma} from '@/prisma'
 
 export default async function UpdatePost(req: NextApiRequest, res: NextApiResponse) {
-	const {id} = req.query
+	const {id} = req.body
 
 	if (!id || typeof id !== 'string') {
 		res.status(400).json({message: 'id is required', success: false})
