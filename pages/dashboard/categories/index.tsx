@@ -3,6 +3,7 @@ import {prisma} from '@/prisma'
 import {Category} from '@/types'
 import {Link} from '@/components'
 import {http} from '@/utils'
+import {toast} from 'react-toastify'
 
 export const getServerSideProps: GetServerSideProps = async () => {
 	const categories = await prisma.category.findMany()
@@ -15,14 +16,15 @@ export const getServerSideProps: GetServerSideProps = async () => {
 }
 
 const deleteCategory = (id: number) => () => {
-	http.post('/api/categories/delete', {id})
+	const req = http.post('/api/categories/delete', {id})
 		.then(() => {
 			window.location.reload()
 		})
-		.catch(err => {
-			console.log(err)
-			// TODO: display errors
-		})
+	toast.promise(req, {
+		pending: 'Deleting category',
+		error: 'Error: couldn\'t delete category',
+		success: 'Category deleted successfully',
+	})
 }
 
 type Props = {
