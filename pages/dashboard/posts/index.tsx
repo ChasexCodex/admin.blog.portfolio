@@ -3,6 +3,7 @@ import {Link} from '@/components'
 import {prisma} from '@/prisma'
 import {Post} from '@/types'
 import {convertTimestampToMoment, http} from '@/utils'
+import {toast} from 'react-toastify'
 
 const perPage = 10
 
@@ -24,25 +25,27 @@ export const getServerSideProps: GetServerSideProps = async ({query}) => {
 }
 
 const deletePost = (id: number) => () => {
-	http.post('/api/posts/delete', {id})
+	const req = http.post('/api/posts/delete', {id})
 		.then(() => {
 			window.location.reload()
 		})
-		.catch(err => {
-			console.log(err)
-			// TODO: display errors
-		})
+	toast.promise(req, {
+		pending: 'Deleting post',
+		error: 'Error: couldn\'t delete post',
+		success: 'Post deleted successfully',
+	})
 }
 
 const revalidate = (id: number) => () => {
-	http.post(`/api/posts/revalidate`, {id})
+	const req = http.post(`/api/posts/revalidate`, {id})
 		.then(() => {
-			// TODO: display success
+			window.location.reload()
 		})
-		.catch(err => {
-			console.log(err)
-			// TODO: display errors
-		})
+	toast.promise(req, {
+		pending: 'Deleting category',
+		error: 'Error: couldn\'t delete category',
+		success: 'Category deleted successfully',
+	})
 }
 
 type RowProps = {
