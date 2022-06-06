@@ -10,7 +10,7 @@ export default async function UpdateTag(req: NextApiRequest, res: NextApiRespons
 	}
 
 	try {
-		const result = await prisma.tag.delete({where: {id: parseInt(id)}})
+		const result = await prisma.tag.delete({where: {id}})
 		res.status(200).json({data: result, success: true})
 	} catch (e) {
 		res.status(400).json({error: e, success: false})

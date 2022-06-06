@@ -10,7 +10,7 @@ export default async function UpdateCategory(req: NextApiRequest, res: NextApiRe
 	}
 
 	try {
-		const result = await prisma.category.delete({where: {id: parseInt(id)}})
+		const result = await prisma.category.delete({where: {id}})
 		res.status(200).json({data: result, success: true})
 	} catch (e) {
 		res.status(400).json({error: e, success: false})
