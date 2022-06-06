@@ -1,11 +1,12 @@
 import {ChangeEvent} from 'react'
 import {useState} from 'react'
-import {http, submission} from '@/utils'
+import {convertBoolean, http, submission} from '@/utils'
 import {useRouter} from 'next/router'
 import {InputLabel, Link} from '@/components'
 import {Category, Errors} from '@/types'
-import {AxiosResponse} from 'axios'
+import {AxiosError, AxiosResponse} from 'axios'
 import ErrorLine from '@/components/ErrorLine'
+import {toast} from 'react-toastify'
 
 type Props = {
 	category?: Category
@@ -17,14 +18,20 @@ const CategoryForm = ({category}: Props) => {
 	const [name, setName] = useState(category?.name ?? '')
 	const [errors, setErrors] = useState<Errors>({})
 
-	const onsubmit = async () => {
-		try {
-			await http.post('/api/categories/store', {name})
-			await router.push('/dashboard/categories')
-		} catch (e) {
-			setErrors((e as AxiosResponse).data.errors)
-		}
+	const onsubmit = () => {
+		const isEdit = !!category?.id
+
+		const req = http.post('/api/categories/store', {name})
+
+		toast.promise(req, {
+			pending: convertBoolean(isEdit, 'Updating', 'Creating'),
+			success: `${convertBoolean(isEdit, 'Updated', 'Created')} successfully`,
+			error: `Error: failed to ${convertBoolean(isEdit, 'update', 'create')}`
+		})
+			.then(() => router.push('/dashboard/categories'))
+			.catch(e => setErrors(e.response.data.errors))
 	}
+
 
 	const changeName = (e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)
 
