@@ -15,7 +15,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 }
 
 const deleteCategory = (id: number) => () => {
-	http.delete('/api/categories/delete?id=' + id)
+	http.post('/api/categories/delete', {id})
 		.then(() => {
 			window.location.reload()
 		})

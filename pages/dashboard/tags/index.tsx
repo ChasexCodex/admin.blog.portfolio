@@ -15,7 +15,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 }
 
 const deleteTag = (id: number) => () => {
-	http.delete('/api/tags/delete?id=' + id)
+	http.post('/api/tags/delete', {id})
 		.then(() => {
 			window.location.reload()
 		})
