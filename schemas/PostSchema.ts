@@ -2,7 +2,7 @@ import Joi from 'joi'
 import {toKebabCase} from '@/utils'
 import {CreatePostValidationResult} from '@/types'
 
-const StorePostSchema = Joi.object<CreatePostValidationResult>({
+const PostSchema = Joi.object<CreatePostValidationResult>({
 	title: Joi.string().disallow('page').min(3).required(),
 	slug: Joi.string().empty(['', null]).default(parent => toKebabCase(parent.title)),
 	content: Joi.string(),
@@ -25,4 +25,4 @@ const StorePostSchema = Joi.object<CreatePostValidationResult>({
 	thumbnail: Joi.any().optional()
 })
 
-export default StorePostSchema
+export default PostSchema

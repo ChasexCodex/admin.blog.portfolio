@@ -1,12 +1,12 @@
 import {NextApiRequest, NextApiResponse} from 'next'
 import {prisma} from '@/prisma'
-import {StorePostSchema} from '@/schemas'
+import {PostSchema} from '@/schemas'
 import {AnyObject, CanBeCreatedTag} from '@/types'
 import {saveFile} from '@/utils/storage'
 
 
 export default async function StorePost(req: NextApiRequest, res: NextApiResponse) {
-	const {value, error} = StorePostSchema.validate(req.body)
+	const {value, error} = PostSchema.validate(req.body)
 
 	if (error) {
 		res.status(400).json({error, success: false})
