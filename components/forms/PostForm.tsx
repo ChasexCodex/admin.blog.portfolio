@@ -3,13 +3,13 @@ import {useRouter} from 'next/router'
 import {PostModelWithRelations, Category, Tag, AnyObject, Errors} from '@/types'
 import {MDXViewer, Link, InputLabel, ReactiveImage} from '@/components'
 import Select from 'react-select/creatable'
-import {FormatNew, FormatOld, http, submission} from '@/utils'
+import {convertBoolean, FormatNew, FormatOld, http, submission} from '@/utils'
 import {Store, localStoreSupported} from '@/utils/store'
 import _ from 'lodash'
 import {useEffectOnce} from '@/hooks'
 import Dropzone from 'react-dropzone'
 import ErrorLine from '@/components/ErrorLine'
-import {AxiosResponse} from 'axios'
+import {toast} from 'react-toastify'
 
 const PostStore = new Store('posts')
 
@@ -128,13 +128,18 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 			delete data['id']
 		}
 
-		try {
-			await http.post(`/api/posts/${isEdit ? 'update' : 'store'}`, data)
-			PostStore.clearStore(id)
-			await router.push('/dashboard/posts')
-		} catch (e) {
-			setErrors((e as AxiosResponse).data.errors)
-		}
+		const req = http.post(`/api/posts/${isEdit ? 'update' : 'store'}`, data)
+
+		toast.promise(req, {
+			pending: convertBoolean(isEdit, 'Updating', 'Creating'),
+			success: `${convertBoolean(isEdit, 'Updated', 'Created')} successfully`,
+			error: `Error: failed to ${convertBoolean(isEdit, 'update', 'create')}`,
+		})
+			.then(() => {
+				PostStore.clearStore(id)
+				router.push('/dashboard/categories')
+			})
+			.catch(e => setErrors(e.reponse.data.errors))
 	}
 
 	return (
