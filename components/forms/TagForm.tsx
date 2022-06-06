@@ -1,11 +1,12 @@
 import {ChangeEvent} from 'react'
 import {useState} from 'react'
-import {http, submission} from '@/utils'
+import {convertBoolean, http, submission} from '@/utils'
 import {useRouter} from 'next/router'
 import {InputLabel, Link} from '@/components'
 import {Errors, Tag} from '@/types'
 import {AxiosResponse} from 'axios'
 import ErrorLine from '@/components/ErrorLine'
+import {toast} from 'react-toastify'
 
 type Props = {
 	tag?: Tag
@@ -17,13 +18,18 @@ const TagForm = ({tag}: Props) => {
 	const [name, setName] = useState(tag?.name ?? '')
 	const [errors, setErrors] = useState<Errors>({})
 
-	const onsubmit = async () => {
-		try {
-			await http.post('/api/tags/store', {name})
-			await router.push('/dashboard/tags')
-		} catch (e) {
-			setErrors((e as AxiosResponse).data.errors)
-		}
+	const onsubmit = () => {
+		const isEdit = !!tag?.id
+
+		const req = http.post('/api/tags/store', {name})
+
+		toast.promise(req, {
+			pending: convertBoolean(isEdit, 'Updating', 'Creating'),
+			success: `${convertBoolean(isEdit, 'Updated', 'Created')} successfully`,
+			error: `Error: failed to ${convertBoolean(isEdit, 'update', 'create')}`
+		})
+			.then(() => router.push('/dashboard/tags'))
+			.catch(e => setErrors(e.response.data.errors))
 	}
 
 	const changeName = (e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)
