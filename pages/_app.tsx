@@ -3,6 +3,7 @@ import {NextPage} from 'next'
 import {AppProps} from 'next/app'
 import '@/styles/globals.css'
 import {MainLayout} from '@/layouts'
+import {ToastContainer} from 'react-toastify'
 
 type NextPageWithLayout = NextPage & {
 	Layout?: (page: ReactElement) => ReactNode
@@ -19,5 +20,10 @@ export default function MyApp({Component, pageProps}: AppPropsWithLayout) {
 		return <Component {...pageProps}/>
 	}
 
-	return Layout(<Component {...pageProps} />)
+	return (
+		<>
+			{Layout(<Component {...pageProps} />)}
+			<ToastContainer/>
+		</>
+	)
 }
