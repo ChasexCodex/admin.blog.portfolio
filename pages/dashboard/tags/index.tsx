@@ -3,6 +3,7 @@ import {prisma} from '@/prisma'
 import {Tag} from '@/types'
 import {Link} from '@/components'
 import {http} from '@/utils'
+import {toast} from 'react-toastify'
 
 export const getServerSideProps: GetServerSideProps = async () => {
 	const tags = await prisma.tag.findMany()
@@ -15,14 +16,15 @@ export const getServerSideProps: GetServerSideProps = async () => {
 }
 
 const deleteTag = (id: number) => () => {
-	http.post('/api/tags/delete', {id})
+	const req = http.post('/api/tags/delete', {id})
 		.then(() => {
 			window.location.reload()
 		})
-		.catch(err => {
-			console.log(err)
-			// TODO: display errors
-		})
+	toast.promise(req, {
+		pending: 'Deleting tag',
+		error: 'Error: couldn\'t delete tag',
+		success: 'Tag deleted successfully',
+	})
 }
 
 type Props = {
