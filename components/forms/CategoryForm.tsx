@@ -4,7 +4,6 @@ import {convertBoolean, http, submission} from '@/utils'
 import {useRouter} from 'next/router'
 import {InputLabel, Link} from '@/components'
 import {Category, Errors} from '@/types'
-import {AxiosError, AxiosResponse} from 'axios'
 import ErrorLine from '@/components/ErrorLine'
 import {toast} from 'react-toastify'
 
@@ -21,12 +20,12 @@ const CategoryForm = ({category}: Props) => {
 	const onsubmit = () => {
 		const isEdit = !!category?.id
 
-		const req = http.post('/api/categories/store', {name})
+		const req = http.post(`/api/categories/${isEdit ? 'update' : 'store'}`, {name})
 
 		toast.promise(req, {
 			pending: convertBoolean(isEdit, 'Updating', 'Creating'),
 			success: `${convertBoolean(isEdit, 'Updated', 'Created')} successfully`,
-			error: `Error: failed to ${convertBoolean(isEdit, 'update', 'create')}`
+			error: `Error: failed to ${convertBoolean(isEdit, 'update', 'create')}`,
 		})
 			.then(() => router.push('/dashboard/categories'))
 			.catch(e => setErrors(e.response.data.errors))
