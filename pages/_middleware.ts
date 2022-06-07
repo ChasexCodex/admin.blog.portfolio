@@ -3,26 +3,22 @@ import {checkUser} from '@/utils/auth'
 
 export const middleware: NextMiddleware = (req) => {
 
-	const next = (redirect = false) => {
-		if (req.nextUrl.pathname === '/' || redirect) {
-			return NextResponse.redirect(new URL('/dashboard', req.url))
-		}
+	const header = req.cookies['Authorization']
+	const dev = process.env.NODE_ENV === 'development' && false
+	const auth = checkUser(header)
 
-		if (req.nextUrl.pathname === '/login') {
-			return NextResponse.next()
+	const pathname = req.nextUrl.pathname
+
+	if (auth || dev) {
+		if (pathname === '/' || (pathname === '/login' && dev)) {
+			return NextResponse.redirect(new URL('/dashboard', req.url))
 		}
 
 		return NextResponse.next()
 	}
 
-	if (process.env.NODE_ENV === 'development') {
-		return next()
-	}
-
-	const header = req.cookies['Authorization']
-
-	if (checkUser(header)) {
-		return next(true)
+	if (pathname === '/login') {
+		return NextResponse.next()
 	}
 
 	return new Response('Auth required', {
