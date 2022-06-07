@@ -5,6 +5,7 @@ import {useState} from 'react'
 import supabase from '@/utils/supabase'
 import {AsyncReturnType} from '@/types'
 import {toast} from 'react-toastify'
+import {useRouter} from 'next/router'
 
 const Login: NextPage = () => {
 	const [email, setEmail] = useState('')
@@ -12,16 +13,19 @@ const Login: NextPage = () => {
 
 	const [error, setError] = useState<AsyncReturnType<typeof supabase.auth.signIn>['error'] | null>(null)
 
+	const router = useRouter()
+
 	const onsubmit = async () => {
 		const res = await toast.promise(supabase.auth.signIn({email, password}), {
 			pending: 'Signing in...',
 			error: 'Error signing in',
-			success: 'Signed in successfully',
 		})
 
 		if (res.error) {
 			return setError(res.error)
 		}
+
+		await router.push('/dashboard')
 	}
 
 	return (
@@ -39,7 +43,7 @@ const Login: NextPage = () => {
 			<input type="submit" value="Login"
 						 className="btn outline outline-2 outline-green-500 hover:bg-green-500 duration-100"/>
 			{error &&
-				<p>{error.message}</p>
+				<p className="outline outline-1 outline-red-400 rounded-sm p-1 bg-red-300">Error: {error.message}</p>
 			}
 		</form>
 	)
