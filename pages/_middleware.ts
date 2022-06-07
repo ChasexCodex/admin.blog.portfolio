@@ -3,10 +3,15 @@ import {checkUser} from '@/utils/auth'
 
 export async function middleware(req: NextRequest) {
 
-	const next = () => {
-		if (req.nextUrl.pathname === '/') {
+	const next = (redirect = false) => {
+		if (req.nextUrl.pathname === '/' || redirect) {
 			return NextResponse.redirect(new URL('/dashboard', req.url))
 		}
+
+		if (req.nextUrl.pathname === '/login') {
+			return NextResponse.next()
+		}
+
 		return NextResponse.next()
 	}
 
@@ -17,7 +22,7 @@ export async function middleware(req: NextRequest) {
 	const header = req.cookies['Authorization']
 
 	if (checkUser(header)) {
-		return next()
+		return next(true)
 	}
 
 	return new Response('Auth required', {
