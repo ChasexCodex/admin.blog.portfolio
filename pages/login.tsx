@@ -6,6 +6,7 @@ import supabase from '@/utils/supabase'
 import {AsyncReturnType} from '@/types'
 import {toast} from 'react-toastify'
 import {useRouter} from 'next/router'
+import Cookie from 'js-cookie'
 
 const Login: NextPage = () => {
 	const [email, setEmail] = useState('')
@@ -21,10 +22,11 @@ const Login: NextPage = () => {
 			error: 'Error signing in',
 		})
 
-		if (res.error) {
+		if (res.error || !res.user) {
 			return setError(res.error)
 		}
 
+		Cookie.set('Authorization', res.user.id)
 		await router.push('/dashboard')
 	}
 
