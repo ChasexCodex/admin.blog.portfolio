@@ -1,7 +1,7 @@
-import {NextRequest, NextResponse} from 'next/server'
+import {NextResponse, NextMiddleware} from 'next/server'
 import {checkUser} from '@/utils/auth'
 
-export async function middleware(req: NextRequest) {
+export const middleware: NextMiddleware = (req) => {
 
 	const next = (redirect = false) => {
 		if (req.nextUrl.pathname === '/' || redirect) {
