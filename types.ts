@@ -76,3 +76,6 @@ export type AnyObject = {[p: string]: any}
 export type Errors = {[name: string]: string}
 
 export type Promiseable<T> = T | Promise<T>
+
+export type AsyncReturnType<T extends (...args: any) => Promise<any>> =
+	ReturnType<T> extends Promise<infer U> ? U : never
