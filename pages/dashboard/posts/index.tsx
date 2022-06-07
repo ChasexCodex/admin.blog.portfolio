@@ -2,7 +2,7 @@ import {GetServerSideProps} from 'next'
 import {Link} from '@/components'
 import {prisma} from '@/prisma'
 import {Post} from '@/types'
-import {convertTimestampToMoment, http} from '@/utils'
+import {convertTimestampToMoment, api} from '@/utils'
 import {toast} from 'react-toastify'
 
 const perPage = 10
@@ -25,7 +25,7 @@ export const getServerSideProps: GetServerSideProps = async ({query}) => {
 }
 
 const deletePost = (id: number) => () => {
-	const req = http.post('/api/posts/delete', {id})
+	const req = api.post('/posts/delete', {id})
 		.then(() => {
 			window.location.reload()
 		})
@@ -37,7 +37,7 @@ const deletePost = (id: number) => () => {
 }
 
 const revalidate = (id: number) => () => {
-	const req = http.post(`/api/posts/revalidate`, {id})
+	const req = api.post(`/posts/revalidate`, {id})
 		.then(() => {
 			window.location.reload()
 		})

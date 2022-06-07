@@ -1,6 +1,6 @@
 import {ChangeEvent} from 'react'
 import {useState} from 'react'
-import {convertBoolean, http, submission} from '@/utils'
+import {convertBoolean, api, submission} from '@/utils'
 import {useRouter} from 'next/router'
 import {InputLabel, Link} from '@/components'
 import {Errors, Tag} from '@/types'
@@ -20,7 +20,7 @@ const TagForm = ({tag}: Props) => {
 	const onsubmit = () => {
 		const isEdit = !!tag?.id
 
-		const req = http.post(`/api/tags/${isEdit ? 'update' : 'store'}`, {name})
+		const req = api.post(`/tags/${isEdit ? 'update' : 'store'}`, {name})
 
 		toast.promise(req, {
 			pending: convertBoolean(isEdit, 'Updating', 'Creating'),

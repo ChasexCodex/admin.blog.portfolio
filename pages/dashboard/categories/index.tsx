@@ -2,7 +2,7 @@ import {GetServerSideProps} from 'next'
 import {prisma} from '@/prisma'
 import {Category} from '@/types'
 import {Link} from '@/components'
-import {http} from '@/utils'
+import {api} from '@/utils'
 import {toast} from 'react-toastify'
 
 export const getServerSideProps: GetServerSideProps = async () => {
@@ -16,7 +16,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 }
 
 const deleteCategory = (id: number) => () => {
-	const req = http.post('/api/categories/delete', {id})
+	const req = api.post('/categories/delete', {id})
 		.then(() => {
 			window.location.reload()
 		})

@@ -3,7 +3,7 @@ import {useRouter} from 'next/router'
 import {PostModelWithRelations, Category, Tag, AnyObject, Errors} from '@/types'
 import {MDXViewer, Link, InputLabel, ReactiveImage} from '@/components'
 import Select from 'react-select/creatable'
-import {convertBoolean, FormatNew, FormatOld, http, submission} from '@/utils'
+import {convertBoolean, FormatNew, FormatOld, api, submission} from '@/utils'
 import {Store, localStoreSupported} from '@/utils/store'
 import _ from 'lodash'
 import {useEffectOnce} from '@/hooks'
@@ -128,7 +128,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 			delete data['id']
 		}
 
-		const req = http.post(`/api/posts/${isEdit ? 'update' : 'store'}`, data)
+		const req = api.post(`/posts/${isEdit ? 'update' : 'store'}`, data)
 
 		toast.promise(req, {
 			pending: convertBoolean(isEdit, 'Updating', 'Creating'),
