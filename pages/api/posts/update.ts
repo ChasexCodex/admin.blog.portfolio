@@ -1,9 +1,7 @@
 import {NextApiRequest, NextApiResponse} from 'next'
 import {prisma} from '@/prisma'
-import {CanBeCreatedTag, UpdatePostValidationResult} from '@/types'
-import {FindSchema, PostSchema} from '@/schemas'
-
-const UpdatePostSchema = FindSchema.append<UpdatePostValidationResult>(PostSchema)
+import {CanBeCreatedTag} from '@/types'
+import {UpdatePostSchema} from '@/schemas'
 
 export default async function UpdatePost(req: NextApiRequest, res: NextApiResponse) {
 	const {value, error} = UpdatePostSchema.validate(req.body)
