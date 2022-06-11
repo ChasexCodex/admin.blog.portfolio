@@ -42,9 +42,9 @@ const revalidate = (id: number) => () => {
 			window.location.reload()
 		})
 	toast.promise(req, {
-		pending: 'Deleting category',
-		error: 'Error: couldn\'t delete category',
-		success: 'Category deleted successfully',
+		pending: 'Revalidating post',
+		error: 'Error: couldn\'t revalidate post',
+		success: 'Post revalidated successfully',
 	})
 }
 

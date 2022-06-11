@@ -137,7 +137,7 @@ const FormPost = ({post, categories: allCategories, tags: allTags, id}: Props) =
 		})
 			.then(() => {
 				PostStore.clearStore(id)
-				router.push('/dashboard/categories')
+				router.push('/dashboard/posts')
 			})
 			.catch(e => setErrors(e.reponse.data.errors))
 	}
